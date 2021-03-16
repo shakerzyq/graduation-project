@@ -27,7 +27,7 @@
 				socketTask: null,
 				// 确保websocket是打开状态
 				is_open_socket: false,
-				feal_id:null,
+				flea_id:null,
 				pagenum:1,//当前页数
 				flag:false
 			}
@@ -39,23 +39,23 @@
 			goodsList
 		},
 
-		onShow:function(){
-			//获取后台商品数据，并渲染
-			this.getGoodsList()
-		},
+		// onShow:function(){
+		// 	//获取后台商品数据，并渲染
+		// 	this.getGoodsList()
+		// },
 		onLoad:function() {
 			//获取本地存储的跳蚤id
-			this.feal_id
+			this.flea_id
 			//获取本地存储的flea_id和locken
 			try {
 			    const value = uni.getStorageSync('locken');
-				const value2 = uni.getStorageSync('feal_id');
+				const value2 = uni.getStorageSync('flea_id');
 			    if (value) {
 			        this.locken=value
 			    }
 				if(value2){
-					this.feal_id=value2
-					console.log("从storage中获取的feal_id为:"+this.feal_id)
+					this.flea_id=value2
+					console.log("从storage中获取的flea_id为:"+this.flea_id)
 				}
 			} catch (e) {
 			    // error
@@ -109,7 +109,7 @@
 			//获取商品数据
 			async getGoodsList(callBack){
 				const result = await this.$myRequest({
-					url:'/product/getgoodslist/'+this.pagenum+'/'+this.feal_id
+					url:'/product/getgoodslist/'+this.pagenum+'/'+this.flea_id
 				})
 				console.log("服务器的商品数据为"+result.data.length)
 				
@@ -155,7 +155,7 @@
 				// 创建一个this.socketTask对象【发送、接收、关闭socket都由这个对象操作】
 				this.socketTask = uni.connectSocket({
 					// 【非常重要】必须确保你的服务器是成功的,如果是手机测试千万别使用ws://127.0.0.1:9099【特别容易犯的错误】
-					url: "ws://10.19.31.49:8081/login/"+this.feal_id+"/"+this.locken,
+					url: "ws://10.19.31.49:8081/login/"+this.flea_id+"/"+this.locken,
 					success(data) {
 						console.log("websocket连接成功");
 					},

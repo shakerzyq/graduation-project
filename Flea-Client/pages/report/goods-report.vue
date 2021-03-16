@@ -1,6 +1,5 @@
 <template>
 	<view>
-		<!-- <button @click="openReportPop">打开弹出框</button> -->
 		<uni-popup ref="reportpop" type="center" >
 			<view class="report-pop">
 				<scroll-view class="pop-content" scroll-y="true">
@@ -20,14 +19,9 @@
 							<view class="option-c-item" v-for="(item,index2) in items.values" :style="{color:item.color}" :key="index2" v-if="items.values.length===0?false:true"  @click="selctReportContent(item)">
 								{{item.name}}
 							</view>
-							
 						</view>
-						
-						
 					</view>
 				</scroll-view>
-				
-				
 				<view class="pop-button" @click="reportGoods">确定举报</view>
 			</view>
 		</uni-popup>

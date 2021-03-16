@@ -47,17 +47,9 @@
 				
 				if(result.data!=null&&result.data.length===9){
 					uni.hideLoading()
-					//this.setStorage()
-					/* uni.setStorage({
-						key: 'feal_id',
-						data: result.data,
-						success() {
-							console.log('跳蚤id存储成功')
-						}
-					}) */
 					try {
-					    uni.setStorageSync('feal_id', result.data);
-						console.log("存储了flea_"+result.data)
+					    uni.setStorageSync('flea_id', result.data);
+						console.log("存储了flea_id"+result.data)
 						
 					} catch (e) {
 					    // error

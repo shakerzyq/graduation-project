@@ -65,7 +65,7 @@
 				i: 0,
 				obj: null,
 				pictures: [],
-				feal_id: null, //跳蚤id
+				flea_id: null, //跳蚤id
 				class_choice: null,
 				arr: null,
 				add_info_judge: false, //判断add_info中的属性是全不为null
@@ -129,10 +129,9 @@
 			// })
 			console.log("quality为：" + this.add_info.quality_choice)
 			uni.getStorage({
-				key: 'feal_id',
+				key: 'flea_id',
 				success: (res) => {
-					this.feal_id = res.data
-					console.log("发布商品界面获取的跳蚤id为" + this.feal_id)
+					this.flea_id = res.data
 				}
 			});
 			// uni.getStorage({
@@ -456,7 +455,7 @@
 							url: '/product/update',
 							data: {
 								product_id:this.goodsId,
-								merchant_id: this.feal_id,
+								merchant_id: this.flea_id,
 								product_title: this.add_info.title,
 								product_des: this.add_info.description,
 								quality: this.add_info.quality_choice,

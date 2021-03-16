@@ -190,15 +190,6 @@
 			}
 		}
         ,{
-            "path" : "pages/order/order",
-            "style" :                                                                                    
-            {
-                "navigationBarTitleText": "订单",
-                "enablePullDownRefresh": false
-            }
-            
-        }
-        ,{
             "path" : "pages/index/mine/collect/collect",
             "style" :                                                                                    
             {

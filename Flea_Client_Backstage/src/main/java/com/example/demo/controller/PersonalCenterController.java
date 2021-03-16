@@ -29,7 +29,7 @@ public class PersonalCenterController {
     public ArrayList<GoodsIndex> getGoodsForIndex(@PathVariable("pagenum")String pagenum,
                                                   @PathVariable("flea_id") String flea_id,
                                                   @PathVariable("status") String status){
-        System.out.println("获取跳蚤id为："+flea_id+" pagenum为："+pagenum);
+        System.out.println("获取跳蚤id为："+flea_id+" pagenum为："+pagenum+"status为："+status);
         //获取所有商品
 //        ArrayList<GoodsIndex> result = iForGoodsService.getGoods(((Integer.parseInt(pagenum)-1)*8),8);
         ArrayList<GoodsIndex> result = personalCenterService.s_getGoodsForPersonal(flea_id,((Integer.parseInt(pagenum)-1)*8),8,status);
@@ -38,13 +38,13 @@ public class PersonalCenterController {
     }
 
     /**
-     * 获取mine主页需要显示的信息
+     * 获取用户主页需要显示的信息
      * @param userId
      * @return
      */
     @CrossOrigin(origins = "*",maxAge = 3600)
     @GetMapping("/userinfo/{userId}/{flea_id}")
-    public PersonalPageInfo getMinePagesInfo(@PathVariable("userId") String userId,@PathVariable("flea_id") String flea_id){
+    public PersonalPageInfo getPersonalPagesInfo(@PathVariable("userId") String userId,@PathVariable("flea_id") String flea_id){
         System.out.println("u收到的userid为："+userId);
         return personalCenterService.s_getPersonalPagesInfo(userId,flea_id);
     }
@@ -94,6 +94,11 @@ public class PersonalCenterController {
         return personalCenterService.s_getUserInfo(userId);
     }
 
+    /**
+     * 更新用户信息
+     * @param user
+     * @return
+     */
     @CrossOrigin(origins = "*",maxAge = 3600)
     @PutMapping("/updateUserInfo")
     public Boolean updateUserInfo(@RequestBody User user){
@@ -101,6 +106,12 @@ public class PersonalCenterController {
         return personalCenterService.s_updateUserInfo(user);
     }
 
+    /**
+     * 更新用户邮箱
+     * @param userId
+     * @param email
+     * @return
+     */
     @CrossOrigin(origins = "*",maxAge = 3600)
     @PutMapping("/updateUserEmial/{userId}/{email}")
     public Boolean updateuserEmail(
@@ -108,4 +119,5 @@ public class PersonalCenterController {
             ,@PathVariable("email") String email){
         return personalCenterMapper.updateUserEmail(userId,email);
     }
+
 }

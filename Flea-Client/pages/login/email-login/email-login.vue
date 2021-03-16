@@ -28,7 +28,6 @@
 					type:'login',
 					detection:'该邮箱没有注册',
 				},
-				//feal_id:null//跳蚤id
 			}
 		},
 		
@@ -60,7 +59,7 @@
 						uni.hideLoading()
 						this.setStorage()
 						try {
-						    uni.setStorageSync('feal_id', result.data);
+						    uni.setStorageSync('flea_id', result.data);
 							
 						} catch (e) {
 						    // error
@@ -76,7 +75,7 @@
 						})
 					}
 			},	
-			setStorage() {
+			/* setStorage() {
 				uni.setStorage({
 					key: 'login_mark',
 					data: true,
@@ -84,7 +83,7 @@
 						console.log('存储成功')
 					}
 				})
-			}
+			} */
 		},
 		onLoad:function() {
 			uni.$on('auth_code',(e)=>{

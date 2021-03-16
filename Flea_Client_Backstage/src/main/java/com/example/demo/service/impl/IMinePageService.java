@@ -49,6 +49,9 @@ public class IMinePageService implements MinePageService {
         //存粉丝数
         minePageInfo.setFansNum(minePageMapper.selectFansNum(userid));
 
+        //查询浏览历史记录
+        minePageInfo.setHistoryNum(minePageMapper.selectHistoryNum(userid));
+
         //存放
         return minePageInfo;
     }
@@ -73,8 +76,6 @@ public class IMinePageService implements MinePageService {
             goodsIndex.setUserName(esUser.getUserName());
             goodsIndices.add(goodsIndex);
         }
-
-        System.out.println("获取到的goodsIndices为："+goodsIndices);
         return goodsIndices;
     }
 
@@ -139,10 +140,8 @@ public class IMinePageService implements MinePageService {
     @Override
     public ArrayList<UserComplain> s_getUserComplains(String userId, String orderStatus) {
         if (orderStatus.equals("todo")){
-            System.out.println("1");
             return minePageMapper.selectUserComplain(userId,"处理中");
         }else {
-            System.out.println("2");
             return minePageMapper.selectUserComplain(userId,"处理完成");
         }
 

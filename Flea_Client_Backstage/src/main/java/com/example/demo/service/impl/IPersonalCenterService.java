@@ -42,11 +42,11 @@ public class IPersonalCenterService implements PersonalCenterService {
         QueryBuilder queryBuilder =null;
         if (status.equals("dead")){
             queryBuilder = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery("userId",flea_id))
+                    .must(QueryBuilders.matchQuery("userId",flea_id))
                     .must(QueryBuilders.matchQuery("status",status));
         }else{
             queryBuilder = QueryBuilders.boolQuery()
-                    .should(QueryBuilders.matchQuery("userId",flea_id))
+                    .must(QueryBuilders.matchQuery("userId",flea_id))
                     .mustNot(QueryBuilders.matchQuery("status","dead"));
         }
         return esDataDao.selectGoods("goods", queryBuilder,from,size);

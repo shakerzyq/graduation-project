@@ -1119,6 +1119,13 @@
 				}else{
 					this.isOrder=false
 				}
+			},
+			
+			async putBrowseLog(){
+				const result = await this.$myRequest({
+					url:'/browselog/updatebrowseLog/'+this.flea_id+'/'+this.goodsId
+				})
+				
 			}
 			
 		},
@@ -1159,10 +1166,10 @@
 			this.userCredit = options.credit
 			//获取fleaID
 			try {
-				const value = uni.getStorageSync('feal_id');
+				const value = uni.getStorageSync('flea_id');
 				if (value) {
 					this.flea_id = value
-					console.log("从storage中获取的feal_id为:" + this.flea_id)
+					console.log("从storage中获取的flea_id为:" + this.flea_id)
 				}
 			} catch (e) {
 				// error
@@ -1172,6 +1179,9 @@
 			
 			//判断用户是否已经下单，如果已经下单那么就跳转到管理订单
 			this.getOrderStatus()
+			
+			//浏览记录
+			this.putBrowseLog()
 		}
 	}
 </script>

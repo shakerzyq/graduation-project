@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.example.demo.config.ElasticSearchConfig;
 import com.example.demo.dao.ESDataDao;
+import com.example.demo.mapper.BrowseLogMapper;
 import com.example.demo.mapper.OrderMapper;
 import com.example.demo.mapper.TransDataMapper;
 import com.example.demo.pojo.*;
@@ -452,5 +453,13 @@ class DemoApplicationTests {
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+    }
+
+    @Autowired
+    BrowseLogMapper browseLogMapper;
+
+    @Test
+    public void test20(){
+        System.out.println(browseLogMapper.selectBrowseLog("db3a3b065"));
     }
 }

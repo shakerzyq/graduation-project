@@ -6,9 +6,6 @@
 				<view class="price">
 					<text>￥{{good.goodsPrice}}</text>
 					<text>{{good.goodsWanter}}人想要</text>
-					
-					<!-- <text>{{good.wanter}}人想要</text> -->
-					<!-- file:/// -->
 				</view>
 				<text class="name">
 					{{good.goodsDes}}
@@ -21,7 +18,6 @@
 		</view>
 		<view class="goods_list2">
 			<view class="goods_item" v-for="(good,index) in goodsb" :key="index" @click="navigator(good.goodsId,good.userId)">
-				<!-- <image :class="good.classtype" :src="good.img"></image> -->
 				<image :class="good.classtype" :src="good.goodsPhoto"></image>
 				
 				<view class="price">

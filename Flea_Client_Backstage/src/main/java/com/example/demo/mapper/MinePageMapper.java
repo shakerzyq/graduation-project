@@ -81,4 +81,7 @@ public interface MinePageMapper {
 
     @Update("update user set user_icon=#{user.user_icon},nickname=#{user.nickname},weixin=#{user.weixin},self_introduction=#{user.self_introduction} where flea_id=#{user.flea_id}")
     Boolean updateUserInfo(@Param("user") User user);
+
+    @Select("select count(*) from tb_browse_log where user_id=#{user_id}")
+    Integer selectHistoryNum(String userid);
 }

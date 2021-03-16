@@ -11,7 +11,11 @@
 				 <strong class="user-name">{{info.userName}}</strong>
 				 <view class="user-id">跳蚤id：{{flea_id}}</view>
 			 </view>
-			 <view class="user-credit">信誉值：{{info.userCredit}}</view>
+			 <view class="credit-singout">
+				 <view class="singout" @click="goToLogin">退出登录</view>
+				  <view class="user-credit">信誉值：{{info.userCredit}}</view>
+			 </view>
+			
 		 </view>
 		 
 		 <!-- 粉丝收藏浏览信息-->
@@ -30,7 +34,7 @@
 				 <text>粉丝</text>
 			 </view>
 			 <view class="history" @click="goToNext('history')">
-				 <strong  class="number">8</strong>
+				 <strong  class="number">{{info.historyNum}}</strong>
 				 <text>足迹</text>
 			 </view>
 		 </view>
@@ -94,6 +98,21 @@
 		},
 		methods: {
 			
+			/* 退出当前登录 */
+			goToLogin(){
+				
+				/* 消除key */
+				try {
+				    uni.removeStorageSync('fl ea_id');
+				} catch (e) {
+				    // error
+				}
+				
+				uni.reLaunch({
+					url:'/pages/login/login'
+				})
+			},
+			
 			/* 前往用户主页 */
 			goToPersonalCenter(userId){
 				console.log('detail页面中userID为：'+userId+" fleaId为："+this.flea_id)
@@ -155,7 +174,7 @@
 		onLoad() {
 			console.log(this.$store)
 			try {
-				this.flea_id = uni.getStorageSync('feal_id');
+				this.flea_id = uni.getStorageSync('flea_id');
 			} catch (e) {
 			    // error
 			}
@@ -200,11 +219,24 @@
 				margin-left: 30;
 			}
 		}
-		.user-credit{
-			margin-left: 30rpx;
-			margin-top: 50rpx;
-			color: $uni-color-midgray;
+		.credit-singout{
+			display: flex;
+			flex-direction: column;
+			.singout{
+				text-align: center;
+				width: 150rpx;
+				margin-left: 65rpx;
+				padding: 5rpx;
+				border-radius: 20rpx;
+				background-color: $uni-color-lightgray;
+			}
+			.user-credit{
+				margin-left: 30rpx;
+				margin-top: 5rpx;
+				color: $uni-color-midgray;
+			}
 		}
+		
 	}
 	
 	.fans-collect-history-attention{

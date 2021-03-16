@@ -353,11 +353,9 @@ public class IForGoodsService implements ForGoodsService {
         if(type.equals("fans")){
 
             forGoodsMapper.insertFans(feal_id,merchan_id);
-            System.out.println("fans");
             return 1;
         }else{
             forGoodsMapper.deleteFans(feal_id,merchan_id);
-            System.out.println("unfans");
             return 0;
         }
     }
@@ -435,8 +433,4 @@ public class IForGoodsService implements ForGoodsService {
         return forGoodsMapper.deleteGoodsReport(goodsReport.getInformer_id(),goodsReport.getViolate_goods_id());
 
     }
-
-
-
-
 }
