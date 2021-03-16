@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "推荐",
+  "navigationBarBackgroundColor": "#fff",
+  "usingComponents": {
+    "good-list": "/components/goods_list"
+  }
+}

@@ -1,0 +1,14 @@
+.top_bar{
+	position: fixed;
+	height: 120rpx;
+	width: 100%;
+	background-color: #007AFF; 
+	z-index: 998;
+	
+	.icon{
+		background-color: #4CD964;
+		line-height: 120rpx;
+		font-size: 400rpx;
+		
+	}
+}

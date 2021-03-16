@@ -1,0 +1,16 @@
+<template>
+	<div>
+		
+		<input class="comment-input" type="text"  confirm-type="send"  placeholder="问一下" />
+	</div>
+</template>
+
+<script>
+	export default {
+		
+	}
+</script>
+
+<style>
+
+</style>

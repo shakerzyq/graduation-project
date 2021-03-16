@@ -1,0 +1,1 @@
+<view class="login_box"><view class="textarea"><input class="input-account" placeholder="请输入新密码" data-event-opts="{{[['focus',[['getFocus',['$event']]]]]}}" bindfocus="__e"/><input class="input-password" id="a" placeholder="确认密码" password="true"/><button data-event-opts="{{[['tap',[['goToLogin',['$event']]]]]}}" bindtap="__e">确认</button></view></view>

@@ -1,0 +1,52 @@
+{
+  "pages": [
+    "pages/login/login",
+    "pages/index/index",
+    "pages/login/password-login/password-login",
+    "pages/login/email-login/email-login",
+    "pages/login/password-login/forget-password/forget-password",
+    "pages/login/password-login/forget-password/changepwd",
+    "pages/register/register",
+    "pages/register/register-pwd/register-pwd",
+    "pages/register/register-info/register-info",
+    "pages/index/mine/mine",
+    "pages/index/message/message",
+    "pages/index/classify/classify"
+  ],
+  "subPackages": [],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "navigationBarBackgroundColor": "#F8F8F8",
+    "backgroundColor": "#F8F8F8"
+  },
+  "tabBar": {
+    "selectedColor": "#FF8000",
+    "list": [
+      {
+        "text": "跳蚤",
+        "pagePath": "pages/index/index",
+        "iconPath": "static/icons_index/products.png",
+        "selectedIconPath": "static/icons_index/mine_selected.png"
+      },
+      {
+        "text": "分类",
+        "pagePath": "pages/index/classify/classify",
+        "iconPath": "static/icons_index/types.png",
+        "selectedIconPath": "static/icons_index/types_selected.png"
+      },
+      {
+        "text": "消息",
+        "pagePath": "pages/index/message/message",
+        "iconPath": "static/icons_index/message.png",
+        "selectedIconPath": "static/icons_index/message_selected.png"
+      },
+      {
+        "text": "我的",
+        "pagePath": "pages/index/mine/mine",
+        "iconPath": "static/icons_index/mine.png",
+        "selectedIconPath": "static/icons_index/mine_selected.png"
+      }
+    ]
+  },
+  "usingComponents": {}
+}

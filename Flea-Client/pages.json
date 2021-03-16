@@ -1,0 +1,433 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+		    "path" : "pages/login/login",
+		    "style" :                                                                                    
+		    {
+		        "navigationStyle":"custom" 
+		    } 
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "推荐",
+				"navigationBarBackgroundColor":"#FF8000",
+				"navigationBarTextStyle":"white",
+				"enablePullDownRefresh":true
+				// "navigationStyle":"custom" 
+				
+				// "app-plus": {
+				//             "titleNView": {
+				//                 "buttons": [
+				//                     {
+				//                         "text": "关注",
+				//                         "fontSrc": "/static/iconfont.ttf",
+				//                         "fontSize": "22px",
+				//                         "float": "left"
+				//                     },
+				//                     {
+				//                         "text": "\ue62c",
+				//                         "fontSrc": "/static/iconfont.ttf",
+				//                         "fontSize": "22px"
+				
+				//                     }
+				//                 ],
+				//                 "searchInput":{
+				                    
+				//                 }
+				//             }
+				//         }
+			}
+		},
+		{
+            "path" : "pages/login/password-login/password-login",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "密码登录",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/login/email-login/email-login",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "邮箱登录",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/login/password-login/forget-password/forget-password",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "找回密码",
+                "enablePullDownRefresh": false
+            }
+        },
+		{
+		    "path" : "pages/login/password-login/forget-password/changepwd",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "找回密码",
+		        "enablePullDownRefresh": false
+		    }
+		}
+        ,{
+            "path" : "pages/register/register",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "注册-验证邮箱",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/register/register-pwd/register-pwd",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "注册-设置密码",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/register/register-info/register-info",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "注册-输入用户信息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/mine/mine",
+            "style" :                                                                                    
+            {
+                "navigationStyle":"custom" ,
+				"enablePullDownRefresh":true
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/message/message",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "消息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/classify/classify",
+            "style" :                                                                                    
+            {
+                "navigationStyle":"custom" 
+            }
+        },
+		{
+			"path":"pages/test"
+		}
+        ,{
+            "path" : "pages/index/addProduct/addProduct",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "发布商品",
+				"navigationBarBackgroundColor":"#FF8000",
+				"navigationBarTextStyle":"white",
+                "enablePullDownRefresh": true
+            }
+            
+        },
+		{
+		    "path" : "pages/index/addProduct/updateProduct",
+		    "style" :                                                                                    
+		    {
+		        "navigationBarTitleText": "修改商品",
+				"navigationBarBackgroundColor":"#FF8000",
+				"navigationBarTextStyle":"white",
+				"enablePullDownRefresh":true
+		    }
+		    
+		},
+		{
+			"path":"pages/test/test2"
+		},
+		{
+			"path":"pages/test/test3logindown"
+		},
+		{
+			"path":"pages/index/goods-detail",
+			"style":{
+				"navigationStyle":"custom" 
+			}
+		},
+		{
+			"path":"pages/report/goods-report",
+			"style":{
+				"navigationBarTitleText": "举报商品"
+			}
+			
+		}
+        ,{
+            "path" : "pages/index/search/search",                                                                                   
+            "style":{
+            	"navigationStyle":"custom" ,
+				"enablePullDownRefresh":true
+            }
+            
+        },
+		{
+			"path" : "pages/index/search/searchResult",
+			"style":{
+				"navigationStyle":"custom" 
+			}
+		},
+		{
+			"path" : "pages/index/place-order",
+			"style":{
+				"navigationStyle":"custom" 
+			}
+		}
+        ,{
+            "path" : "pages/order/order",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "订单",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/mine/collect/collect",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "商品收藏",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/mine/attention/attention",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "关注",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/mine/fans/fans",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "粉丝",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/mine/history/history",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "浏览历史",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/mine/mine-publish/mine-publish",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的发布",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/mine/mine-sold/mine-sold",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的卖出",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/mine/mine-orders/mine-orders",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的订单",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/mine/mine-bought/mine-bought",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我买到的",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/mine/mine-dispute/mine-dispute",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "我的纠纷",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/mine/mine-orders/updateOrder/updateOrder",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+
+        ,{
+            "path" : "pages/personal-center/personal-center",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/personal-center/fans/fans",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/personal-center/attention/attention",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/personal-center/likes/likes",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/mine/mine-orders/order-details/order-details",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/mine/mine-orders/evaluate-trading/evaluate-trading",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/mine/mine-dispute/complain-page/complain-page",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/index/mine/mine-dispute/complain-detail/complain-detail",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/personal-center/edit-personalinfo/edit-personalinfo",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+       
+        ,{
+            "path" : "pages/personal-center/edit-personalinfo/change-email-pwd/change-email-pwd",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/personal-center/edit-personalinfo/change-email/change-email",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar":{
+		"selectedColor":"#FF8000",
+		"list":[
+			{
+				"text":"跳蚤",
+				"pagePath":"pages/index/index",
+				"iconPath":"static/icons_index/products.png",
+				"selectedIconPath":"static/icons_index/products_selected.png"
+			},
+			{
+				"text":"分类",
+				"pagePath":"pages/index/classify/classify",
+				"iconPath":"static/icons_index/types.png",
+				"selectedIconPath":"static/icons_index/types_selected.png"
+			},
+			{
+				"text":"消息",
+				"pagePath":"pages/index/message/message",
+				"iconPath":"static/icons_index/message.png",
+				"selectedIconPath":"static/icons_index/message_selected.png"
+			},
+			{
+				"text":"我的",
+				"pagePath":"pages/index/mine/mine",
+				"iconPath":"static/icons_index/mine.png",
+				"selectedIconPath":"static/icons_index/mine_selected.png"
+			}
+		],
+		"midButton":{
+			"iconPath":"static/icons_index/add-fill.png",
+			"height":"57px",
+			"iconWidth":"65px"
+			
+		}
+	}
+}

@@ -1,0 +1,6 @@
+rabbitmq:
+  mqtt:
+    url: tcp://116.62.149.46:1883
+    username: guest
+    password: guest
+    defaultTopic: testTopic

@@ -1,0 +1,1 @@
+<view class="content"><good-list vue-id="8dd740cc-1" goodsa="{{goodsa}}" goodsb="{{goodsb}}" bind:__l="__l"></good-list><view class="iconfont "></view></view>
