@@ -269,7 +269,7 @@
 					
 				</view>
 				<view class="observer-right" v-if="goodsUserInfo.status==='living'">
-					<view style="background-color:#ffaa00;border-radius: 30rpx;"  @click.stop="getOrder">下单</view>
+					<view style="background-color:#ffaa00;border-radius: 30rpx;"  @click.stop="putOrder">下单</view>
 				</view>
 				<view class="observer-right" v-else>
 					<view v-if="goodsUserInfo.status==='trading'">
@@ -649,7 +649,6 @@
 			},
 			//对商品留言的处理
 			noMultipleClicks2(methods) {
-			
 				let that = this
 				this.commented_userid = that.merchantId
 				this.commented_username = that.goodsUserInfo.userName
@@ -704,6 +703,7 @@
 						commented_userid: that.commented_userid,
 						commented_username: that.commented_username,
 						observer_id: that.flea_id,
+						observer_username:that.goodsUserInfo.observerName,
 						comment: that.commentVals,
 						put_time: nowtime
 
@@ -1090,10 +1090,10 @@
 			},
 			
 			//跳转到商品订单界面
-			getOrder(){
+			putOrder(){
 				console.log("点击了下单：")
 				uni.navigateTo({
-					url:'/pages/index/place-order?userId='+this.flea_id+"&goodsId="+this.goodsId+"&merchantId="+this.merchantId+"&price="+this.goodsUserInfo.goodsNowPrice
+					url:'/pages/index/place-order?userId='+this.flea_id+"&goodsId="+this.goodsId+"&merchantId="+this.merchantId+"&price="+this.goodsUserInfo.goodsNowPrice+"&username="+this.goodsUserInfo.observerName+'&goodsTitle='+this.goodsUserInfo.goodsTitle
 					
 					// url:'/pages/index/place-order'
 				})

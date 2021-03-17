@@ -67,7 +67,7 @@ public interface MinePageMapper {
     Boolean insertComplain(@Param("userComplain") UserComplain userComplain);
 
 
-    @Select("select * from violate_user where complain_status=#{status} and complain_userid=#{userId} or complained_userid=#{userId}  ")
+    @Select("select * from violate_user where complain_status=#{status} and (complain_userid=#{userId} or complained_userid=#{userId})")
     ArrayList<UserComplain> selectUserComplain(String userId,String status);
 
     @Select("select * from violate_user where complain_id=#{complain_id}")
@@ -84,4 +84,7 @@ public interface MinePageMapper {
 
     @Select("select count(*) from tb_browse_log where user_id=#{user_id}")
     Integer selectHistoryNum(String userid);
+
+    @Select("select email from account where flea_id=#{userid}")
+    String selectUserEmail(String userid);
 }

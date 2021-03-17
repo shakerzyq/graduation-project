@@ -3,35 +3,23 @@
 		<view class="message">
 			<view class="goods">
 				<strong>互动消息</strong>
-				<view class="comment" >
+				<view class="comment" @click="goToNext('goods-comment')">
 					<view class="iconfont icon" style="background-color:#22BCEF ;">&#xe85a;</view>
 					<text>商品留言</text>
 				</view>
-				<view class="comment-like">
-					<view class="iconfont icon" style="background-color:#EF6818 ;">&#xe831;</view>
-					<text>留言点赞</text>
-				</view>
-				<view class="goods-like">
-					<view class="iconfont icon" style="background-color:#ED9495 ;">&#xe721;</view>
-					<text>商品点赞</text>
-				</view>
-				<view class="user-attention">
+				<view class="user-attention" @click="goToNext('comment-reply')">
 					<view class="iconfont icon" style="background-color:#ffaa00 ;">&#xe884;</view>
-					<text>收藏通知</text>
-				</view>
-				<view class="goods-collect">
-					<view class="iconfont icon" style="background-color:#DBED0F ;">&#xe80d;</view>
-					<text>关注通知</text>
+					<text>留言回复</text>
 				</view>
 			</view>
 			<view class="user">
 				<strong>事务消息</strong>
-				<view class="order-message">
-					<view class="iconfont icon" style="background-color:#F88000 ;">&#xe847;</view>
+				<view class="order-message" @click="goToNext('order-notify')">
+					<view  class="iconfont icon" style="background-color:#F88000 ;">&#xe847;</view>
 					<text>订单通知</text>
 				</view>
 				<!-- 评论举报，商品举报，纠纷举报都在里面 -->
-				<view class="user-report">
+				<view class="user-report" @click="goToNext('report-notify')">
 					<view class="iconfont icon" style="background-color:#e10e03 ;">&#xe876;</view>
 					<text>举报通告</text>
 				</view>
@@ -45,11 +33,29 @@
 	export default {
 		data() {
 			return {
+				flea_id:null,
 				
 			}
 		},
-		methods: {
+		
+		onLoad(options) {
 			
+
+			try {
+			    const value = uni.getStorageSync('flea_id');
+			    if (value) {
+			        this.flea_id=value
+			    }
+			} catch (e) {
+			    // error
+			}
+		},
+		methods: {
+			goToNext(page){
+				uni.navigateTo({
+					url:'/pages/index/message/'+page+'/'+page+'?flea_id='+this.flea_id
+				})
+			}
 		}
 		// 判断是否登录，暂时不用
 		/* onShow() {

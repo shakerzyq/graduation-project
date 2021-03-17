@@ -14,6 +14,7 @@ public class MinePageInfo {
     private String userName;
     private String userIcon;
     private Double userCredit;
+    private String userEmail;
 
     private Integer collectNum;
     private Integer attentionNum;
@@ -26,6 +27,13 @@ public class MinePageInfo {
     private String myBought;
     private String myDisputes;
 
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
 
     public Double getUserCredit() {
         return userCredit;

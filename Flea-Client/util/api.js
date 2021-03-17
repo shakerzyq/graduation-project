@@ -36,6 +36,31 @@ export const uuid = function uuid() {
 	return uuid;
 }
 
+export const sendEmail = function sendEmail(email,content){
+	console.log("in",email,content)
+	/* 发送订单消息给卖家 */
+	const res = this.$myRequest({
+		url:'/notify/sendemail/'+email+'/'+content,
+		method:"PUT"
+	})
+	return res.data
+	// uni.request({
+	// 	url:BASE_URL+'/notify/sendemail/'+email+'/'+content,
+	// 	method:"PUT",
+	// 	success: (res) => {
+	// 		return res.data
+	// 	},
+	// 	fail: () => {
+	// 		uni.showToast({
+	// 			title:'请求接口失败'
+	// 		})
+	// 	}
+	// })
+		
+	
+	
+}
+
 
 
 

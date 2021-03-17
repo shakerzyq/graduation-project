@@ -47,7 +47,7 @@
 		data() {
 			return {
 				flea_id:null,
-				
+				username:null,
 				todobg:'#F88000',
 				todoborder:'1px solid #ccc',
 				historybg:'#ccc',
@@ -72,15 +72,17 @@
 		},
 		onLoad(options) {
 			this.flea_id = options.flea_id
+			this.username=options.username
 			
 			console.log("跳蚤id为："+this.flea_id)
 			
 			this.getOrders('todo','buy')
+			
 		},
 		//监听是否触底了
 		onReachBottom() {
 			console.log()
-			if(this.goods.length<this.pagenum*8) return this.flag=true
+			if(this.orders.length<this.pagenum*8) return this.flag=true
 			console.log("触底了")
 			this.pagenum++
 			this.getOrders(this.orderStatus,this.dealType)
@@ -181,10 +183,14 @@
 				this.orders=result.data.reverse()
 			},
 			
+			// sendEmail(content){
+			// 	uni.$emit('sendEmail',content)
+			// }
+			
 			
 			
 			/* 删除订单,拒绝订单,悔单 */
-			async deleteOrder(order,type,index){
+			async deleteOrder(order,type,index,role,email){
 				uni.showModal({
 					title:"提示",
 					content:"确认取消订单？毁单会扣除5信誉值,如果在交易中毁单会扣除10信誉值",
@@ -197,6 +203,13 @@
 								method:'DELETE'
 							})
 							this.orders.splice(index,1)
+							
+							const content="用户:"+this.username+"(跳蚤ID:"+this.flea_id+")  "+((role===0)?'取消':'拒绝')+"了商品("+order.goodsTitle+")的订单"
+							// this.sendEmail(content)
+							const res = this.$myRequest({
+								url:'/notify/sendemail/'+order.userEmail+'/'+content,
+								method:"PUT"
+							})
 						}
 						
 					},
@@ -205,14 +218,15 @@
 			},
 			
 			/* 修改订单 */
-			updateOrder(orderId,status){
+			updateOrder(order){
 				uni.navigateTo({
-					url:'/pages/index/mine/mine-orders/updateOrder/updateOrder?orderId='+orderId+'&flea_id='+this.flea_id+'&status='+status
+					url:'/pages/index/mine/mine-orders/updateOrder/updateOrder?orderId='+order.orderId+'&flea_id='+this.flea_id+'&status='+order.orderStatus
+					+'&username='+this.username+'&goodsTitle='+order.goodsTitle+'&email='+order.userEmail
 				})
 			},
 			
 			/* 确认收货 */
-			async accomplishOrder(index,userId,goodsId,orderId){
+			async accomplishOrder(index,userId,goodsId,orderId,email,goodsTitle){
 				console.log("goodsid:",goodsId,"merchantId:",userId,"orderId:",orderId)
 				uni.showModal({
 					title:"提示",
@@ -223,8 +237,10 @@
 						if(res.confirm){
 							this.orders.splice(index,1)
 							uni.navigateTo({
-								url:'/pages/index/mine/mine-orders/evaluate-trading/evaluate-trading?orderId='+orderId+'&merchantId='+userId+'&goodsId='+goodsId
+								url:'/pages/index/mine/mine-orders/evaluate-trading/evaluate-trading?orderId='+orderId+
+								'&merchantId='+userId+'&goodsId='+goodsId+"&email="+email+'&flea_id='+this.flea_id+'&username='+this.username+'&goodsTitle='+goodsTitle
 							})
+							
 							
 						}
 					},
@@ -233,7 +249,7 @@
 			},
 			
 			/* 接收订单 */
-			async acceptOrder(orderId,index){
+			async acceptOrder(order,index){
 				uni.showModal({
 					title:"提示",
 					content:"确认接收订单？",
@@ -242,10 +258,18 @@
 					success: (res) => {
 						if(res.confirm){
 							const result =this.$myRequest({
-								url:'/order/acceptOrder/'+orderId
+								url:'/order/acceptOrder/'+order.orderId
 							})
 							this.orders[index].orderStatus='交易中'
+							const content="用户:"+this.username+"(跳蚤ID:"+this.flea_id+")  "+"接收了你对商品("+order.goodsTitle+")的订单"
+							// this.sendEmail(content)
+							const res = this.$myRequest({
+								url:'/notify/sendemail/'+order.userEmail+'/'+content,
+								method:"PUT"
+							})
 						}
+						
+						
 					},
 				})
 			}

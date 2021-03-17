@@ -41,7 +41,6 @@ public class IRegisterService implements RegisterService {
      */
     @Override
     public Boolean sendAuthCode(String email) {
-        System.out.println("hello world"+email);
         //设置邮件内容
         SimpleMailMessage message = new SimpleMailMessage();
         message.setSubject(email);

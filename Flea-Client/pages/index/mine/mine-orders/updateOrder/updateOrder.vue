@@ -30,6 +30,9 @@
 				orderId:null,
 				flea_id:null,
 				status:null,
+				goodsTitle:null,
+				username:null,
+				email:null,
 				order:{},
 			}
 		},
@@ -37,6 +40,9 @@
 			this.flea_id=options.flea_id
 			this.orderId=options.orderId
 			this.status=options.status
+			this.username=options.username
+			this.goodsTitle=options.goodsTitle
+			this.email=options.email
 			this.getOrderInfo()
 		},
 		methods: {
@@ -46,7 +52,32 @@
 				})
 				this.order=result.data
 			},
-			async updateOrderInfo(){
+			async update(){
+				const result = await this.$myRequest({
+					url:'/order/updateOrder/'+this.flea_id+'/'+this.order.order_id+'/'+this.order.trading_place+'/'+this.order.order_date,
+					method:'POST'
+				})
+				
+				if(result.data){
+					uni.showToast({
+						icon:'none',
+						title:'修改订单成功',
+						duration:1000,
+					})
+					const content="用户:"+this.username+"(跳蚤ID:"+this.flea_id+") 修改了商品（"+this.goodsTitle+"）的订单信息"
+					// this.sendEmail(content)
+					const res = this.$myRequest({
+						url:'/notify/sendemail/'+this.email+'/'+content,
+						method:"PUT"
+					})	
+					setTimeout(()=>{
+						uni.navigateBack({
+							delta:1
+						})
+					},1000)	
+				}
+			},
+			updateOrderInfo(){
 				uni.showModal({
 					title:"提示",
 					content:"确认修改订单信息？修改订单将会扣除2.5信誉值",
@@ -54,19 +85,7 @@
 					confirmText:"确认",
 					success: (res) => {
 						if(res.confirm){
-							const result = this.$myRequest({
-								url:'/order/updateOrder/'+this.flea_id+'/'+this.order.order_id+'/'+this.order.trading_place+'/'+this.order.order_date,
-								method:'POST'
-							})
-							if(result.data){
-								uni.showToast({
-									icon:'none',
-									title:'修改订单成功'
-								})
-								uni.navigateBack({
-									delta:1
-								})
-							}
+							this.update()
 						}
 					}
 				})

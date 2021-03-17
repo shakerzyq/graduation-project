@@ -7,6 +7,7 @@ import java.io.Serializable;
 @Component
 public class User implements Serializable {
     private String flea_id;
+    private String email;
     private String sex;
     private String nickname;
     private String name;
@@ -21,6 +22,14 @@ public class User implements Serializable {
     private String status;
     private Double credit;
     private String weixin;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getAcademy() {
         return academy;

@@ -10,7 +10,7 @@
 					<view class="userid">被举报人id：{{complain.complained_userid}}</view>
 				</view>
 				<view class="content">
-					{{complain.complained_userid}}
+					{{complain.complain_content}}
 				</view>
 				<view class="complan-type-status">
 					<view class="type" v-if="complain.complain_userid===flea_id">举报</view>

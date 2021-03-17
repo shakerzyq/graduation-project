@@ -27,8 +27,8 @@ public interface RegisterMapper {
    /* @Insert("insert into account(id ,flea_id,email,pwd,status) values (1,#{flea_id},{#email},#{pwd},#{status})")
     public Boolean InsertAccount(String flea_id,String email,String pwd,String status);*/
 
-    @Insert("insert into user (flea_id,sex,nickname,name,stu_num,province,college,academy,grade,user_icon,testify_img,self_introduction,status,credit,weixin) " +
-            "values (#{flea_id},#{sex},#{nickname},#{name},#{stu_num},#{province},#{college},#{academy},#{grade},#{user_icon},#{testify_img},#{self_introduction},#{status},#{credit},#{weixin})")
+    @Insert("insert into user (flea_id,email,sex,nickname,name,stu_num,province,college,academy,grade,user_icon,testify_img,self_introduction,status,credit,weixin) " +
+            "values (#{flea_id},#{email},#{sex},#{nickname},#{name},#{stu_num},#{province},#{college},#{academy},#{grade},#{user_icon},#{testify_img},#{self_introduction},#{status},#{credit},#{weixin})")
     public Boolean InsertUser(User user);
 
     @Select("select * from account where email=#{email}")

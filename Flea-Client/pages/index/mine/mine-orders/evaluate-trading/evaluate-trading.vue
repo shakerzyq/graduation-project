@@ -29,7 +29,13 @@
 		data() {
 			return {
 				orderId:null,
+				merchantId:null,
+				goodsId:null,
+				email:null,
 				remark:null,
+				goodsTitle:null,
+				username:null,
+				flea_id:null,
 				i:0,
 				level1:0,
 				stars1:[
@@ -77,6 +83,10 @@
 			this.orderId=options.orderId
 			this.merchantId=options.merchantId
 			this.goodsId=options.goodsId
+			this.email=options.email
+			this.flea_id=options.flea_id
+			this.username=options.username
+			this.goodsTitle=options.goodsTitle
 			
 		},
 		onBackPress() {
@@ -148,6 +158,14 @@
 									},
 									method:'POST',
 								})
+								
+								const content="用户:"+this.username+"(跳蚤ID:"+this.flea_id+") 确认收货:"+this.goodsTitle+'商家评价为：'+this.level1+'星，'+"商品评价为："+this.level2+'星'
+								// this.sendEmail(content)
+								const res = this.$myRequest({
+									url:'/notify/sendemail/'+this.email+'/'+content,
+									method:"PUT"
+								})
+								
 								uni.navigateBack({
 									delta:1
 								})

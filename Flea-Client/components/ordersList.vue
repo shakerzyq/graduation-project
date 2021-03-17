@@ -30,9 +30,9 @@
 				
 				<view class="todo-order" v-else>
 					<view class="order-details" @click="goToOrderDetails(order.orderId,order.orderStatus)">详情</view>
-					<view  class="delete-order"  @click="deleteOrder(order,'todo',index)">取消订单</view> 
+					<view  class="delete-order"  @click="deleteOrder(order,'todo',index,0)">取消订单</view> 
 					
-					<view class="alter-order" @click="updateOrder(order.orderId,order.status)">修改</view> 
+					<view class="alter-order" @click="updateOrder(order)">修改</view> 
 					<view v-if="order.orderStatus==='交易中'" class="affirm-order" @click="accomplishOrder(index,order)">确认收货</view>
 				</view>
 				
@@ -48,8 +48,8 @@
 				<!-- 待处理 -->
 				<view class="todo-order" v-else>
 					<view class="order-details" @click="goToOrderDetails(order.orderId,order.orderStatus)">详情</view>
-					<view v-if="order.orderStatus==='待接单'" class="delete-order" @click="deleteOrder(order.orderId,'todo',order.goodsId,index)">拒单</view>
-					<view v-if="order.orderStatus==='待接单'" class="alter-order" @click="acceptOrder(order.orderId,index)">接单</view> 
+					<view v-if="order.orderStatus==='待接单'" class="delete-order" @click="deleteOrder(order,'todo',index,1)">拒单</view>
+					<view v-if="order.orderStatus==='待接单'" class="alter-order" @click="acceptOrder(order,index)">接单</view> 
 					<view v-else class="delete-order" @click="deleteOrder(order,'todo',index)">悔单</view>
 				</view>
 				
@@ -74,9 +74,9 @@
 			 * @param {Object} orderId
 			 * @param {Object} index
 			 */
-			async acceptOrder(orderId,index){
+			async acceptOrder(order,index){
 				this.$emit(
-					'acceptOrder',orderId,index
+					'acceptOrder',order,index
 				)
 			},
 			
@@ -87,18 +87,19 @@
 			 * @param {Object} goodsId
 			 * @param {Object} index
 			 */
-			deleteOrder(order,type,index){
+			deleteOrder(order,type,index,role){
 				this.$emit(
-				'deleteOrder',order,type,index
+				'deleteOrder',order,type,index,role
 				)
 			},
 			/**
 			 * 用户修改订单
 			 * @param {Object} orderId
 			 */
-			updateOrder(orderId,status){
+			updateOrder(order){
 				this.$emit(
-				'updateOrder',orderId,status
+				
+				'updateOrder',order
 				)
 			},
 			
@@ -108,7 +109,7 @@
 			 */
 			accomplishOrder(index,order){
 				this.$emit(
-				'accomplishOrder',index,order.userId,order.goodsId,order.orderId
+				'accomplishOrder',index,order.userId,order.goodsId,order.orderId,order.userEmail,order.goodsTitle
 				)
 			},
 			

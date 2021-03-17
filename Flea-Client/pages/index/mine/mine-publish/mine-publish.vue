@@ -1,10 +1,19 @@
 <template>
 	<view>
-		<goodsList v-if="goods.length>0" @goodsItemClick="goGoodsDetail" :goodsa="goodsa" :goodsb="goodsb"></goodsList>
-		<view class="hint" v-else>
-			<text>还没有发布任何商品</text> 
-			<button class="add-products" @click="goToAddProducts">发布商品</button>
+		<view class="content" >
+			<view class="title">
+				<view class="trading" :class="tradingClass" @click="getGoodsInfomiddleware('living')">上架中</view>
+				<view class="sold" :class="soldClass" @click="getGoodsInfomiddleware('dead')">成交</view>
+			</view>
+			
+			<goodsList @goodsItemClick="goGoodsDetail" :goodsa="goodsa" :goodsb="goodsb"></goodsList>
+			<view v-if="goods.length===0" class="hint" >
+				<text v-if="status==='dead'">还没有成交商品，多发布些吧！</text> 
+				<text v-else>没有正在上架的商品</text>
+				<button class="add-products" @click="goToAddProducts">发布商品</button>
+			</view>
 		</view>
+		
 	</view>
 </template>
 
@@ -20,6 +29,10 @@
 				goods:[],
 				goodsa: [],
 				goodsb: [],
+				
+				tradingClass:'trading2',
+				soldClass:'sold',
+				status:'living',//查询类型
 			}
 		},
 		components: {
@@ -28,7 +41,7 @@
 		onLoad(options) {
 			this.flea_id=options.flea_id
 			console.log("fleaId为："+this.flea_id)
-			this.getMinePublish()
+			this.getGoodsInfo(this.status)
 		},
 
 		
@@ -38,16 +51,33 @@
 			if(this.goods.length<this.pagenum*8) return this.flag=true
 			console.log("触底了")
 			this.pagenum++
-			this.getMinePublish()
+			this.getGoodsInfo(this.status)
 		},
 		methods: {
-			/* 获取商品信息 */
-			async getMinePublish(){
-				console.log("进入了")
+			
+			getGoodsInfomiddleware(status){
+				if(status==='dead'){
+					this.soldClass='sold2'
+					this.tradingClass='trading'
+				}else{
+					this.soldClass='sold'
+					this.tradingClass='trading2'
+				}
+				this.goods=[]
+				this.goodsa=[]
+				this.goodsb=[]
+				this.status = status
+				
+				this.getGoodsInfo(status)
+				
+			},
+			/* 查询商品信息 */
+			async getGoodsInfo(status){
 				const result = await this.$myRequest({
-					url:'/mine/publishInfo/'+this.pagenum+'/'+this.flea_id
+					url:'/personal/getGoodsInfo/'+this.pagenum+'/'+this.flea_id+'/'+status
 				})
-				this.goods = result.data 
+				
+				this.goods = result.data
 				
 				for (this.i = 0; this.i < this.goods.length; this.i++) {
 					const number = Math.round(Math.random() * (4 - 1)) + 1
@@ -83,6 +113,37 @@
 </script>
 
 <style lang="scss">
+	
+	.content{
+		display: flex;
+		flex-direction: column;
+		.title{
+			display: flex;
+			flex-direction: row;
+			color: $uni-color-midgray;
+			width: 93%;
+			margin: 0 auto;
+			border-top: 1px solid $uni-color-midgray;
+			padding-top: 10rpx;
+			align-items: cneter;
+			.trading{
+				margin-right: 20rpx;
+				
+			}
+			.trading2{
+				color: black;
+				margin-right: 20rpx;
+				font-size: 40rpx;
+			}
+			.sold{
+				
+			}
+			.sold2{
+				color: black;
+				font-size: 40rpx;
+			}
+		}
+	}
 	.hint{
 		display: flex;
 		flex-direction: column;

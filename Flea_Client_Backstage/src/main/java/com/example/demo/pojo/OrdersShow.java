@@ -5,6 +5,7 @@ package com.example.demo.pojo;
  * @date 2021/3/11 19:15
  */
 public class OrdersShow {
+    private String goodsTitle;
     private String goodsPicture;
     private String goodsContent;
     private Double goodsPrice;
@@ -13,12 +14,29 @@ public class OrdersShow {
     private String usersIcon;
     private String userName;
     private String userId;
+    private String userEmail;
 
     private String orderId;
     private String orderStatus;
     private String orderDate;
     private String EvaluateContent;
     private String EvaluateLevel;
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public String getGoodsTitle() {
+        return goodsTitle;
+    }
+
+    public void setGoodsTitle(String goodsTitle) {
+        this.goodsTitle = goodsTitle;
+    }
 
     public String getEvaluateContent() {
         return EvaluateContent;

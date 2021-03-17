@@ -14,7 +14,7 @@ import java.util.ArrayList;
 @Mapper
 public interface OrderMapper {
 
-    @Select("select nickname,user_icon,weixin,credit from user where flea_id=#{userId}")
+    @Select("select nickname,user_icon,weixin,credit,email from user where flea_id=#{userId}")
     User selectUserInfoForOrder(String userId);
 
     @Insert("insert into orders (order_id,goods_id,consumer_id,merchant_id,order_time,trading_place,order_status,order_date,remark) " +
@@ -29,7 +29,7 @@ public interface OrderMapper {
      * @param userId
      * @return
      */
-    @Select("select order_id,goods_id,order_status,merchant_id from orders where consumer_id=#{userId} limit #{from},#{size}")
+    @Select("select * from orders where consumer_id=#{userId} limit #{from},#{size}")
     ArrayList<Order> selectOrdersBuy(Integer from,Integer size,String userId);
 
     /**
@@ -40,7 +40,7 @@ public interface OrderMapper {
      * @param userId
      * @return
      */
-    @Select("select order_id,goods_id,order_status from orders where merchant_id=#{userId} limit #{from},#{size}")
+    @Select("select * from orders where merchant_id=#{userId} limit #{from},#{size}")
     ArrayList<Order> selectOrdersSell(Integer from,Integer size,String userId);
 
     /**
@@ -51,7 +51,7 @@ public interface OrderMapper {
      * @param userId
      * @return
      */
-    @Select("select order_id,goods_id,order_status,evaluate_content,evaluate_level from history_orders where consumer_id=#{userId} limit #{from},#{size}")
+    @Select("select * from history_orders where consumer_id=#{userId} limit #{from},#{size}")
     ArrayList<HistoryOrder> selectHistoryOrderBuy(int from, int size, String userId);
 
     /**
@@ -62,7 +62,7 @@ public interface OrderMapper {
      * @param userId
      * @return
      */
-    @Select("select order_id,goods_id,order_status,evaluate_content,evaluate_level from history_orders where merchant_id=#{userId} limit #{from},#{size}")
+    @Select("select * from history_orders where merchant_id=#{userId} limit #{from},#{size}")
     ArrayList<HistoryOrder> selectHistoryOrderSell(int from, int size, String userId);
 
     /**
@@ -117,5 +117,6 @@ public interface OrderMapper {
     @Update("update user set credit=credit+#{num} where flea_id=#{merchantId}")
     void upUserCredit(String merchantId, Double num);
 
-
+    @Select("select email from account where flea_id=#{userid}")
+    String selectUserEmail(String userid);
 }

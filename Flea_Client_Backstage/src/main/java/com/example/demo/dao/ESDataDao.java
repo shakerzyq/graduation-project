@@ -145,6 +145,27 @@ public class ESDataDao {
         return goodsIndex;
     }
 
+    private GoodsIndex toGoodsIndex(String json,String consumerId) throws JsonProcessingException {
+        Map map = objectMapper.readValue(json,Map.class);
+        GoodsIndex goodsIndex = new GoodsIndex();
+        goodsIndex.setUserId(map.get("userId").toString());
+        goodsIndex.setGoodsTitle(map.get("goodsTitle").toString());
+        goodsIndex.setGoodsDes(map.get("goodsDes").toString());
+        goodsIndex.setGoodsType(map.get("goodsType").toString());
+        goodsIndex.setGoodsPhoto(map.get("goodsPhoto").toString());
+        goodsIndex.setGoodsPrice((Double)map.get("goodsPrice"));
+        goodsIndex.setGoodsWanter((Integer) map.get("goodsWanter"));
+        goodsIndex.setGoodsId(map.get("goodsId").toString());
+        goodsIndex.setViewsNum((Integer) map.get("viewsNum"));
+        goodsIndex.setLikesNum((Integer) map.get("likesNum"));
+
+        ESUser esUser = selectUserIndex(consumerId);
+        goodsIndex.setUserName(esUser.getUserName());
+        goodsIndex.setUserIcon(esUser.getUserIcon());
+        goodsIndex.setUserCredit(esUser.getUserCredit());
+        return goodsIndex;
+    }
+
     /**
      * ,"goodsId",order.getGoods_id()
      * 查询物品，用于推荐页面,
@@ -208,6 +229,26 @@ public class ESDataDao {
        return goodsIndex;
     }
 
+    public GoodsIndex selectGoodsForOrders(String index,QueryBuilder queryBuilder,Integer from,Integer size,String consumerId){
+        SearchRequest searchRequest = new SearchRequest();
+        searchRequest.indices(index);
+        SearchSourceBuilder sourceBuilder = new SearchSourceBuilder();
+        sourceBuilder.query(queryBuilder);
+        sourceBuilder.from(from);
+        sourceBuilder.size(size);
+        searchRequest.source(sourceBuilder);
+        GoodsIndex goodsIndex = null;
+        try {
+            SearchResponse searchResponse = client.search(searchRequest,ElasticSearchConfig.COMMON_OPTIONS);
+            SearchHits hits = searchResponse.getHits();
+            SearchHit[] searchHits = hits.getHits();
+            String json = searchHits[0].getSourceAsString();
+            goodsIndex = toGoodsIndex(json,consumerId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return goodsIndex;
+    }
     /**
      * 更新goods中商品的状态
      * @param index
@@ -430,6 +471,20 @@ public class ESDataDao {
         return goodsIndices;
     }
 
+    public void updateUserInfo(User user){
+        Map<String, Object> jsonMap = new HashMap<>();
+        jsonMap.put("userName",user.getNickname());
+        jsonMap.put("userIcon",user.getUser_icon());
+        UpdateRequest updateRequest = new UpdateRequest("user",user.getFlea_id()).doc(jsonMap);
+        UpdateResponse updateResponse = null;
+        try {
+
+            updateResponse = client.update(updateRequest, ElasticSearchConfig.COMMON_OPTIONS);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     //更新商品信息
     public void updateGoodsInfo(Goods goods) {
         Map<String, Object> jsonMap = new HashMap<>();
@@ -451,7 +506,6 @@ public class ESDataDao {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println(updateResponse);
     }
 
     /**

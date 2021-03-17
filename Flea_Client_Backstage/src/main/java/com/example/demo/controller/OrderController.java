@@ -88,7 +88,7 @@ public class OrderController {
             ,@PathVariable("type") String type
             ,@PathVariable("goodsId") String goodsId
             ,@PathVariable("orderStatus") String orderStatus){
-        System.out.println("收到的订单id为："+orderId);
+        System.out.println("收到的订单id为："+flea_id+" "+orderId+type+goodsId+orderStatus);
         return orderService.s_deleteOrder(flea_id,orderId,type,goodsId,orderStatus);
     }
 

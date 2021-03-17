@@ -33,7 +33,7 @@
 						<strong class="title">标签</strong>
 						<checkbox-group @change="checkboxChange">
 							<label>
-								<checkbox value="商品" checked="true" color="#FFCC33" style="transform:scale(0.7)" />商品
+								<checkbox value="商品" color="#FFCC33" style="transform:scale(0.7)" />商品
 							</label>
 							<label>
 								<checkbox value="用户" color="#FFCC33" style="transform:scale(0.7)" />用户
@@ -104,6 +104,7 @@
 		},
 		onLoad(options) {
 			this.flea_id = options.flea_id
+			this.username = options.username
 			this.getComplains('todo')
 		},
 		methods: {
@@ -215,6 +216,7 @@
 							complain_type: this.complainType.join(","),
 							complain_photos: this.pictures.join(","),
 						}
+						const content="用户:"+this.username+"(跳蚤ID:"+this.flea_id+")  "+"举报了你"
 						const result = this.$myRequest({
 							url: '/mine/putUserComplain',
 							method: "PUT",
@@ -224,8 +226,8 @@
 								complained_userid:obj.complained_userid,
 								complain_content:obj.complain_content,
 								complain_type:obj.complain_type,
-								complain_photos:obj.complain_photos
-								
+								complain_photos:obj.complain_photos,
+								email:content
 								// complain_id:this.$uuid(),
 								// complain_userid: this.flea_id,
 								// complained_userid: this.complainUserId,
@@ -245,7 +247,12 @@
 							
 						// }
 					},1000)
-						
+					/* const content="用户:"+this.username+"(跳蚤ID:"+this.flea_id+")  "+"举报了你"
+					// this.sendEmail(content)
+					const res = this.$myRequest({
+						url:'/notify/sendemail/'+order.userEmail+'/'+content,
+						method:"PUT"
+					})	 */
 
 					
 				}else{

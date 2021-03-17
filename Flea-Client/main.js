@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import App from './App'
-import {myRequest,uuid} from './util/api.js'
+import {myRequest,uuid,sendEmail} from './util/api.js'
 import store from './store/store.js'
 
 Vue.prototype.$store = store
 Vue.prototype.$myRequest = myRequest
 Vue.prototype.$uuid=uuid
+Vue.prototype.$sendEmail=sendEmail
 Vue.filter('formatDate',(date)=>{
 
 	const nDate = new Date(date)

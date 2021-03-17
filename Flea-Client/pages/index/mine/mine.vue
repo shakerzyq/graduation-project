@@ -133,7 +133,7 @@
 			},
 			goToNext(type){
 				uni.navigateTo({
-					url:'/pages/index/mine/'+type+'/'+type+'?flea_id='+this.flea_id
+					url:'/pages/index/mine/'+type+'/'+type+'?flea_id='+this.flea_id+"&username="+this.info.userName+"&userEmail="+this.info.userEmail
 				})
 			},
 			/* 跳转到商品收藏页面 */
@@ -170,8 +170,20 @@
 			/* 我买到的 */
 			
 			/* 我的纠纷 */
+			// async sendMessage(content,type){
+			// 	const res =await this.$myRequest({
+			// 		url:'/notify/sendemail/'+this.info.userEmail+'/'+content,
+			// 		method:"PUT"
+			// 	})
+			// }
 		},
+		// onUnload() {
+		// 	uni.$off('sendMessage')
+		// }
 		onLoad() {
+			
+			// uni.$on('sendMessage',this.sendMessage)
+			
 			console.log(this.$store)
 			try {
 				this.flea_id = uni.getStorageSync('flea_id');

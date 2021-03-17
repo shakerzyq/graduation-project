@@ -70,6 +70,7 @@
 				button_status: true,
 				user: {
 					flea_id:null,
+					email:null,
 					sex: 'man',
 					nickname: null,
 					name: null,
@@ -158,6 +159,7 @@
 				this.uploadImage(this.photoArr[0],1)
 				console.log("user为："+this.user)
 				console.log("account为："+this.account)
+				this.user.email=this.email
 				 setTimeout(()=> {
 					const result =  this.$myRequest({
 						url:"/register/putInfo",

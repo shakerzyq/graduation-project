@@ -15,6 +15,15 @@ public class UserComplain {
     private String complain_type;
     private String complain_photos;
     private String complain_status;
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getComplain_type() {
         return complain_type;

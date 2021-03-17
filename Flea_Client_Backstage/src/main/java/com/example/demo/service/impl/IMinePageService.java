@@ -8,6 +8,7 @@ import com.example.demo.pojo.MinePageInfo;
 import com.example.demo.pojo.User;
 import com.example.demo.pojo.putpojo.UserComplain;
 import com.example.demo.service.MinePageService;
+import com.example.demo.util.SendEmailMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,9 @@ public class IMinePageService implements MinePageService {
     @Autowired
     ESDataDao esDataDao;
 
+    @Autowired
+    SendEmailMessage sendEmailMessage;
+
     @Override
     public MinePageInfo s_getMinePagesInfo(String userid) {
 
@@ -39,6 +43,7 @@ public class IMinePageService implements MinePageService {
         minePageInfo.setUserIcon(user.getUser_icon());
         minePageInfo.setUserName(user.getNickname());
         minePageInfo.setUserCredit(user.getCredit());
+        minePageInfo.setUserEmail(user.getEmail());
 
         //存收藏数
         minePageInfo.setCollectNum(minePageMapper.selectCollectNum(userid));
@@ -134,13 +139,22 @@ public class IMinePageService implements MinePageService {
      */
     @Override
     public Boolean s_putUserComplain(UserComplain userComplain) {
+        sendEmailMessage.sendMessage(minePageMapper.selectUserEmail(userComplain.getComplained_userid()),userComplain.getEmail());
         return minePageMapper.insertComplain(userComplain);
     }
 
     @Override
     public ArrayList<UserComplain> s_getUserComplains(String userId, String orderStatus) {
         if (orderStatus.equals("todo")){
-            return minePageMapper.selectUserComplain(userId,"处理中");
+            ArrayList<UserComplain> userComplains = minePageMapper.selectUserComplain(userId, "处理中");
+            for (UserComplain userComplain:userComplains){
+                if (userId.equals(userComplain.getComplain_userid())){
+                    userComplain.setEmail(minePageMapper.selectUserEmail(userComplain.getComplained_userid()));
+                }else{
+                    userComplain.setEmail(minePageMapper.selectUserEmail(userComplain.getComplain_userid()));
+                }
+            }
+            return userComplains;
         }else {
             return minePageMapper.selectUserComplain(userId,"处理完成");
         }

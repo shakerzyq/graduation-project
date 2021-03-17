@@ -60,12 +60,15 @@
 				credit:null,
 				orderDate:null,
 				tradingPlace:null,
+				goodsTitle:null,
 				remark:null,
+				username:null,
 				user:{
 			
 					
 				},
-				icon:null
+				icon:null,
+				
 			}
 		},
 		onLoad(options) {
@@ -73,6 +76,9 @@
 			this.fleaId=options.userId
 			this.merchantId=options.merchantId
 			this.goodsId=options.goodsId
+			this.goodsTitle=options.goodsTitle
+			this.username=options.username
+			
 			
 			this.getUserInfo()
 			/* 获取用户头像，微信号 */
@@ -101,8 +107,19 @@
 							remark:this.remark,
 						},
 					})
+					
+					// const emailRes =this.$sendEmail(this.user.email,content)
 					console.log("得到的结果为"+result.data)
 					if(result.data){
+						const content="用户:"+this.username+"(跳蚤ID:"+this.fleaId+")  下单了您的商品("+this.goodsTitle+")，"+"请您尽快处理"
+						const res =await this.$myRequest({
+							url:'/notify/sendemail/'+this.user.email+'/'+content,
+							method:"PUT"
+						})
+						uni.showToast({
+							icon:'none',
+							title:'下单成功'
+						})
 						uni.navigateBack({
 							delta:2
 						})
@@ -126,10 +143,8 @@
 						title:'请将信息填写完整'
 					})
 				}
-				
-				
-				
 			},
+			
 			
 			async getUserInfo(){
 				console.log("fleaId为："+this.fleaId)

@@ -74,7 +74,7 @@ public class IForGoodsService implements ForGoodsService {
         //商品相关
         esGoods.setGoodsTitle(goods.getProduct_title());
         esGoods.setGoodsDes(goods.getProduct_des());
-        esGoods.setGoodsType(goods.getAtype()+goods.getBrand()+goods.getCtype()+"");
+        esGoods.setGoodsType(goods.getAtype()+goods.getBtype()+goods.getCtype()+"");
         if (goods.getPhotos().contains(",")){
             esGoods.setGoodsPhoto(goods.getPhotos().split(",")[0]);
         }else{
@@ -104,7 +104,6 @@ public class IForGoodsService implements ForGoodsService {
     @Override
     public ArrayList<GoodsIndex> s_getGoodsForIndex(int from, int size,String status) {
         QueryBuilder queryBuilder = QueryBuilders.boolQuery()
-                .should(QueryBuilders.matchAllQuery())
                 .mustNot(QueryBuilders.matchQuery("status",status));
         return esDataDao.selectGoods("goods", queryBuilder,from,size);
     }

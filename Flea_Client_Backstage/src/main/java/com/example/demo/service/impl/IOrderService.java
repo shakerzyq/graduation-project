@@ -80,36 +80,69 @@ public class IOrderService implements OrderService {
             status="trading";
             if (sellorbuy.equals("buy")){
                 orderList= orderMapper.selectOrdersBuy(((Integer.parseInt(pageNum)-1)*8),8,userId);
+                for(Order order:orderList){
+                    QueryBuilder queryBuilder = QueryBuilders.boolQuery()
+                            .should(QueryBuilders.matchQuery("goodsId",order.getGoods_id()))
+                            .must(QueryBuilders.matchQuery("status",status));
+                    goodsIndex = esDataDao.selectGoodsForOrders("goods", queryBuilder,0,8,order.getConsumer_id());
+                    System.out.println("收到的goodsIndex为："+goodsIndex);
+                    ordersShow= new OrdersShow();
+                    ordersShow.setOrderId(order.getOrder_id());
+                    ordersShow.setOrderStatus(order.getOrder_status());
+                    ordersShow.setOrderDate(order.getOrder_date());
+
+
+                    ordersShow.setGoodsPrice(goodsIndex.getGoodsPrice());
+                    ordersShow.setGoodsTitle(goodsIndex.getGoodsTitle());
+                    ordersShow.setGoodsContent(goodsIndex.getGoodsDes());
+                    ordersShow.setGoodsPicture(goodsIndex.getGoodsPhoto());
+                    ordersShow.setGoodsId(goodsIndex.getGoodsId());
+
+                    ordersShow.setUserName(goodsIndex.getUserName());
+                    ordersShow.setUsersIcon(goodsIndex.getUserIcon());
+                    ordersShow.setUserId(goodsIndex.getUserId());
+
+                    ordersShow.setUserEmail(orderMapper.selectUserEmail(order.getMerchant_id()));
+
+                    orderShowList.add(ordersShow);
+                }
             }else {
                 orderList= orderMapper.selectOrdersSell(((Integer.parseInt(pageNum)-1)*8),8,userId);
-            }
-            for(Order order:orderList){
-                QueryBuilder queryBuilder = QueryBuilders.boolQuery()
-                        .should(QueryBuilders.matchQuery("goodsId",order.getGoods_id()))
-                        .must(QueryBuilders.matchQuery("status",status));
-                goodsIndex = esDataDao.selectGoodsForOrders("goods", queryBuilder,0,8);
-                System.out.println("收到的goodsIndex为："+goodsIndex);
-                ordersShow= new OrdersShow();
-                ordersShow.setOrderId(order.getOrder_id());
-                ordersShow.setOrderStatus(order.getOrder_status());
-                ordersShow.setOrderDate(order.getOrder_date());
+                for(Order order:orderList){
+                    QueryBuilder queryBuilder = QueryBuilders.boolQuery()
+                            .should(QueryBuilders.matchQuery("goodsId",order.getGoods_id()))
+                            .must(QueryBuilders.matchQuery("status",status));
+                    goodsIndex = esDataDao.selectGoodsForOrders("goods", queryBuilder,0,8,order.getConsumer_id());
+                    System.out.println("收到的goodsIndex为："+goodsIndex);
+                    ordersShow= new OrdersShow();
+                    ordersShow.setOrderId(order.getOrder_id());
+                    ordersShow.setOrderStatus(order.getOrder_status());
+                    ordersShow.setOrderDate(order.getOrder_date());
 
-                ordersShow.setGoodsPrice(goodsIndex.getGoodsPrice());
-                ordersShow.setGoodsContent(goodsIndex.getGoodsDes());
-                ordersShow.setGoodsPicture(goodsIndex.getGoodsPhoto());
-                ordersShow.setGoodsId(goodsIndex.getGoodsId());
 
-                ordersShow.setUserName(goodsIndex.getUserName());
-                ordersShow.setUsersIcon(goodsIndex.getUserIcon());
-                ordersShow.setUserId(goodsIndex.getUserId());
-                orderShowList.add(ordersShow);
+                    ordersShow.setGoodsPrice(goodsIndex.getGoodsPrice());
+                    ordersShow.setGoodsTitle(goodsIndex.getGoodsTitle());
+                    ordersShow.setGoodsContent(goodsIndex.getGoodsDes());
+                    ordersShow.setGoodsPicture(goodsIndex.getGoodsPhoto());
+                    ordersShow.setGoodsId(goodsIndex.getGoodsId());
+
+                    ordersShow.setUserName(goodsIndex.getUserName());
+                    ordersShow.setUsersIcon(goodsIndex.getUserIcon());
+                    ordersShow.setUserId(goodsIndex.getUserId());
+
+                    ordersShow.setUserEmail(orderMapper.selectUserEmail(order.getConsumer_id()));
+
+                    orderShowList.add(ordersShow);
+                }
             }
+
 
         }else{
             ArrayList<HistoryOrder> historyOrders = null;
             status="dead";
             if (sellorbuy.equals("buy")){
                 historyOrders= orderMapper.selectHistoryOrderBuy(((Integer.parseInt(pageNum)-1)*8),8,userId);
+
             }else {
                 historyOrders= orderMapper.selectHistoryOrderSell(((Integer.parseInt(pageNum)-1)*8),8,userId);
             }
@@ -117,7 +150,7 @@ public class IOrderService implements OrderService {
                 QueryBuilder queryBuilder = QueryBuilders.boolQuery()
                         .should(QueryBuilders.matchQuery("goodsId",historyOrder.getGoods_id()))
                         .must(QueryBuilders.matchQuery("status",status));
-                goodsIndex = esDataDao.selectGoodsForOrders("goods", queryBuilder,0,8);
+                goodsIndex = esDataDao.selectGoodsForOrders("goods", queryBuilder,0,8,historyOrder.getConsumer_id());
                 System.out.println("收到的goodsIndex为："+goodsIndex);
 //            assert ordersShow != null;
 //            assert false;
@@ -138,6 +171,7 @@ public class IOrderService implements OrderService {
                 ordersShow.setUserId(goodsIndex.getUserId());
                 orderShowList.add(ordersShow);
             }
+
         }
         return orderShowList;
 

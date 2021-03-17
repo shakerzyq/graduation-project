@@ -150,7 +150,8 @@ public class IPersonalCenterService implements PersonalCenterService {
 
     @Override
     public Boolean s_updateUserInfo(User user) {
-
+        /*更新es中的user信息*/
+        esDataDao.updateUserInfo(user);
         return minePageMapper.updateUserInfo(user);
     }
 }

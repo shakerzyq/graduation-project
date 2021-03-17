@@ -20,9 +20,27 @@ public class Comment implements Serializable {
     private String commented_userid;
     private String commented_username;
     private String observer_id;
+    private String observer_username;
     private String comment;
 
     private long put_time;
+    private Integer view_status;
+
+    public Integer getView_status() {
+        return view_status;
+    }
+
+    public void setView_status(Integer view_status) {
+        this.view_status = view_status;
+    }
+
+    public String getObserver_username() {
+        return observer_username;
+    }
+
+    public void setObserver_username(String observer_username) {
+        this.observer_username = observer_username;
+    }
 
     public String getComment_f_id() {
         return comment_f_id;
@@ -118,14 +136,16 @@ public class Comment implements Serializable {
                 "comment_id='" + comment_id + '\'' +
                 ", commented_id='" + commented_id + '\'' +
                 ", comment_f_id='" + comment_f_id + '\'' +
-                ", comment_rank='" + comment_rank + '\'' +
+                ", comment_rank=" + comment_rank +
                 ", goods_id='" + goods_id + '\'' +
                 ", merchant_id='" + merchant_id + '\'' +
                 ", commented_userid='" + commented_userid + '\'' +
                 ", commented_username='" + commented_username + '\'' +
                 ", observer_id='" + observer_id + '\'' +
+                ", observer_username='" + observer_username + '\'' +
                 ", comment='" + comment + '\'' +
                 ", put_time=" + put_time +
+                ", view_status=" + view_status +
                 '}';
     }
 }

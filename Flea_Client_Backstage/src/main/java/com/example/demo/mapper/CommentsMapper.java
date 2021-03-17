@@ -18,12 +18,12 @@ import java.util.LinkedList;
 @Component
 public interface CommentsMapper {
 
-    @Insert("insert into comment (comment_id,commented_id,comment_rank,goods_id,merchant_id,commented_userid,commented_username,observer_id,comment,put_time) " +
-            "values (#{comment_id},#{commented_id},#{comment_rank},#{goods_id},#{merchant_id},#{commented_userid},#{commented_username},#{observer_id},#{comment},#{put_time})")
+    @Insert("insert into comment (comment_id,commented_id,comment_rank,goods_id,merchant_id,commented_userid,commented_username,observer_id,observer_username,comment,put_time) " +
+            "values (#{comment_id},#{commented_id},#{comment_rank},#{goods_id},#{merchant_id},#{commented_userid},#{commented_username},#{observer_id},#{observer_username},#{comment},#{put_time})")
     Boolean insertComment(Comment comment);
 
-    @Insert("insert into comment_1 (comment_id,commented_id,comment_f_id,comment_rank,goods_id,merchant_id,commented_userid,commented_username,observer_id,comment,put_time) " +
-            "values (#{comment_id},#{commented_id},#{comment_f_id},#{comment_rank},#{goods_id},#{merchant_id},#{commented_userid},#{commented_username},#{observer_id},#{comment},#{put_time})")
+    @Insert("insert into comment_1 (comment_id,commented_id,comment_f_id,comment_rank,goods_id,merchant_id,commented_userid,commented_username,observer_id,observer_username,comment,put_time) " +
+            "values (#{comment_id},#{commented_id},#{comment_f_id},#{comment_rank},#{goods_id},#{merchant_id},#{commented_userid},#{commented_username},#{observer_id},#{observer_username},#{comment},#{put_time})")
     boolean insertComment_1(Comment comment);
 
     @Insert("insert into comment_relation (child_id,parent_id) values (#{comment_id},#{comment_f_id})")
