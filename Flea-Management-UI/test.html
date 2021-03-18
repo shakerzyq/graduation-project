@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>table模块快速使用</title>
+  <link rel="stylesheet" href="/layui/css/layui.css" media="all">
+</head>
+<body>
+ 
+<table id="demo" lay-filter="test"></table>
+ 
+<script src="./lib/layui/layui.js" charset="utf-8"></script>
+<script>
+layui.use('table', function(){
+  var table = layui.table;
+  
+  //第一个实例
+  table.render({
+    elem: '#demo'
+    ,height: 312
+    ,url: 'http://127.0.0.1:8082/user/getUncheckedUser' //数据接口
+    ,page: true //开启分页
+    , cols: [[ //表头
+        { field: 'flea_id', title: 'ID', width: 80, sort: true, fixed: 'left' }
+        , { field: 'nickname', title: '昵称', width: 80 }
+        , { field: 'sex', title: '性别', width: 80, sort: true }
+        , { field: 'college', title: '大学', width: 80 }
+        , { field: 'academy', title: '学院', width: 177 }
+        , { field: 'grade', title: '班级', width: 177 }
+      ]]
+  });
+  
+});
+</script>
+</body>
+</html>

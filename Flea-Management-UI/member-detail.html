@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.2</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+        content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/layui.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script type="text/javascript" src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
+    <!--[if lt IE 9]>
+            <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+            <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <style>
+        #user-info{
+            display: flex;
+            flex-direction: column;
+            width: 93%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .attr{
+            display: flex;
+            flex-direction: row;
+            padding: 10px 0;
+        }
+        .attr strong{
+            width: 50px;
+            margin-right:40px;
+        }
+        .testify_img{
+            display: flex;
+            flex-direction: column;
+
+        }
+        .user_icon img{
+            width: 50px;
+            height: 50px;
+        }
+        .testify_img img{
+            width: 200px;
+            height: 100px;
+        }
+        .testify_img strong{
+            padding:10px 0;
+        }
+
+    </style>
+</head>
+
+<body>
+   
+         
+        <!-- 移动设备、平板、桌面端的不同表现：
+        <div class="layui-row">
+          <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+            移动：6/12 | 平板：6/12 | 桌面：4/12
+          </div>
+          <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
+            移动：6/12 | 平板：6/12 | 桌面：4/12
+          </div>
+          <div class="layui-col-xs4 layui-col-sm12 layui-col-md4">
+            移动：4/12 | 平板：12/12 | 桌面：4/12
+          </div>
+          <div class="layui-col-xs4 layui-col-sm7 layui-col-md8">
+            移动：4/12 | 平板：7/12 | 桌面：8/12
+          </div>
+          <div class="layui-col-xs4 layui-col-sm5 layui-col-md4">
+            移动：4/12 | 平板：5/12 | 桌面：4/12
+          </div>
+        </div>
+      </div>
+    <div class="layui-container">
+        <div class="layui-row">
+            <strong class="layui-col-md3">
+                ID
+            </strong>
+            <div id="flea_id" class="layui-col-md9">
+            </div>
+        </div>
+
+        <div class="layui-row">
+            <strong class="layui-col-md3">
+                昵称
+            </strong>
+            <div id="nickname" class="layui-col-md9">
+            </div>
+        </div>
+        <div class="layui-row">
+            <strong class="layui-col-md3">
+                姓名
+            </strong>
+            <div id="name" class="layui-col-md9">
+            </div>
+        </div>
+    </div> -->
+    <!-- academy: "计算机学院"
+college: "中国传媒大学"
+credit: 83
+email: "1312197142@qq.com"
+flea_id: "db3a3b065"
+grade: "计科171"
+name: "艾克"
+nickname: "时间刺客"
+province: "北京"
+self_introduction: "时间不在于拥有多少而在于如何使用"
+sex: "man"
+status: "待审核"
+stu_num: "777777"
+testify_img: "http://localhost:8091/test_images/user_photos/big245001.webp"
+user_icon: "http://localhost:8091/test_images/user_photos/big245001.webp"
+weixin: "fdsgsgsssdfds" -->
+    <div id="user-info">
+            <div class="attr">
+                <strong>ID</strong>
+                <text id="flea_id"></text>
+            </div>
+            <div class="user_icon attr">
+                <strong>头像</strong>
+                <img id="user_icon" src=""></img>
+            </div>
+            <div class=" attr">
+                <strong>昵称</strong>
+                <text id="nickname"></text>
+            </div>
+            <div class="attr">
+                <strong>姓名</strong>
+                <text id="name"></text>
+            </div>
+            <div class="attr">
+                <strong>性别</strong>
+                <text id="sex"></text>
+            </div>
+            <div class="attr">
+                <strong>微信号</strong>
+                <text id="weixin"></text>
+            </div>
+            <div class="attr">
+                <strong>邮箱</strong>
+                <text id="email"></text>
+            </div>
+            <div class="attr">
+                <strong>自我介绍</strong>
+                <text id="self_introduction"></text>
+            </div>
+            <div class=" attr">
+                <strong>省份</strong>
+                <text id="province"></text>
+            </div>
+            <div class="attr">
+                <strong>学校</strong>
+                <text id="college"></text>
+            </div>
+            <div class="attr">
+                <strong>学院</strong>
+                <text id="academy"></text>
+            </div>
+            <div class=" attr">
+                <strong>班级</strong>
+                <text id="grade"></text>
+            </div>
+            <div class="attr">
+                <strong>学号</strong>
+                <text id="stu_num"></text>
+            </div>
+            <div class="testify_img attr">
+                <strong>在校证明</strong>
+                <img id="testify_img" src=""></img>
+            </div>
+            
+    </div>
+
+    <!-- <div class="layui-fluid">
+            <div class="layui-row">
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <label for="L_email" class="layui-form-label">
+                            <span class="x-red">*</span>邮箱</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="L_email" name="email" required="" lay-verify="email" autocomplete="off" class="layui-input"></div>
+                        <div class="layui-form-mid layui-word-aux">
+                            <span class="x-red">*</span>将会成为您唯一的登入名</div></div>
+                    <div class="layui-form-item">
+                        <label for="L_username" class="layui-form-label">
+                            <span class="x-red">*</span>昵称</label>
+                        <div class="layui-input-inline">
+                            <input type="text" id="L_username" name="username" required="" lay-verify="nikename" autocomplete="off" class="layui-input"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="L_pass" class="layui-form-label">
+                            <span class="x-red">*</span>密码</label>
+                        <div class="layui-input-inline">
+                            <input type="password" id="L_pass" name="pass" required="" lay-verify="pass" autocomplete="off" class="layui-input"></div>
+                        <div class="layui-form-mid layui-word-aux">6到16个字符</div></div>
+                    <div class="layui-form-item">
+                        <label for="L_repass" class="layui-form-label">
+                            <span class="x-red">*</span>确认密码</label>
+                        <div class="layui-input-inline">
+                            <input type="password" id="L_repass" name="repass" required="" lay-verify="repass" autocomplete="off" class="layui-input"></div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label for="L_repass" class="layui-form-label"></label>
+                        <button class="layui-btn" lay-filter="add" lay-submit="">增加</button></div>
+                </form>
+            </div> -->
+    </div>
+    <!-- <script id="userdetail" type="text/html">
+            <h1>{{name}}</h1>
+            <span>{{sex}}</span>
+
+            <ul>
+                {{each list as value index}}
+                    <li>{{index+1}}、{{value}}</li>
+                {{/each}}
+            </ul>
+        </script> -->
+    <script>
+
+        $(document).ready(function () {
+            str = location.href; //获取本页url地址
+            arr = str.split("?");
+            str1 = arr[1];
+            arr1 = str1.split("=");
+            var info = {
+                name: 'sdfa',
+                sex: "man"
+            }
+
+            // alert(arr1[0]);
+            // alert(arr1[1]); 
+            $.get("http://127.0.0.1:8082/user/getUserDetail/" + arr1[1], function (data, status) {
+                console.log(data)
+                var user = data
+                console.log(data.nickname, data.name, data.flea_id)
+                
+                $("#nickname").text(data.nickname)
+                $("#name").text(data.name)
+                $("#flea_id").text(data.flea_id)
+                $("#email").text(data.email)
+                $("#sex").text(data.sex)
+                $("#stu_num").text(data.stu_num)
+                $("#province").text(data.province)
+                $("#college").text(data.college)
+                $("#academy").text(data.academy)
+                $("#grade").text(data.grade)
+                $("#self_introduction").text(data.self_introduction)
+                $("#weixin").text(data.weixin)
+                $("#testify_img").attr("src",data.testify_img)
+                $("#user_icon").attr("src",data.user_icon)
+                // var html =template('#userdetail',user);
+                // console.log(html)
+                // document.getElementById('user-info').innerHTML = html
+            });
+
+
+
+        });
+
+        layui.use(['form', 'layer'],
+            function () {
+                $ = layui.jquery;
+                var form = layui.form,
+                    layer = layui.layer;
+
+                //自定义验证规则
+                form.verify({
+                    nikename: function (value) {
+                        if (value.length < 5) {
+                            return '昵称至少得5个字符啊';
+                        }
+                    },
+                    pass: [/(.+){6,12}$/, '密码必须6到12位'],
+                    repass: function (value) {
+                        if ($('#L_pass').val() != $('#L_repass').val()) {
+                            return '两次密码不一致';
+                        }
+                    }
+                });
+
+                //监听提交
+                form.on('submit(add)',
+                    function (data) {
+                        console.log(data);
+                        //发异步，把数据提交给php
+                        layer.alert("增加成功", {
+                            icon: 6
+                        },
+                            function () {
+                                // 获得frame索引
+                                var index = parent.layer.getFrameIndex(window.name);
+                                //关闭当前frame
+                                parent.layer.close(index);
+                            });
+                        return false;
+                    });
+
+            });</script>
+    <script>var _hmt = _hmt || []; (function () {
+            var hm = document.createElement("script");
+            hm.src = "https://hm.baidu.com/hm.js?b393d153aeb26b46e9431fabaf0f6190";
+            var s = document.getElementsByTagName("script")[0];
+            s.parentNode.insertBefore(hm, s);
+        })();</script>
+</body>
+
+</html>
