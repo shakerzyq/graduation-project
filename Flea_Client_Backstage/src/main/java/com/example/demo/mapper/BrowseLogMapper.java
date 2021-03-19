@@ -1,10 +1,7 @@
 package com.example.demo.mapper;
 
 import com.example.demo.pojo.BrowseLog;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
+import org.apache.ibatis.annotations.*;
 
 import java.util.ArrayList;
 
@@ -32,4 +29,7 @@ public interface BrowseLogMapper {
 
     @Select("select goods_id from tb_browse_log where user_id=#{userId} order by browse_date desc")
     ArrayList<String> selectBrowseLog(String userId);
+
+    @Delete("delete from tb_browse_log where goods_id=#{goodsId}")
+    void deleteBrowseLog(String goodsId);
 }

@@ -428,7 +428,8 @@ public class ESDataDao {
                 .should(QueryBuilders.matchQuery("goodsTitle",value))
                 .should(QueryBuilders.matchQuery("goodsDes",value))
                 .should(QueryBuilders.matchQuery("goodsType",value))
-                .must(QueryBuilders.matchQuery("status","living"));
+                .mustNot(QueryBuilders.matchQuery("status","dead"));
+//                .must(QueryBuilders.matchQuery("status","living"));
         searchSourceBuilder.query(queryBuilder);
         searchSourceBuilder.from(from);
         searchSourceBuilder.size(size);

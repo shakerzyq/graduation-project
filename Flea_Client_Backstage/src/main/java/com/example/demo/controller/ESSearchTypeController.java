@@ -83,7 +83,7 @@ public class ESSearchTypeController {
     @CrossOrigin(origins = "*",maxAge = 3600)
     @GetMapping("/searchGoodsList/{pagenum}/{value}/{sortType}")
     public ArrayList<GoodsIndex> searchGoodsList(@PathVariable("pagenum")String pagenum, @PathVariable("value") String value, @PathVariable("sortType") String sortType) throws IOException {
-        System.out.println("搜索内容为："+value+" pagenum为："+pagenum);
+        System.out.println("搜索内容为："+value+" pagenum为："+pagenum+"搜索类型为"+sortType);
         //获取所有商品
 //        ArrayList<GoodsIndex> result = iForGoodsService.getGoods(((Integer.parseInt(pagenum)-1)*8),8);
         ArrayList<GoodsIndex> result =elasticSearchService.s_searchGoodsList(((Integer.parseInt(pagenum)-1)*8),8,value,Integer.parseInt(sortType));

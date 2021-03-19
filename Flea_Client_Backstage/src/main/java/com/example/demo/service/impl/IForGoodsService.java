@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dao.ESDataDao;
+import com.example.demo.mapper.BrowseLogMapper;
 import com.example.demo.mapper.ForGoodsMapper;
 import com.example.demo.pojo.*;
 import com.example.demo.service.ForGoodsService;
@@ -27,6 +28,9 @@ public class IForGoodsService implements ForGoodsService {
 
     @Autowired
     ESDataDao esDataDao;
+
+    @Autowired
+    BrowseLogMapper browseLogMapper;
 
     @Override
     public Boolean putGoods(Goods goods) throws IOException {
@@ -152,6 +156,9 @@ public class IForGoodsService implements ForGoodsService {
 
         //删除ES数据
         esDataDao.deleteGoodsInfo(goodsId);
+
+        //删除所有有关的浏览记录
+        browseLogMapper.deleteBrowseLog(goodsId);
         return result;
     }
 

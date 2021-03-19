@@ -1,36 +1,30 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <title>table模块快速使用</title>
-  <link rel="stylesheet" href="/layui/css/layui.css" media="all">
-</head>
-<body>
- 
-<table id="demo" lay-filter="test"></table>
- 
-<script src="./lib/layui/layui.js" charset="utf-8"></script>
-<script>
-layui.use('table', function(){
-  var table = layui.table;
-  
-  //第一个实例
-  table.render({
-    elem: '#demo'
-    ,height: 312
-    ,url: 'http://127.0.0.1:8082/user/getUncheckedUser' //数据接口
-    ,page: true //开启分页
-    , cols: [[ //表头
-        { field: 'flea_id', title: 'ID', width: 80, sort: true, fixed: 'left' }
-        , { field: 'nickname', title: '昵称', width: 80 }
-        , { field: 'sex', title: '性别', width: 80, sort: true }
-        , { field: 'college', title: '大学', width: 80 }
-        , { field: 'academy', title: '学院', width: 177 }
-        , { field: 'grade', title: '班级', width: 177 }
-      ]]
-  });
-  
-});
-</script>
-</body>
-</html>
+<td data-field="flea_id" data-key="1-0-0" class="">
+  <div class="layui-table-cell laytable-cell-1-0-0">db3a3b065</div>
+</td>
+<td data-field="nickname" data-key="1-0-1" class="">
+  <div class="layui-table-cell laytable-cell-1-0-1">时间刺客</div>
+</td>
+<td data-field="sex" data-key="1-0-2" class="">
+  <div class="layui-table-cell laytable-cell-1-0-2">man</div>
+</td>
+<td data-field="grade" data-key="1-0-3" class="">
+  <div class="layui-table-cell laytable-cell-1-0-3">计科171</div>
+</td>
+<td data-field="weixin" data-key="1-0-4" class="">
+  <div class="layui-table-cell laytable-cell-1-0-4">fdsgsgsssdfds</div>
+</td>
+<td data-field="flea_id" data-key="1-0-5" data-off="true" class="">
+  <div class="layui-table-cell laytable-cell-1-0-5">
+    <!-- //onclick="xadmin.open('编辑','member-detail.html'+d.flea_id,600,400)" --> <span class="layui-table-link"
+      lay-event="todetail">详情</span>
+    <!-- <span class="layui-btn" lay-event="pass">通过</span> <span class="layui-btn layui-btn-danger" lay-event="refuse">拒绝<span> -->
+  </div>
+</td>
+<td data-field="status" data-key="1-0-6" data-content="封禁" class="">
+  <div class="layui-table-cell laytable-cell-1-0-6"> <span class="ban-show" style="color:red">封禁中</span> </div>
+</td>
+<td data-field="handle" data-key="1-0-7" data-off="true" class="">
+  <div class="layui-table-cell laytable-cell-1-0-7">
+    <div lay-event="banning"> <span class="ban-action layui-btn layui-btn-normal">解封</span> </div>
+  </div>
+</td>

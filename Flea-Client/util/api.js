@@ -1,4 +1,4 @@
-const BASE_URL = 'http://10.19.31.49:8083' /* 因为以后域名可能会更换 */
+const BASE_URL = 'http://192.168.43.199:8083' /* 因为以后域名可能会更换 */
 export const myRequest =(options)=>{
 	// 异步的方法使用Promise来封装
 	return new Promise((resolve,reject)=>{

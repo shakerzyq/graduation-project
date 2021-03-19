@@ -89,6 +89,7 @@
 			
 			
 			async inputMonitor(value){
+				console.log("es检索"+value)
 				if(value){
 				const result = await this.$myRequest({
 						url:"/elasticsearch/searchTitle/"+value,

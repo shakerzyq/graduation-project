@@ -298,7 +298,7 @@
 			uploadImage(filepath,index) {
 				
 				uni.uploadFile({
-					url: 'http://10.19.31.49:8083/register/upload/goods_photos',
+					url: 'http://192.168.43.199:8083/register/upload/goods_photos',
 					filePath: filepath,
 					name: 'file',
 					formData: {

@@ -44,6 +44,7 @@ public class BrowseLogController {
     @GetMapping("/getUserBrowseLog/{userId}")
     public ArrayList<GoodsIndex> getUserBrowseLog(
             @PathVariable("userId") String userId){
+        System.out.println("userID为："+userId);
         return browseLogService.s_getUserBrowseLog(userId);
     }
 

@@ -33,7 +33,6 @@ public class IBrowseLogService implements BrowseLogService {
     @Override
     public Boolean s_updateBrowse(String goodsId, String userId) {
         if (browseLogMapper.selectBrowseNum(goodsId,userId)==0){
-
             return browseLogMapper.insertBrowseLog(UUID.randomUUID().toString(),goodsId,userId,System.currentTimeMillis());
 //            return browseLogMapper.updateBrowseNum(goodsId,userId);
         }else {
