@@ -15,7 +15,10 @@ public class Report implements Serializable {
     private String complain_type;
     private String complain_photos;
     private String complain_status;
-    private String email;
+    private String audit_result;
+    private String audit_content;
+    private String complain_email;
+    private String complained_email;
 
     @Override
     public String toString() {
@@ -27,7 +30,10 @@ public class Report implements Serializable {
                 ", complain_type='" + complain_type + '\'' +
                 ", complain_photos='" + complain_photos + '\'' +
                 ", complain_status='" + complain_status + '\'' +
-                ", email='" + email + '\'' +
+                ", audit_result='" + audit_result + '\'' +
+                ", audit_content='" + audit_content + '\'' +
+                ", complain_email='" + complain_email + '\'' +
+                ", complained_email='" + complained_email + '\'' +
                 '}';
     }
 
@@ -87,11 +93,35 @@ public class Report implements Serializable {
         this.complain_status = complain_status;
     }
 
-    public String getEmail() {
-        return email;
+    public String getAudit_result() {
+        return audit_result;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setAudit_result(String audit_result) {
+        this.audit_result = audit_result;
+    }
+
+    public String getAudit_content() {
+        return audit_content;
+    }
+
+    public void setAudit_content(String audit_content) {
+        this.audit_content = audit_content;
+    }
+
+    public String getComplain_email() {
+        return complain_email;
+    }
+
+    public void setComplain_email(String complain_email) {
+        this.complain_email = complain_email;
+    }
+
+    public String getComplained_email() {
+        return complained_email;
+    }
+
+    public void setComplained_email(String complained_email) {
+        this.complained_email = complained_email;
     }
 }

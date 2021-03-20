@@ -81,14 +81,13 @@
   <span   class="ban-action layui-btn layui-btn-normal" lay-event="comment">留言</span>
 </script>
 
-<!-- 封禁或者解禁用户 -->
-<script type="text/html" id="handle-user">
-  <span   class="ban-action layui-btn layui-btn-warm" lay-event="handle-user">处理</span>
-</script>
-
 <script type="text/html" id="check">
   <span class="layui-btn " lay-event="pass">通过</span>
   <span class="layui-btn layui-btn-danger " lay-event="refuse">拒绝<span>
+</script>
+
+<script type="text/html" id="handle-user">
+    <span class="layui-btn " lay-event="handle-user">处理用户</span>
 </script>
 
 <script type="text/html" id="image">
@@ -111,6 +110,9 @@
       elem: '#demo'
       , height: 312
       , url: 'http://127.0.0.1:8082/report/getPendingReports' //数据接口
+      ,where: { //设定异步数据接口的额外参数，任意设
+        complain_status: '通过'
+        }
       , page: true //开启分页
       , cols: [[ //表头
         { field: 'complain_userid', title: '举报人ID', width: 120, sort: true, fixed: 'left', toolbar: '#complainuserinfo' }
@@ -120,7 +122,7 @@
         , { field: 'complain_photos', title: '举报证据', width: 90, toolbar: '#image' }
         , { field: 'complain_status', title: '状态', width: 80 }
         , { field: 'comment', title: '留言', width: 90, toolbar: '#comment' }
-        , { field: 'handle_user', title: '处理用户', width: 90, toolbar: '#handle-user' }
+        , { field: 'handle_user', title: '处理用户', width: 177, toolbar: '#handle-user' }
         , { field: 'handle', title: '处理', width: 177, toolbar: '#check' }
       ]]
       , id: 'aa'
@@ -149,6 +151,9 @@
           //封禁
           $.get("http://127.0.0.1:8082/user/updateUserStatus/ban/" + data.flea_id, function (data, status) {
             tr.children("[data-field='handle']").children("div").children("div").children("span").text("解禁").css("background-color", "rgb(30,159,255)")
+
+            console.log("obj.tr.[data-field='handle']为：" + tr.children("[data-field='handle']").text())
+
             tr.children("[data-field='status']").children("div").children("span").text("封禁中").css("color", "red")
           })
 
@@ -178,9 +183,11 @@
           //向服务端发送删除指令
         });
       } else if (layEvent === 'todetail') {
-        xadmin.open('查询举报人信息', 'member-detail.html?flea_id=' + obj.data.complain_userid, 600, 400);
+        console.log("你好世界")
+        xadmin.open('编辑', 'member-detail.html?flea_id=' + obj.data.complain_userid, 600, 400);
       } else if (layEvent === 'todetail2') {
-        xadmin.open('查询被举报人信息', 'member-detail.html?flea_id=' + obj.data.complained_userid, 600, 400);
+        console.log("你好世界")
+        xadmin.open('编辑', 'member-detail.html?flea_id=' + obj.data.complained_userid, 600, 400);
       } else if (layEvent === 'comment') {
         layer.prompt({
           fromType: 2,
@@ -191,12 +198,11 @@
           })
           layer.close(index);
         })
-      } else if (layEvent === "openphoto") {//展示举报图片
+      } else if (layEvent === "openphoto") {
         var photos = data.complain_photos.split(",")
-        xadmin.open('展示图片', 'report-photo.html?photos='+data.complain_photos, 600, 400);
-      }else if(layEvent === "handle-user"){//封禁用户
-        xadmin.open('处理用户', 'report-edit-user.html?userid='+data.complained_userid, 300, 100);
-        
+        xadmin.open('编辑', 'report-photo.html?photos='+data.complain_photos, 600, 400);
+      }else if(layEvent === "handle-user"){
+        xadmin.open('编辑', 'report-photo.html?photos='+data.complain_photos, 600, 400);
       }
     });
   });
@@ -205,7 +211,6 @@
   layui.use(['laydate', 'form'], function () {
     var laydate = layui.laydate;
     var form = layui.form;
-
 
     // 监听全选
     form.on('checkbox(checkall)', function (data) {
@@ -228,10 +233,7 @@
       elem: '#end' //指定元素
     });
 
-
   });
-
-
 
   /*用户-停用*/
   function member_stop(obj, id) {

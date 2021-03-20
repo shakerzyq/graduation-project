@@ -50,8 +50,7 @@
               <div class="layui-inline layui-show-xs-block">
                 <!-- <button id="search-user" data-type="reload" class="layui-btn" lay-submit="" lay-filter="sreach"><i
                     class="layui-icon">&#xe615;</i></button> -->
-                    <button type="button" id="search-user" class="layui-btn"><i
-                      class="layui-icon">&#xe615;</i></button>
+                <button type="button" id="search-user" class="layui-btn"><i class="layui-icon">&#xe615;</i></button>
               </div>
             </form>
           </div>
@@ -147,6 +146,10 @@
       </div>
     </div>
   </div>
+  <div hidden id="aa">
+    <textarea  placeholder="world"></textarea>
+  </div>
+  <button id="bb" >button</button>
 </body>
 
 <script type="text/html" id="userinfo">
@@ -167,6 +170,7 @@
     <span  class="layui-btn layui-btn-normal">{{d.status}}</span>
   {{#  } }}
 </script>
+
 
 <script type="text/html" id="check">
   <span class="layui-btn" lay-event="pass">通过</span>
@@ -198,6 +202,28 @@
       $(".ban-user").attr("checked", false);
       $(".ban-status").addClass("layui-btn layui-btn-danger").text("被封禁");
     }
+
+    $("#bb").click(function(){
+      layer.open({
+      type: 1, //Layer提供了5种层类型。可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加                    
+              // 载层）4（tips层）,
+      title: 'title here',   //标题
+      area: ['390px', '330px'],   //宽高
+      shade: 0.4,   //遮罩透明度
+      content: $("#aa"),//支持获取DOM元素
+      btn: ['确定', '取消'], //按钮组
+      scrollbar: false,//屏蔽浏览器滚动条
+      yes: function (index) {//layer.msg('yes');    //点击确定回调
+        layer.close(index);
+        showToast();
+      },
+      btn2: function () {//layer.alert('aaa',{title:'msg title'});  点击取消回调
+        layer.msg('bbb');//layer.closeAll();
+      }
+    });
+    })
+    
+
   });
   // $("#search-user").click(function () {
   //   console.log("asff")
@@ -237,9 +263,9 @@
       console.log("asff")
       var value = $("#inputname").val();
       console.log(value + "dd")
-    // $.get("http://127.0.0.1:8082/user/disposeRegisterApply/" + obj.data.flea_id + "/1", function (data, status) {
-    //   console.log(data, status)
-    // });
+      // $.get("http://127.0.0.1:8082/user/disposeRegisterApply/" + obj.data.flea_id + "/1", function (data, status) {
+      //   console.log(data, status)
+      // });
       table.reload('aa', {
         url: 'http://127.0.0.1:8082/user/getUncheckedUsersByName',
         where: { //设定异步数据接口的额外参数，任意设
@@ -252,18 +278,18 @@
         }
       }); //只重载数据
 
-    // table.reload('aa', {
-    //   where: { //设定异步数据接口的额外参数，任意设
-    //     nickname: value
-    //     // , bbb: 'yyy'
-    //     // //…
-    //   }
-    //   , page: {
-    //     curr: 1 //重新从第 1 页开始
-    //   }
-    // }); //只重载数据
-  });
-    
+      // table.reload('aa', {
+      //   where: { //设定异步数据接口的额外参数，任意设
+      //     nickname: value
+      //     // , bbb: 'yyy'
+      //     // //…
+      //   }
+      //   , page: {
+      //     curr: 1 //重新从第 1 页开始
+      //   }
+      // }); //只重载数据
+    });
+
 
     // $("#search-user").click(function () {
     //   console.log("asff")

@@ -176,7 +176,6 @@
         <span  class="ban-action layui-btn layui-btn-danger">封禁</span>
         {{#  } }}
     </div>
-    
 </script>
 <!-- <script type="text/html" id="check"> -->
     <!-- <input onclick="banning" class="ban-user" type="checkbox" name="yyy" lay-skin="switch"
@@ -233,10 +232,10 @@
         , { field: 'nickname', title: '昵称', width: 80 }
         , { field: 'sex', title: '性别', width: 80, sort: true }
         , { field: 'grade', title: '班级', width: 80 }
-        , { field: 'weixin', title: '微信号', width: 80, }
+        , { field: 'weixin', title: '微信号', width: 80,edit:true }
         , { field: 'flea_id', title: '用户详情', width: 90, toolbar: '#userinfo' }
         , { field: 'status', title: '状态', width: 90,sort: true, templet: '#status' }
-        , { field: 'handle', title: '处理', width: 177, toolbar: '#check' }
+        , { field: 'handle', title: '处理', width: 80, toolbar: '#check' }
       ]]
       , id: 'aa'
     });

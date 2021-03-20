@@ -20,46 +20,26 @@
             <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     <style>
-        #user-info{
-            display: flex;
-            flex-direction: column;
-            width: 93%;
-            margin: 0 auto;
-            padding: 20px;
-        }
-        .attr{
-            display: flex;
-            flex-direction: row;
-            padding: 10px 0;
-        }
-        .attr strong{
-            width: 50px;
-            margin-right:40px;
-        }
-        .testify_img{
-            display: flex;
-            flex-direction: column;
-
-        }
-        .user_icon img{
-            width: 50px;
-            height: 50px;
-        }
-        .testify_img img{
+        
+        #photos{
             width: 80%;
-            margin:0 auto;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-        .testify_img strong{
-            padding:10px 0;
+        .photo{
+            width: 100%;
+            
+            margin-top: 40px;
         }
-
     </style>
 </head>
 
 <body>
-   
-         
-        <!-- 移动设备、平板、桌面端的不同表现：
+
+
+    <!-- 移动设备、平板、桌面端的不同表现：
         <div class="layui-row">
           <div class="layui-col-xs6 layui-col-sm6 layui-col-md4">
             移动：6/12 | 平板：6/12 | 桌面：4/12
@@ -118,65 +98,12 @@ stu_num: "777777"
 testify_img: "http://localhost:8091/test_images/user_photos/big245001.webp"
 user_icon: "http://localhost:8091/test_images/user_photos/big245001.webp"
 weixin: "fdsgsgsssdfds" -->
-    <div id="user-info">
-            <div class="attr">
-                <strong>ID</strong>
-                <text id="flea_id"></text>
-            </div>
-            <div class="user_icon attr">
-                <strong>头像</strong>
-                <img id="user_icon" src=""></img>
-            </div>
-            <div class=" attr">
-                <strong>昵称</strong>
-                <text id="nickname"></text>
-            </div>
-            <div class="attr">
-                <strong>姓名</strong>
-                <text id="name"></text>
-            </div>
-            <div class="attr">
-                <strong>性别</strong>
-                <text id="sex"></text>
-            </div>
-            <div class="attr">
-                <strong>微信号</strong>
-                <text id="weixin"></text>
-            </div>
-            <div class="attr">
-                <strong>邮箱</strong>
-                <text id="email"></text>
-            </div>
-            <div class="attr">
-                <strong>自我介绍</strong>
-                <text id="self_introduction"></text>
-            </div>
-            <div class=" attr">
-                <strong>省份</strong>
-                <text id="province"></text>
-            </div>
-            <div class="attr">
-                <strong>学校</strong>
-                <text id="college"></text>
-            </div>
-            <div class="attr">
-                <strong>学院</strong>
-                <text id="academy"></text>
-            </div>
-            <div class=" attr">
-                <strong>班级</strong>
-                <text id="grade"></text>
-            </div>
-            <div class="attr">
-                <strong>学号</strong>
-                <text id="stu_num"></text>
-            </div>
-            <div class="testify_img attr">
-                <strong>在校证明</strong>
-                <img id="testify_img" src=""></img>
-            </div>
-            
+
+    <div id="photos">
+
     </div>
+ 
+
 
     <!-- <div class="layui-fluid">
             <div class="layui-row">
@@ -229,39 +156,47 @@ weixin: "fdsgsgsssdfds" -->
             arr = str.split("?");
             str1 = arr[1];
             arr1 = str1.split("=");
-            var info = {
-                name: 'sdfa',
-                sex: "man"
+            var photos = arr1[1].split(",");
+            console.log("图片："+photos)
+            var i = 0
+
+            for (i = 0; i < photos.length; i++) {
+                console.log(photos[i]);
+                // console.log(1)
+                var txt1 = "<img class='photo' src='"+photos[i]+"'/>"
+                // var txt2 = document.createElement("p");
+                // txt2.innerHTML
+                $("#photos").append(txt1)
             }
+            // var info = {
+            //     name: 'sdfa',
+            //     sex: "man"
+            // }
 
             // alert(arr1[0]);
             // alert(arr1[1]); 
-            $.get("http://127.0.0.1:8082/user/getUserDetail/" + arr1[1], function (data, status) {
-                console.log(data)
-                var user = data
-                console.log(data.nickname, data.name, data.flea_id)
-                
-                $("#nickname").text(data.nickname)
-                $("#name").text(data.name)
-                $("#flea_id").text(data.flea_id)
-                $("#email").text(data.email)
-                $("#sex").text(data.sex)
-                $("#stu_num").text(data.stu_num)
-                $("#province").text(data.province)
-                $("#college").text(data.college)
-                $("#academy").text(data.academy)
-                $("#grade").text(data.grade)
-                $("#self_introduction").text(data.self_introduction)
-                $("#weixin").text(data.weixin)
-                $("#testify_img").attr("src",data.testify_img)
-                $("#user_icon").attr("src",data.user_icon)
-                // var html =template('#userdetail',user);
-                // console.log(html)
-                // document.getElementById('user-info').innerHTML = html
-            });
-
-
-
+            // $.get("http://127.0.0.1:8082/user/getUserDetail/" + arr1[1], function (data, status) {
+            //     console.log(data)
+            //     var user = data
+            //     console.log(data.nickname, data.name, data.flea_id)
+            //     $("#nickname").text(data.nickname)
+            //     $("#name").text(data.name)
+            //     $("#flea_id").text(data.flea_id)
+            //     $("#email").text(data.email)
+            //     $("#sex").text(data.sex)
+            //     $("#stu_num").text(data.stu_num)
+            //     $("#province").text(data.province)
+            //     $("#college").text(data.college)
+            //     $("#academy").text(data.academy)
+            //     $("#grade").text(data.grade)
+            //     $("#self_introduction").text(data.self_introduction)
+            //     $("#weixin").text(data.weixin)
+            //     $("#testify_img").attr("src",data.testify_img)
+            //     $("#user_icon").attr("src",data.user_icon)
+            //     // var html =template('#userdetail',user);
+            //     // console.log(html)
+            //     // document.getElementById('user-info').innerHTML = html
+            // });
         });
 
         layui.use(['form', 'layer'],
