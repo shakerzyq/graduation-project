@@ -20,25 +20,87 @@
             <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     <style>
-        
-        #photos{
-            width: 80%;
-            margin: 0 auto;
+        #order-info {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            width: 93%;
+            margin: 0 auto;
+            padding: 20px;
         }
-        .photo{
-            width: 100%;
-            
-            margin-top: 40px;
+
+        .attr {
+            display: flex;
+            flex-direction: row;
+            padding: 10px 0;
+        }
+
+        .attr strong {
+            width: 50px;
+            margin-right: 40px;
+        }
+
+        .testify_img {
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        .user_icon img {
+            width: 50px;
+            height: 50px;
+        }
+
+        .testify_img img {
+            width: 80%;
+            margin: 0 auto;
+        }
+
+        .testify_img strong {
+            padding: 10px 0;
         }
     </style>
 </head>
 
 <body>
+    <div id="order-info">
+        <div class="attr">
+            <strong>订单ID</strong>
+            <text id="order_id"></text>
+        </div>
+        <div class="consumer_id attr">
+            <strong>买方ID</strong>
+            <text id="consumer_id"></text>
+        </div>
+        <div class=" attr">
+            <strong>商家ID</strong>
+            <text id="merchant_id"></text>
+        </div>
+        <div class="attr">
+            <strong>商品ID</strong>
+            <text id="goods_id"></text>
+        </div>
+        <div class="attr">
+            <strong>下单时间</strong>
+            <text id="order_time"></text>
+        </div>
+        <div class="attr">
+            <strong>结单时间</strong>
+            <text id="order_date"></text>
+        </div>
+        <div class="attr">
+            <strong>交易地点</strong>
+            <text id="trading_place"></text>
+        </div>
+        <div class="attr">
+            <strong>订单状态</strong>
+            <text id="order_status"></text>
+        </div>
+        <div class="attr">
+            <strong>订单备注</strong>
+            <text id="remark"></text>
+        </div>
 
-    <div id="photos">
+    </div>
     </div>
     <script>
 
@@ -47,47 +109,21 @@
             arr = str.split("?");
             str1 = arr[1];
             arr1 = str1.split("=");
-            var photos = arr1[1].split(",");
-            console.log("图片："+photos)
-            var i = 0
+            $.get("http://127.0.0.1:8082/order/getOrdersByOrderId/" + arr1[1], function (data, status) {
+                var user = data
+                $("#order_id").text(data.order_id)
+                $("#consumer_id").text(data.consumer_id)
+                $("#merchant_id").text(data.merchant_id)
+                $("#goods_id").text(data.goods_id)
+                $("#order_time").text(data.order_time)
+                $("#order_date").text(data.order_date)
+                $("#trading_place").text(data.trading_place)
+                $("#order_status").text(data.order_status)
+                $("#remark").text(data.remark)
+            });
 
-            for (i = 0; i < photos.length; i++) {
-                console.log(photos[i]);
-                // console.log(1)
-                var txt1 = "<img class='photo' src='"+photos[i]+"'/>"
-                // var txt2 = document.createElement("p");
-                // txt2.innerHTML
-                $("#photos").append(txt1)
-            }
-            // var info = {
-            //     name: 'sdfa',
-            //     sex: "man"
-            // }
 
-            // alert(arr1[0]);
-            // alert(arr1[1]); 
-            // $.get("http://127.0.0.1:8082/user/getUserDetail/" + arr1[1], function (data, status) {
-            //     console.log(data)
-            //     var user = data
-            //     console.log(data.nickname, data.name, data.flea_id)
-            //     $("#nickname").text(data.nickname)
-            //     $("#name").text(data.name)
-            //     $("#flea_id").text(data.flea_id)
-            //     $("#email").text(data.email)
-            //     $("#sex").text(data.sex)
-            //     $("#stu_num").text(data.stu_num)
-            //     $("#province").text(data.province)
-            //     $("#college").text(data.college)
-            //     $("#academy").text(data.academy)
-            //     $("#grade").text(data.grade)
-            //     $("#self_introduction").text(data.self_introduction)
-            //     $("#weixin").text(data.weixin)
-            //     $("#testify_img").attr("src",data.testify_img)
-            //     $("#user_icon").attr("src",data.user_icon)
-            //     // var html =template('#userdetail',user);
-            //     // console.log(html)
-            //     // document.getElementById('user-info').innerHTML = html
-            // });
+
         });
 
         layui.use(['form', 'layer'],

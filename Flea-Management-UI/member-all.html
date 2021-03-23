@@ -17,6 +17,33 @@
           <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
           <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+  <style>
+    .input {
+      width: 83%;
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+
+    }
+
+    #ban-type {
+      width: 100px;
+      margin-bottom: 10px;
+      padding: 3px;
+    }
+
+    .short-ban {
+      width: 100px;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .short-ban input {
+      width: 50px;
+      padding: 3px;
+      text-align: left;
+    }
+  </style>
 </head>
 
 <body>
@@ -37,97 +64,17 @@
         <div class="layui-card">
           <div class="layui-card-body ">
             <form class="layui-form layui-col-space5">
-              <!-- <div class="layui-inline layui-show-xs-block">
-                <input class="layui-input" autocomplete="off" placeholder="开始日" name="start" id="start">
-              </div>
-              <div class="layui-inline layui-show-xs-block">
-                <input class="layui-input" autocomplete="off" placeholder="截止日" name="end" id="end">
-              </div> -->
               <div class="layui-inline layui-show-xs-block">
                 <input id="inputname" type="text" name="username" placeholder="请输入用户名" autocomplete="off"
                   class="layui-input">
               </div>
               <div class="layui-inline layui-show-xs-block">
-                <!-- <button id="search-user" data-type="reload" class="layui-btn" lay-submit="" lay-filter="sreach"><i
-                    class="layui-icon">&#xe615;</i></button> -->
-                    <button type="button" id="search-user" class="layui-btn"><i
-                      class="layui-icon">&#xe615;</i></button>
+                <button type="button" id="search-user" class="layui-btn"><i class="layui-icon">&#xe615;</i></button>
               </div>
             </form>
           </div>
-          <!-- <div class="layui-card-header">
-                            <button class="layui-btn layui-btn-danger" onclick="delAll()"><i class="layui-icon"></i>批量删除</button>
-                            <button class="layui-btn" onclick="xadmin.open('添加用户','./member-add.html',600,400)"><i class="layui-icon"></i>添加</button>
-                        </div> -->
           <div class="layui-card-body layui-table-body layui-table-main">
             <table class="layui-table layui-form" id="demo" lay-filter="test">
-              <!-- <thead>
-                <tr>
-                  <th>
-                    <input type="checkbox" lay-filter="checkall" name="" lay-skin="primary">
-                  </th>
-                  <th>ID</th>
-                  <th>用户名</th>
-                  <th>性别</th>
-                  <th>手机</th>
-                  <th>地址</th>
-                  <th>状态</th>
-                  <th>一键封禁</th>
-              </thead> -->
-              <!-- <tbody>
-                <tr>
-                  <td>
-                    <input type="checkbox" name="id" value="1" lay-skin="primary">
-                  </td>
-                  <td>1</td>
-                  <td>小明</td>
-                  <td>男</td>
-                  <td>13000000000</td>
-                  <td>北京市 海淀区</td>
-                  <td class="td-status">
-                    <span id="ban-status"></span>
-                  </td> -->
-              <!-- 警告 -->
-              <!-- <td class="td-status">
-                                      <span class="layui-btn layui-btn-danger">已启用以封禁</span>
-                                    </td> -->
-              <!-- <td>
-                    <input onclick="banning" id="ban-user" type="checkbox" name="yyy" lay-skin="switch"
-                      lay-text="ON|OFF" checked="false">
-                  </td> -->
-              <!-- <td class="td-manage">
-                                      <a onclick="member_stop(this,'10001')" href="javascript:;"  title="启用">
-                                        <i class="layui-icon">&#xe601;</i>
-                                      </a>
-                                      <a title="编辑"  onclick="xadmin.open('编辑','member-edit.html',600,400)" href="javascript:;">
-                                        <i class="layui-icon">&#xe642;</i>
-                                      </a>
-                                      <a onclick="xadmin.open('修改密码','member-password.html',600,400)" title="修改密码" href="javascript:;">
-                                        <i class="layui-icon">&#xe631;</i>
-                                      </a>
-                                      <a title="删除" onclick="member_del(this,'要删除的id')" href="javascript:;">
-                                        <i class="layui-icon">&#xe640;</i>
-                                      </a>
-                                    </td> -->
-              <!-- </tr> -->
-              <!-- <tr>
-                  <td>
-                    <input type="checkbox" name="id" value="1" lay-skin="primary">
-                  </td>
-                  <td>1</td>
-                  <td>小明</td>
-                  <td>男</td>
-                  <td>13000000000</td>
-                  <td>北京市 海淀区</td>
-                  <td class="td-status">
-                    <span class="ban-status"></span>
-                  </td>
-                  <td>
-                    <input onclick="banning" class="ban-user" type="checkbox" name="yyy" lay-skin="switch"
-                      lay-text="ON|OFF" checked="false">
-                  </td>
-                </tr> -->
-
               </tbody>
             </table>
           </div>
@@ -147,76 +94,61 @@
       </div>
     </div>
   </div>
+
+  <div class="input" style="display:none">
+    <select id="ban-type" name="contrller">
+      <option class="ban-item" value="0">永久封禁</option>
+      <option class="ban-item" value="1">暂时封禁</option>
+    </select>
+    <div class="short-ban" style="display:none">
+      <input type='number' min=1 placeholder='天数'>
+      <text>天</text>
+    </div>
+  </div>
 </body>
 
 <script type="text/html" id="userinfo">
-  <!-- //onclick="xadmin.open('编辑','member-detail.html'+d.flea_id,600,400)" -->
 <span class="layui-table-link" lay-event="todetail">详情</span>
-<!-- <span class="layui-btn" lay-event="pass">通过</span>
-  <span class="layui-btn layui-btn-danger" lay-event="refuse">拒绝<span> -->
+
 </script>
 
-
-<!-- <script type="text/html" id="userinfo">
-    <span class="layui-table-link"  onclick="xadmin.open('编辑','member-detail.html'+d.flea_id,600,400)">详情</span>
-</script> -->
 <script type="text/html" id="status">
-  {{#  if(d.status==='封禁'){ }}
-    <span class="ban-show" style="color:red">封禁中</span>
-  {{#  } else if(d.status==='正常'){ }}
+  {{#  if(d.status==='1'){ }}
+    <span class="ban-show" style="color:red">永久封禁中</span>
+  {{#  } else if(d.status==='2'){ }}
+    <span class="ban-show" style="color:red">暂时封禁中({{d.deadline}}解封)</span>
+  {{#  } else{ }}
     <span class="ban-show" style="color:green">正常</span>
   {{#  } }}
 </script>
 
 <script type="text/html" id="check">
     <div lay-event="banning">
-        {{#  if(d.status==='封禁'){ }}
+        {{#  if(d.status!=='0'){ }}
         <span   class="ban-action layui-btn layui-btn-normal">解封</span>
-        {{#  } else if(d.status==='正常'){ }}
+        {{#  } else if(d.status==='0'){ }}
         <span  class="ban-action layui-btn layui-btn-danger">封禁</span>
         {{#  } }}
     </div>
 </script>
-<!-- <script type="text/html" id="check"> -->
-    <!-- <input onclick="banning" class="ban-user" type="checkbox" name="yyy" lay-skin="switch"
-    lay-text="ON|OFF" checked="false"> -->
-  <!-- <a class="layui-btn layui-btn-xs" lay-event="detail">查看</a>
-  <a class="layui-btn layui-btn-xs" lay-event="edit">编辑</a>
-  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a> -->
-  <!-- <script type="text/html" id="check">
-    实打实
-  </script> -->
-  <!-- 这里同样支持 laytpl 语法，如： -->
-    
- 
-<!-- <script type="text/html" id="check">
-  <span class="layui-btn" onclick="userSuccess(flea_id)">通过</span>
-  <span class="layui-btn layui-btn-danger" onclick="userRefuse(d)">拒绝<span>
-</script> -->
 <script>
 
   // 查询用户
 
 
   $(document).ready(function () {
-   
-    // var judge = true;
-    // if (judge) {
-    //   $(".ban-user").attr("checked", true);
-    //   $(".ban-status").addClass("layui-btn layui-btn-normal").text("正常");
-    // } else {
-    //   $(".ban-user").attr("checked", false);
-    //   $(".ban-status").addClass("layui-btn layui-btn-danger").text("被封禁");
-    // }
+    $("#ban-type").click(function () {
+      //  alert("hello world");
+      console.log("hello world:" + $("#ban-type").val());
+      if ($("#ban-type").val() === '1') {
+        console.log("hello world:");
+        $(".short-ban").css("display", 'inline');
+      } else {
+        $(".short-ban").css("display", 'none');
+      }
+    })
+
   });
-  // $("#search-user").click(function () {
-  //   console.log("asff")
-  //   var value = $("#inputname").val();
-  //   console.log(value + "dd")
-  //   $.get("http://127.0.0.1:8082/user/disposeRegisterApply/" + obj.data.flea_id + "/1", function (data, status) {
-  //     console.log(data, status)
-  //   });
-  // });
 
   layui.use('table', function () {
     var table = layui.table;
@@ -232,167 +164,93 @@
         , { field: 'nickname', title: '昵称', width: 80 }
         , { field: 'sex', title: '性别', width: 80, sort: true }
         , { field: 'grade', title: '班级', width: 80 }
-        , { field: 'weixin', title: '微信号', width: 80,edit:true }
+        , { field: 'weixin', title: '微信号', width: 80, edit: true }
         , { field: 'flea_id', title: '用户详情', width: 90, toolbar: '#userinfo' }
-        , { field: 'status', title: '状态', width: 90,sort: true, templet: '#status' }
+        , { field: 'status', title: '状态', width: 90, sort: true, templet: '#status' }
         , { field: 'handle', title: '处理', width: 80, toolbar: '#check' }
       ]]
       , id: 'aa'
     });
 
     $("#search-user").click(function () {
-      console.log("asff")
       var value = $("#inputname").val();
-      console.log(value + "dd")
-    // $.get("http://127.0.0.1:8082/user/disposeRegisterApply/" + obj.data.flea_id + "/1", function (data, status) {
-    //   console.log(data, status)
-    // });
       table.reload('aa', {
         url: 'http://127.0.0.1:8082/user/getCheckedUsersByName',
         where: { //设定异步数据接口的额外参数，任意设
           nickname: value
-          // , bbb: 'yyy'
-          // //…
         }
         , page: {
           curr: 1 //重新从第 1 页开始
         }
       }); //只重载数据
+    });
 
-    // table.reload('aa', {
-    //   where: { //设定异步数据接口的额外参数，任意设
-    //     nickname: value
-    //     // , bbb: 'yyy'
-    //     // //…
-    //   }
-    //   , page: {
-    //     curr: 1 //重新从第 1 页开始
-    //   }
-    // }); //只重载数据
-  });
-    
 
-    // $("#search-user").click(function () {
-    //   console.log("asff")
-    //   var value = $(".layui-input").val();
-    //   console.log(value + "dd")
-    //   $.get("http://127.0.0.1:8082/user/getUncheckedUsers/" + value, function (data, status) {
-    //     console.log("结果",data.code)
-    //   });
-    // });
-    // $('#search-user').click(function () {
-    //   var inputVal = $('.layui-input').val()
-    //   console.log("输入的值为ddd："+inputVal)
-    //   table.reload('testReload', {
-    //     url: 'http://127.0.0.1:8082/user/getUncheckedUsers/'+inputVal
-    //     ,methods:"get"
-    //     ,methods:"post"
-    //     , request: {
-    //       pageName: 'page' //页码的参数名称，默认：page
-    //       , limitName: 'pageSize' //每页数据量的参数名，默认：limit
-    //     }
-    //     , where: {
-    //       query: inputVal
-    //     }
-    //     , page: {
-    //       curr: 1
-    //     }
-    //   });
-    // })
-    
     table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
       var data = obj.data; //获得当前行数据
       var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
       var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
-    
-      if(layEvent ==="banning"){
-        console.log("获得的文本为------"+tr.children("[data-field='handle']").text().replace('    ','')+"--dsa");
 
-        if(tr.children("[data-field='handle']").text()==="   封禁   " ){//如果为true
-            console.log("**************封禁****************")
-            //封禁
-            $.get("http://127.0.0.1:8082/user/updateUserStatus/ban/"+data.flea_id,function(data,status){
-                console.log(data,status);
-                // if(data){
-                    console.log("obj.tr为："+tr.html())
-                    tr.children("[data-field='handle']").children("div").children("div").children("span").text("解禁").css("background-color","rgb(30,159,255)")
-                    // obj.data.status="封禁"
-                   
-                    console.log("obj.tr.[data-field='handle']为："+tr.children("[data-field='handle']").text())
-                    
-                    // tr.children("[data-field='status']").css("color","red").text("封禁中")
-                    tr.children("[data-field='status']").children("div").children("span").text("封禁中").css("color","red")
-                    
-                    // tr.children(".ban-action").removeClass(".layui-btn-danger").addClass(".layui-btn-normal")
-                    // tr.text("封禁中").css("color","red")
-                    // tr.text("解禁").removeClass(".layui-btn-danger").addClass(".layui-btn-normal")
-                // }
-            })
-      
-        } else{
-            
-            // obj.data.status==="正常"
-            console.log("**************解封****************")
-            //解禁
-            $.get("http://127.0.0.1:8082/user/updateUserStatus/unban/"+data.flea_id,function(data,status){
-                console.log(data,status);
-                // if(data){
-                    // console.log("解禁")
-                    // obj.data.status="正常"
-                    console.log("obj.tr为："+tr.html())
-                    console.log("obj.tr.[data-field='handle']为："+tr.children("[data-field='handle']").text())
-                    // tr.children("[data-field='status']").css("color","green").text("正常")
-                    tr.children("[data-field='handle']").children("div").children("div").children("span").text("封禁").css("background-color","rgb(255,87,34)")
-                    tr.children("[data-field='status']").children("div").children("span").text("正常").css("color","green")
-                    
-                    // tr.children(".ban-action").removeClass(".layui-btn-normal").addClass(".layui-btn-danger")
-                    // tr.text("正常").css("color","green")
-                    // tr.text("封禁").removeClass(".layui-btn-normal").addClass(".layui-btn-danger")
-                // }   
-            })
-            this.status=true;
+      if (layEvent === "banning") {
+        $('#ban-type').val(0)
+        $('.short-ban').css('display', 'none');
+        $('.short-ban').children().val("")
+
+        if (tr.children("[data-field='handle']").text() === "   封禁   ") {//如果为true
+          layer.open({
+            type: 1,
+            content: $('.input') //这里content是一个普通的String
+            , btn: ['确定', '取消']
+            , yes: function (index, layero) {
+              if ($('#ban-type').val() === '0') {//永久封禁
+                $.get("http://127.0.0.1:8082/user/updateUserStatus/ban/" + data.flea_id, function (data, status) {
+                  tr.children("[data-field='handle']").children("div").children("div").children("span").text("解封").css("background-color", "rgb(30,159,255)")
+                  tr.children("[data-field='status']").children("div").children("span").text("永久封禁中").css("color", "red")
+                })
+                layer.close(index);
+              } else {//暂时封禁
+                var day = $('.short-ban').children().val()
+                if (day !== null && day.length > 0) {
+                  $.get('http://127.0.0.1:8082/user/temporaryBanUser/' + data.flea_id + '/' + day, function (data, status) {
+                    tr.children("[data-field='handle']").children("div").children("div").children("span").text("解封").css("background-color", "rgb(30,159,255)")
+                    tr.children("[data-field='status']").children("div").children("span").text("暂时封禁(" + day + "天后解封)").css("color", "red")
+                  })
+                  layer.close(index);
+                } else {
+                  layer.msg('输入日期不能为空', { icon: 5 });
+                }
+              }
+            }
+          });
+        } else {
+
+          // obj.data.status==="正常"
+          console.log("**************解封****************")
+          //解禁
+          $.get("http://127.0.0.1:8082/user/updateUserStatus/unban/" + data.flea_id, function (data, status) {
+            tr.children("[data-field='handle']").children("div").children("div").children("span").text("封禁").css("background-color", "rgb(255,87,34)")
+            tr.children("[data-field='status']").children("div").children("span").text("正常").css("color", "green")
+          })
+          this.status = true;
         }
-      }else if (layEvent === 'pass') {
+      } else if (layEvent === 'pass') {
         layer.confirm('确认通过审核？', function (index) {
           obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
           layer.close(index);
           $.get("http://127.0.0.1:8082/user/disposeRegisterApply/" + obj.data.flea_id + "/1", function (data, status) {
-            console.log(data, status)
           });
         });
       } else if (layEvent === 'refuse') {
-
         layer.confirm('真的拒绝通过吗？', function (index) {
           $.get("http://127.0.0.1:8082/user/disposeRegisterApply/" + obj.data.flea_id + "/0", function (data, status) {
-            console.log(data, status)
           });
           obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
           layer.close(index);
           //向服务端发送删除指令
         });
       } else if (layEvent === 'todetail') {
-          console.log("你好世界")
         xadmin.open('编辑', 'member-detail.html?flea_id=' + obj.data.flea_id, 600, 400);
       }
-      // if(layEvent === 'detail'){ //查看
-      //   //do somehing
-      // } else if(layEvent === 'del'){ //删除
-      //   layer.confirm('真的删除行么', function(index){
-      //     obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
-      //     layer.close(index);
-      //     //向服务端发送删除指令
-      //   });
-      // } else if(layEvent === 'edit'){ //编辑
-      //   //do something
-
-      //   //同步更新缓存对应的值
-      //   obj.update({
-      //     username: '123'
-      //     ,title: 'xxx'
-      //   });
-      // } else if(layEvent === 'LAYTABLE_TIPS'){
-      //   layer.alert('Hi，头部工具栏扩展的右侧图标。');
-      // }
     });
   });
 
@@ -400,11 +258,8 @@
   layui.use(['laydate', 'form'], function () {
     var laydate = layui.laydate;
     var form = layui.form;
-
-
     // 监听全选
     form.on('checkbox(checkall)', function (data) {
-
       if (data.elem.checked) {
         $('tbody input').prop('checked', true);
       } else {

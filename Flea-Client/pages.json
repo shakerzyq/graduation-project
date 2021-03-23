@@ -416,6 +416,15 @@
             }
             
         }
+        ,{
+            "path" : "pages/index/mine/mine-orders/report-order/report-order",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "",
+                "enablePullDownRefresh": false
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",

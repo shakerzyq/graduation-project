@@ -1,12 +1,15 @@
 package zyq.graduation.management.pojo;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * @author 周杨清
  * @date 2021/3/18 23:30
  */
 public class User implements Serializable {
+    private static SimpleDateFormat a=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     private String flea_id;
     private String email;
@@ -22,6 +25,7 @@ public class User implements Serializable {
     private String testify_img;
     private String self_introduction;
     private String status;
+    private String deadline;
     private Double credit;
     private String weixin;
 
@@ -42,9 +46,19 @@ public class User implements Serializable {
                 ", testify_img='" + testify_img + '\'' +
                 ", self_introduction='" + self_introduction + '\'' +
                 ", status='" + status + '\'' +
+                ", deadline='" + deadline + '\'' +
                 ", credit=" + credit +
                 ", weixin='" + weixin + '\'' +
                 '}';
+    }
+
+    public String getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(String deadline) {
+
+        this.deadline = a.format(new Date(Long.parseLong(deadline)));
     }
 
     public String getFlea_id() {

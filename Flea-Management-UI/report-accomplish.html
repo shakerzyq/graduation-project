@@ -17,6 +17,33 @@
           <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
           <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+  <style >
+    .input {
+      width: 83%;
+      display: flex;
+      flex-direction: column;
+      margin: 0 auto;
+
+    }
+
+    #ban-type {
+      width: 100px;
+      margin-bottom: 10px;
+      padding: 3px;
+    }
+
+    .short-ban {
+      width: 100px;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .short-ban input {
+      width: 50px;
+      padding: 3px;
+      text-align: left;
+    }
+  </style>
 </head>
 
 <body>
@@ -37,9 +64,24 @@
         <div class="layui-card">
           <div class="layui-card-body ">
             <form class="layui-form layui-col-space5">
-              <div class="layui-inline layui-show-xs-block">
+
+              <!-- <div class="layui-inline layui-show-xs-block">
                 <input id="inputname" type="text" name="username" placeholder="请输入用户名" autocomplete="off"
                   class="layui-input">
+              </div> -->
+              <div class="layui-input-inline layui-show-xs-block">
+                <select id="report-type" name="contrller">
+                  <option value="2">举报类型</option>
+                  <option value="0">买方举报</option>
+                  <option value="1">卖方举报</option>
+                </select>
+              </div>
+              <div class="layui-input-inline layui-show-xs-block">
+                <select id="result-type" name="contrller">
+                  <option value="2">处理结果</option>
+                  <option value="0">通过</option>
+                  <option value="1">拒绝</option>
+                </select>
               </div>
               <div class="layui-inline layui-show-xs-block">
                 <button type="button" id="search-user" class="layui-btn"><i class="layui-icon">&#xe615;</i></button>
@@ -67,6 +109,16 @@
       </div>
     </div>
   </div>
+  <div class="input" style="display:none">
+    <select id="ban-type" name="contrller">
+      <option class="ban-item" value="0">永久封禁</option>
+      <option class="ban-item" value="1">暂时封禁</option>
+    </select>
+    <div class="short-ban" style="display:none">
+      <input type='number'  min=1 placeholder='天数' >
+      <text>天</text>
+    </div>
+  </div>
 </body>
 
 <script type="text/html" id="complainuserinfo">
@@ -77,17 +129,16 @@
 <span class="layui-table-link" lay-event="todetail2">{{d.complained_userid}}</span>
 </script>
 
+<script type="text/html" id="goodsinfo">
+  <span class="layui-table-link" lay-event="goodsinfo">{{d.goods_id}}</span>
+</script>
+
+<script type="text/html" id="orderinfo">
+  <span class="layui-table-link" lay-event="orderinfo">{{d.order_id}}</span>
+</script>
+
 <script type="text/html" id="comment">
   <span   class="ban-action layui-btn layui-btn-normal" lay-event="comment">留言</span>
-</script>
-
-<script type="text/html" id="check">
-  <span class="layui-btn " lay-event="pass">通过</span>
-  <span class="layui-btn layui-btn-danger " lay-event="refuse">拒绝<span>
-</script>
-
-<script type="text/html" id="handle-user">
-    <span class="layui-btn " lay-event="handle-user">处理用户</span>
 </script>
 
 <script type="text/html" id="image">
@@ -109,31 +160,37 @@
     var table1 = table.render({
       elem: '#demo'
       , height: 312
-      , url: 'http://127.0.0.1:8082/report/getPendingReports' //数据接口
-      ,where: { //设定异步数据接口的额外参数，任意设
-        complain_status: '通过'
-        }
+      , url: 'http://127.0.0.1:8082/report/getAccomplishReports' //数据接口
+      , where: { //设定异步数据接口的额外参数，任意设
+        reportType: 2,
+        resultType: 2
+      }
       , page: true //开启分页
       , cols: [[ //表头
         { field: 'complain_userid', title: '举报人ID', width: 120, sort: true, fixed: 'left', toolbar: '#complainuserinfo' }
         , { field: 'complained_userid', title: '被举报人ID', width: 80, toolbar: '#complaineduserinfo' }
+        , { field: 'goods_id', title: '商品ID', width: 80, toolbar: '#goodsinfo' }
+        , { field: 'order_id', title: '订单ID', width: 80, toolbar: '#orderinfo' }
         , { field: 'complain_type', title: '举报类型', width: 80, sort: true }
         , { field: 'complain_content', title: '举报理由', width: 90 }
         , { field: 'complain_photos', title: '举报证据', width: 90, toolbar: '#image' }
         , { field: 'complain_status', title: '状态', width: 80 }
-        , { field: 'comment', title: '留言', width: 90, toolbar: '#comment' }
-        , { field: 'handle_user', title: '处理用户', width: 177, toolbar: '#handle-user' }
-        , { field: 'handle', title: '处理', width: 177, toolbar: '#check' }
+        , { field: 'audit_result', title: '处理结果', width: 90 }
+        // , { field: 'handle_user', title: '处理用户', width: 177, toolbar: '#handle-user' }
+        // , { field: 'handle', title: '处理', width: 177, toolbar: '#check' }
       ]]
       , id: 'aa'
     });
 
     $("#search-user").click(function () {
-      var value = $("#inputname").val();
+      var reportType = $("#report-type").val()
+      var resultType = $("#result-type").val()
+      console.log("reportType: " + reportType + "resultType: " + resultType)
       table.reload('aa', {
-        url: 'http://127.0.0.1:8082/user/getCheckedUsersByName',
+        url: 'http://127.0.0.1:8082/report/getAccomplishReports',
         where: { //设定异步数据接口的额外参数，任意设
-          nickname: value
+          reportType: reportType,
+          resultType: resultType
         }
         , page: {
           curr: 1 //重新从第 1 页开始
@@ -160,7 +217,7 @@
         } else {
           $.get("http://127.0.0.1:8082/user/updateUserStatus/unban/" + data.flea_id, function (data, status) {
             tr.children("[data-field='handle']").children("div").children("div").children("span").text("封禁").css("background-color", "rgb(255,87,34)")
-            tr.children("[data-field='status']").children("div").children("span").text("正常").css("color", "green") 
+            tr.children("[data-field='status']").children("div").children("span").text("正常").css("color", "green")
           })
           this.status = true;
         }
@@ -168,14 +225,14 @@
         layer.confirm('确认通过审核？', function (index) {
           obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
           layer.close(index);
-          $.get("http://127.0.0.1:8082/report/disposeReport/"+data.complain_id+"/"+data.audit_result+"/1", function (data, status) {
+          $.get("http://127.0.0.1:8082/report/disposeReport/" + data.complain_id + "/" + data.audit_result + "/1", function (data, status) {
             console.log(data, status)
           });
         });
       } else if (layEvent === 'refuse') {
 
         layer.confirm('真的拒绝通过吗？', function (index) {
-          $.get("http://127.0.0.1:8082/report/disposeReport/"+data.complain_id+"/"+data.audit_result+"/0", function (data, status) {
+          $.get("http://127.0.0.1:8082/report/disposeReport/" + data.complain_id + "/" + data.audit_result + "/0", function (data, status) {
             console.log(data, status)
           });
           obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
@@ -200,9 +257,12 @@
         })
       } else if (layEvent === "openphoto") {
         var photos = data.complain_photos.split(",")
-        xadmin.open('编辑', 'report-photo.html?photos='+data.complain_photos, 600, 400);
-      }else if(layEvent === "handle-user"){
-        xadmin.open('编辑', 'report-photo.html?photos='+data.complain_photos, 600, 400);
+        xadmin.open('编辑', 'report-photo.html?photos=' + data.complain_photos, 600, 400);
+      } else if(layEvent === "goodsinfo"){
+        console.log("hello world")
+        xadmin.open('商品信息', 'show-goods-detail.html?goods_id=' + data.goods_id, 600, 400);
+      }else if(layEvent === "orderinfo"){
+        xadmin.open('订单信息', 'show-order-detail.html?order_id=' + data.order_id, 600, 400);
       }
     });
   });

@@ -18,9 +18,9 @@
 				<text  :style="{color:(complains.complain_status==='拒绝'?'#e10e03':'#00ff00')}">{{complains.complain_status}}</text>
 			</view>
 			<view class="complain-type">
-				<strong>类型</strong>
+				<strong>类型：</strong>
 				<view class="types">
-					<view class="type" v-for="(type,index) in types" :key="index">{{type}}</view>
+					<view class="type" >{{type===0?'买方举报':'卖方举报'}}</view>
 				</view>
 				
 			</view>
@@ -47,9 +47,7 @@
 				status:null,
 				
 				complains:[],
-				
-				types:[],
-				
+				type:null,
 				photos:[],
 			}
 		},
@@ -81,7 +79,7 @@
 				})
 				this.complains=result.data
 				
-				this.types = this.complains.complain_type.split(',')
+				this.type = this.complains.complain_type
 				this.photos = this.complains.complain_photos.split(',')
 			}
 		}
@@ -127,13 +125,13 @@
 		}
 		.complain-type{
 			display: flex;
-			flex-direction: column;
+			flex-direction: row;
 			margin: 10rpx 0;
 			.types{
 				display: flex;
 				flex-direction: row;
 				.type{
-					margin-right: 30rpx;
+
 				}
 			}
 		}

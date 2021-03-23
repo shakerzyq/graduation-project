@@ -100,7 +100,8 @@ public class IOrderService implements OrderService {
 
                     ordersShow.setUserName(goodsIndex.getUserName());
                     ordersShow.setUsersIcon(goodsIndex.getUserIcon());
-                    ordersShow.setUserId(goodsIndex.getUserId());
+                    ordersShow.setMerchantId(goodsIndex.getUserId());
+                    ordersShow.setConsumerId(order.getConsumer_id());
 
                     ordersShow.setUserEmail(orderMapper.selectUserEmail(order.getMerchant_id()));
 
@@ -128,7 +129,8 @@ public class IOrderService implements OrderService {
 
                     ordersShow.setUserName(goodsIndex.getUserName());
                     ordersShow.setUsersIcon(goodsIndex.getUserIcon());
-                    ordersShow.setUserId(goodsIndex.getUserId());
+                    ordersShow.setMerchantId(goodsIndex.getUserId());
+                    ordersShow.setConsumerId(order.getConsumer_id());
 
                     ordersShow.setUserEmail(orderMapper.selectUserEmail(order.getConsumer_id()));
 
@@ -168,7 +170,8 @@ public class IOrderService implements OrderService {
 
                 ordersShow.setUserName(goodsIndex.getUserName());
                 ordersShow.setUsersIcon(goodsIndex.getUserIcon());
-                ordersShow.setUserId(goodsIndex.getUserId());
+                ordersShow.setMerchantId(goodsIndex.getUserId());
+                ordersShow.setConsumerId(historyOrder.getConsumer_id());
                 orderShowList.add(ordersShow);
             }
 

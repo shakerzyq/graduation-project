@@ -20,7 +20,7 @@
             <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     <style>
-        #handle{
+        #handle {
             width: 80%;
             margin: 0 auto;
             display: flex;
@@ -29,10 +29,37 @@
             justify-content: space-between;
             margin-top: 10px;
         }
-        .status{
+
+        .status {
             width: 100px;
             margin-right: 10px;
             font-size: 20px;
+        }
+
+        .input {
+            width: 83%;
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+
+        }
+
+        #ban-type {
+            width: 100px;
+            margin-bottom: 10px;
+            padding: 3px;
+        }
+
+        .short-ban {
+            width: 100px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .short-ban input {
+            width: 50px;
+            padding: 3px;
+            text-align: left;
         }
     </style>
 </head>
@@ -40,7 +67,17 @@
 <body>
     <div id="handle">
         <span class="status"></span>
-        <span class="layui-btn ban-action" lay-event="pass"></span>
+        <span class="handle_button layui-btn ban-action" lay-event="pass"></span>
+    </div>
+    <div class="input" style="display:none">
+        <select id="ban-type" name="contrller">
+            <option class="ban-item" value="0">永久封禁</option>
+            <option class="ban-item" value="1">暂时封禁</option>
+        </select>
+        <div class="short-ban" style="display: none">
+            <input type='number' min=1 placeholder='天数'>
+            <text>天</text>
+        </div>
     </div>
 
     <script>
@@ -49,56 +86,87 @@
             arr = str.split("?");
             str1 = arr[1];
             arr1 = str1.split("=");
-            var banJudge=false
-            var txt =null
-            var txt2=null
-            var color=null
+            var banJudge = false
+            var txt = null
+            var txt2 = null
+            var color = null
             $.get("http://127.0.0.1:8082/user/getUserDetail/" + arr1[1], function (data, status) {
-                console.log("结果"+data.status)
+                console.log("结果" + data.status)
                 var user = data
-                var txt =null
-                var txt2=null
-                var color=null
-                if(user.status=="正常"){
-                    txt="正常"
-                    txt2="封禁"
-                    color="green"
-                    banJudge=true
-                }else{
-                    txt="封禁中"
-                    txt2="解禁"
-                    color="red"
-                    banJudge=false
+                var txt = null
+                var txt2 = null
+                var color = null
+                if (user.status == '2') {
+                    txt = "暂时封禁中(" + user.deadline + "解封)"
+                    txt2 = "解封"
+                    color = "red"
+                    color2 = "green"
+                    banJudge = true
+                } else if (user.status == '1') {
+                    txt = "永久封禁中"
+                    txt2 = "解封"
+                    color = "red"
+                    color2 = "green"
+                    banJudge = false
+                } else {
+                    txt = "正常"
+                    txt2 = "封禁"
+                    color = "green"
+                    color2 = "red"
+                    banJudge = true
                 }
-                $(".status").text(txt).css("color",color);
-                $(".ban-action").text(txt2).css("background",color);
-            });
+                $(".status").text(txt).css("color", color);
+                $(".ban-action").text(txt2).css("background", color2);
 
-            // $(".ban-action").click("http://127.0.0.1:8082/getPendingReports/banOrUnbanUser/"+ banJudge+"/"+data.complained_userid,function(data,status){
-            //     console.log("safs")
-            // }
-            $(".ban-action").click(function(){
-                console.log("hello world")
-                var userid = arr1[1]
-                console.log("id为："+userid+"banjudge为："+banJudge)
-                // console.log("hello world"+banJudge+" : "+data.complained_userid)
-                $.get("http://127.0.0.1:8082/report/banOrUnbanUser/"+ banJudge+"/"+userid,function(data,status){
-                    console.log("hello world"+banJudge+" : "+data)
-                    if(banJudge){
-                        txt="封禁中"
-                        txt2="解禁"
-                        color="red"
-                    }else{
-                        
-                        txt="正常"
-                        txt2="封禁"
-                        color="green"
+                $("#ban-type").click(function () {
+                    if ($("#ban-type").val() === '1') {
+                        $(".short-ban").css("display", 'inline');
+                    } else {
+                        $(".short-ban").css("display", 'none');
                     }
-                    $(".status").text(txt).css("color",color);
-                    $(".ban-action").text(txt2).css("background",color);
-                    banJudge=!banJudge
-                
                 })
+            });
+            $(".ban-action").click(function () {
+                var userid = arr1[1]
+                if ($(".handle_button").text() === "封禁") {//如果为true
+                    layer.open({
+                        type: 1,
+                        content: $('.input') //这里content是一个普通的String
+                        , btn: ['确定', '取消']
+                        , yes: function (index, layero) {
+                            if ($('#ban-type').val() === '0') {//永久封禁
+                                $.get("http://127.0.0.1:8082/user/updateUserStatus/ban/" + userid, function (data, status) {
+                                    $(".status").text("永久封禁中").css("color", 'red');
+                                    $(".ban-action").text('解封').css("background", 'green');
+                                })
+                                layer.close(index);
+                            } else {//暂时封禁
+                                var day = $('.short-ban').children().val()
+                                console.log("0:" + day)
+                                if (day !== null && day.length > 0) {
+                                    console.log(1)
+                                    $.get('http://127.0.0.1:8082/user/temporaryBanUser/' + userid + '/' + day, function (data, status) {
+                                        $(".status").text("暂时封禁(" + day + "天后解封)").css("color", 'red');
+                                        $(".ban-action").text('解封').css("background", 'green');
+                                    })
+                                    layer.close(index);
+                                } else {
+                                    layer.msg('输入日期不能为空', { icon: 5 });
+                                }
+                            }
+                        }
+                    });
+                } else {
+
+                    // obj.data.status==="正常"
+                    console.log("**************解封****************")
+                    //解禁
+                    $.get("http://127.0.0.1:8082/user/updateUserStatus/unban/" + userid, function (data, status) {
+                        $(".status").text("正常").css("color", 'green');
+                        $(".ban-action").text('封禁').css("background", 'red');
+                    })
+
+                }
             })
         });
 

@@ -1,14 +1,14 @@
 <template>
 	<view>
 		<view v-for="(order,index) in orders" class="orders" :key="order.id">
-			<view class="merchant" @click="goToPersonalCenter(order.userId)">
+			<view class="merchant" @click="goToPersonalCenter(order.consumerId)">
 				<view class="usericon-usernmae">
 					<image class="userIcon" :src="order.usersIcon"></image>
 					<view class="userName">{{order.userName}}</view>
 				</view>
-				<view class="userId">跳蚤id：{{order.userId}}</view>
+				<view class="userId">跳蚤id：{{order.consumerId}}</view>
 			</view>
-			<view class="goods" @click="goGoodsDetail(order.goodsId,order.userId)">
+			<view class="goods" @click="goGoodsDetail(order.goodsId,order.consumerId)">
 				<image class="goods-picture" :src="order.goodsPicture"></image>
 				<view class="goods-info">
 					<view class="goods-des">{{order.goodsContent}}</view>
@@ -22,12 +22,11 @@
 			<view class="order-action" v-if="dealType==='buy'">
 				<!-- 历史 -->
 				<view class="history-order" v-if="order.orderStatus==='交易完成'">
+					<view  class="order-report" @click="goToReport(order)">举报</view>
 					<view class="order-details" @click="goToOrderDetails(order.orderId,order.orderStatus)">详情</view>
 				</view>
 				<!-- 待处理 -->
 				<!-- <view v-if="order.orderStatus==='发起'?true:false " class="alter-order">修改订单</view> -->
-				
-				
 				<view class="todo-order" v-else>
 					<view class="order-details" @click="goToOrderDetails(order.orderId,order.orderStatus)">详情</view>
 					<view  class="delete-order"  @click="deleteOrder(order,'todo',index,0)">取消订单</view> 
@@ -41,18 +40,20 @@
 			<view class="order-action" v-else>
 				<!-- 历史 -->
 				<view class="history-order" v-if="order.orderStatus==='交易完成'">
+					
+					<view  class="order-report" @click="goToReport(order)">举报</view>
 					<view class="order-details" @click="goToOrderDetails(order.orderId,order.orderStatus)">详情</view>
 				</view>
 				<!-- <view v-if="order.orderStatus==='发起'?true:false " class="alter-order">修改订单</view> -->
 				
 				<!-- 待处理 -->
 				<view class="todo-order" v-else>
+					
 					<view class="order-details" @click="goToOrderDetails(order.orderId,order.orderStatus)">详情</view>
 					<view v-if="order.orderStatus==='待接单'" class="delete-order" @click="deleteOrder(order,'todo',index,1)">拒单</view>
 					<view v-if="order.orderStatus==='待接单'" class="alter-order" @click="acceptOrder(order,index)">接单</view> 
 					<view v-else class="delete-order" @click="deleteOrder(order,'todo',index)">悔单</view>
 				</view>
-				
 			</view>
 		</view>
 	</view>
@@ -60,7 +61,7 @@
 
 <script>
 	export default {
-		props:['orders','dealType'],
+		props:['orders','dealType','flea_id'],
 		data() {
 			return {
 				order:[],
@@ -68,6 +69,12 @@
 			};
 		},
 		methods:{
+			
+			goToReport(order){
+				this.$emit(
+					'goToReport',order
+				)
+			},
 			
 			/**
 			 * 商家接收订单
@@ -221,7 +228,7 @@
 			justify-content: flex-end;
 			
 			
-			color: #fff;
+			
 			.todo-order{
 				display: flex;
 				flex-direction: row;
@@ -230,7 +237,14 @@
 				margin-left: 20rpx;
 				background-color: yellow;
 				padding: 10rpx 20rpx;
-				color: $uni-color-midgray;
+				// color: $uni-color-midgray;
+				border-radius: 30rpx;
+			}
+			.order-report{
+				margin-left: 20rpx;
+				background-color: red;
+				padding: 10rpx 20rpx;
+				// color: $uni-color-midgray;
 				border-radius: 30rpx;
 			}
 			.alter-order{
@@ -250,6 +264,11 @@
 				background-color: $uni-color-red;
 				padding: 10rpx 20rpx;
 				border-radius: 30rpx;
+			}
+			.history-order{
+				display: flex;
+				flex-direction: row;
+				color: #fff;
 			}
 		}
 	}

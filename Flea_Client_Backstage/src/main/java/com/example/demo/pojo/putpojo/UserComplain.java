@@ -9,13 +9,31 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserComplain {
     private String complain_id;
+    private String order_id;
+    private String goods_id;
     private String complain_userid;
     private String complained_userid;
     private String complain_content;
-    private String complain_type;
+    private Integer complain_type;
     private String complain_photos;
     private String complain_status;
     private String email;
+
+    public String getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(String order_id) {
+        this.order_id = order_id;
+    }
+
+    public String getGoods_id() {
+        return goods_id;
+    }
+
+    public void setGoods_id(String goods_id) {
+        this.goods_id = goods_id;
+    }
 
     public String getEmail() {
         return email;
@@ -25,11 +43,11 @@ public class UserComplain {
         this.email = email;
     }
 
-    public String getComplain_type() {
+    public Integer getComplain_type() {
         return complain_type;
     }
 
-    public void setComplain_type(String complain_type) {
+    public void setComplain_type(Integer complain_type) {
         this.complain_type = complain_type;
     }
 
@@ -85,12 +103,15 @@ public class UserComplain {
     public String toString() {
         return "UserComplain{" +
                 "complain_id='" + complain_id + '\'' +
+                ", order_id='" + order_id + '\'' +
+                ", goods_id='" + goods_id + '\'' +
                 ", complain_userid='" + complain_userid + '\'' +
                 ", complained_userid='" + complained_userid + '\'' +
                 ", complain_content='" + complain_content + '\'' +
-                ", complain_type='" + complain_type + '\'' +
+                ", complain_type=" + complain_type +
                 ", complain_photos='" + complain_photos + '\'' +
                 ", complain_status='" + complain_status + '\'' +
+                ", email='" + email + '\'' +
                 '}';
     }
 }

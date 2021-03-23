@@ -117,7 +117,7 @@
 					<view class="PopPrice">
 						<text>入手价</text>
 						<view>￥</view>
-						<input  type="number" placeholder="0.00" v-model="add_info.oldprice" />
+						<input  type="number"  placeholder="0.00" v-model="add_info.oldprice" />
 					</view>
 				</view>
 

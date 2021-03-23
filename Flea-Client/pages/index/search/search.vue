@@ -109,7 +109,7 @@
 			// 	})
 			// }
 			readySearch(){
-				console.log("readySearch")
+				console.log("readySearch") 
 				this.goodsa=[]
 				this.goodsb=[]
 				this.goods=[]

@@ -62,21 +62,21 @@ public interface MinePageMapper {
     @Select("select fans_id from fans where fansed_id=#{userId}")
     ArrayList<String> selectFans(String userId);
 
-    @Insert("insert into violate_user (complain_id,complain_userid,complained_userid,complain_content,complain_type,complain_photos,complain_status)" +
-            " values (#{userComplain.complain_id},#{userComplain.complain_userid},#{userComplain.complained_userid},#{userComplain.complain_content},#{userComplain.complain_type},#{userComplain.complain_photos},'处理中')")
+    @Insert("insert into violate_order (complain_id,order_id,goods_id,complain_userid,complained_userid,complain_content,complain_type,complain_photos,complain_status)" +
+            " values (#{userComplain.complain_id},#{userComplain.order_id},#{userComplain.goods_id},#{userComplain.complain_userid},#{userComplain.complained_userid},#{userComplain.complain_content},#{userComplain.complain_type},#{userComplain.complain_photos},2)")
     Boolean insertComplain(@Param("userComplain") UserComplain userComplain);
 
 
-    @Select("select * from violate_user where complain_status=#{status} and (complain_userid=#{userId} or complained_userid=#{userId})")
+    @Select("select * from violate_order where complain_status=#{status} and (complain_userid=#{userId} or complained_userid=#{userId})")
     ArrayList<UserComplain> selectUserComplain(String userId,String status);
 
-    @Select("select * from violate_user where complain_id=#{complain_id}")
+    @Select("select * from violate_order where complain_id=#{complain_id}")
     UserComplain selectDetailComplain(String complain_id,String status);
 
-    @Select("select * from violate_user where complain_id=#{complain_id}")
+    @Select("select * from violate_order where complain_id=#{complain_id}")
     UserComplainHistory selectHistoryDetailComplain(String complain_id,String status);
 
-    @Delete("delete from violate_user where complain_id=#{complain_id}")
+    @Delete("delete from violate_order where complain_id=#{complain_id}")
     Boolean deleteComplain(String complain_id);
 
     @Update("update user set user_icon=#{user.user_icon},nickname=#{user.nickname},weixin=#{user.weixin},self_introduction=#{user.self_introduction} where flea_id=#{user.flea_id}")

@@ -20,26 +20,104 @@
             <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
     <style>
+
+        #goods-info{
+            width: 93%;
+            margin: 0 auto;
+        }
+
+        .attr{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .attr strong{
+            margin-right:20px;
+            width:80px;
+        }
         
+        #old_price{
+           color:gray 
+        }
+
+        #now_price{
+            font-size: 20px;
+            color:red
+        }
+
         #photos{
             width: 80%;
             margin: 0 auto;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            margin-bottom: 40px;
+            margin-right:20px;
         }
-        .photo{
+        .photos{
             width: 100%;
-            
-            margin-top: 40px;
+            margin: 10px 0;
+            margin-bottom: 40px;
         }
+
+        .photos strong{
+            margin-right:20px;
+            width:80px;
+        }
+
     </style>
 </head>
 
 <body>
-
-    <div id="photos">
+    <div id="goods-info">
+            <div class="attr">
+                <strong>商品ID</strong>
+                <text id="product_id"></text>
+            </div>
+            <div class="user_icon attr">
+                <strong>商家ID</strong>
+                <text id="merchant_id"></text>
+            </div>
+            <div class=" attr">
+                <strong>商品标题</strong>
+                <text id="product_title"></text>
+            </div>
+            <div class="attr">
+                <strong>详细描述</strong>
+                <text id="product_des"></text>
+            </div>
+            <div class="attr">
+                <strong>成色</strong>
+                <text id="quality"></text>
+            </div>
+            <div class="attr">
+                <strong>类别</strong>
+                <text id="type"></text>
+            </div>
+            <div class="attr">
+                <strong>品牌</strong>
+                <text id="brand"></text>
+            </div>
+            <div class="attr">
+                <strong>历史价格</strong>
+                <text id="old_price"></text>
+            </div>
+            <div class="attr">
+                <strong>价格</strong>
+                <text id="now_price"></text>
+            </div>
+            <div class="attr">
+                <strong>发布日期</strong>
+                <text id="add_date"></text>
+            </div>
+            <div class=" photo">
+                <strong>照片</strong>
+                <div id="photos"></div>
+            </div>
     </div>
+    </div>
+    
     <script>
 
         $(document).ready(function () {
@@ -47,47 +125,31 @@
             arr = str.split("?");
             str1 = arr[1];
             arr1 = str1.split("=");
-            var photos = arr1[1].split(",");
-            console.log("图片："+photos)
-            var i = 0
+            $.get("http://127.0.0.1:8082/goods/getGoodsByGoodsId/" + arr1[1], function (data, status) {
+                console.log(data)
+                var user = data
+                console.log(data.nickname, data.name, data.flea_id)
 
-            for (i = 0; i < photos.length; i++) {
-                console.log(photos[i]);
-                // console.log(1)
+                $("#product_id").text(data.product_id)
+                $("#merchant_id").text(data.merchant_id)
+                $("#product_title").text(data.product_title)
+                $("#product_des").text(data.product_des)
+                $("#quality").text(data.quality)
+                $("#type").text(data.atype+"/"+data.btype+"/"+data.ctype)
+                $("#brand").text(data.brand)
+                $("#old_price").text("￥"+data.old_price)
+                $("#now_price").text("￥"+data.now_price)
+                $("#add_date").text(data.add_date)
+                var photos = data.photos.split(',')
+                var i = 0
+                for (i = 0; i < photos.length; i++) {
                 var txt1 = "<img class='photo' src='"+photos[i]+"'/>"
-                // var txt2 = document.createElement("p");
-                // txt2.innerHTML
                 $("#photos").append(txt1)
             }
-            // var info = {
-            //     name: 'sdfa',
-            //     sex: "man"
-            // }
+            });
 
-            // alert(arr1[0]);
-            // alert(arr1[1]); 
-            // $.get("http://127.0.0.1:8082/user/getUserDetail/" + arr1[1], function (data, status) {
-            //     console.log(data)
-            //     var user = data
-            //     console.log(data.nickname, data.name, data.flea_id)
-            //     $("#nickname").text(data.nickname)
-            //     $("#name").text(data.name)
-            //     $("#flea_id").text(data.flea_id)
-            //     $("#email").text(data.email)
-            //     $("#sex").text(data.sex)
-            //     $("#stu_num").text(data.stu_num)
-            //     $("#province").text(data.province)
-            //     $("#college").text(data.college)
-            //     $("#academy").text(data.academy)
-            //     $("#grade").text(data.grade)
-            //     $("#self_introduction").text(data.self_introduction)
-            //     $("#weixin").text(data.weixin)
-            //     $("#testify_img").attr("src",data.testify_img)
-            //     $("#user_icon").attr("src",data.user_icon)
-            //     // var html =template('#userdetail',user);
-            //     // console.log(html)
-            //     // document.getElementById('user-info').innerHTML = html
-            // });
+
+
         });
 
         layui.use(['form', 'layer'],

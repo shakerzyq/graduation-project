@@ -26,18 +26,18 @@
 		<view class="content">
 			
 			<view class="orders-list">
-				<order-list :orders="orders" :dealType='dealType' 
+				<order-list :orders="orders" :dealType='dealType' :flea_id='flea_id'
 				@goToPersonalCenter="goToPersonalCenter" 
 				@goGoodsDetail="goGoodsDetail" 
 				@deleteOrder="deleteOrder" 
 				@updateOrder="updateOrder" 
 				@accomplishOrder="accomplishOrder" 
 				@acceptOrder="acceptOrder"
+				@goToReport="goToReport"
 				></order-list>
 			</view>
-			
-			
 		</view>
+		
 	</view>
 </template>
 
@@ -88,6 +88,29 @@
 			this.getOrders(this.orderStatus,this.dealType)
 		},
 		methods: {
+			
+			/**
+			 * 前往举报页面
+			 */
+			goToReport(order) {
+				if(this.flea_id===order.consumerId){
+					uni.navigateTo({
+						url:'/pages/index/mine/mine-orders/report-order/report-order?goodsId='+order.goodsId
+						+'&violatorId='+order.merchantId
+						+"&flea_id="+this.flea_id
+						+'&complain_type=0'
+						+'&order_id='+order.orderId
+					})
+				}else{
+					uni.navigateTo({
+						url:'/pages/index/mine/mine-orders/report-order/report-order?goodsId='+order.goodsId
+						+'&violatorId='+order.consumerId
+						+"&flea_id="+this.flea_id
+						+'&complain_type=1'
+						+'&order_id='+order.orderId
+					})
+				}	
+			},
 			
 			//导航到商品详情页
 			goGoodsDetail(userId,goodsId){

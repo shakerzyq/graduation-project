@@ -13,7 +13,8 @@ public class OrdersShow {
 
     private String usersIcon;
     private String userName;
-    private String userId;
+    private String merchantId;
+    private String consumerId;
     private String userEmail;
 
     private String orderId;
@@ -21,6 +22,22 @@ public class OrdersShow {
     private String orderDate;
     private String EvaluateContent;
     private String EvaluateLevel;
+
+    public String getMerchantId() {
+        return merchantId;
+    }
+
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
+    }
+
+    public String getConsumerId() {
+        return consumerId;
+    }
+
+    public void setConsumerId(String consumerId) {
+        this.consumerId = consumerId;
+    }
 
     public String getUserEmail() {
         return userEmail;
@@ -110,14 +127,6 @@ public class OrdersShow {
         this.userName = userName;
     }
 
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
     public String getOrderId() {
         return orderId;
     }
@@ -137,14 +146,21 @@ public class OrdersShow {
     @Override
     public String toString() {
         return "OrdersShow{" +
-                "goodsPicture='" + goodsPicture + '\'' +
+                "goodsTitle='" + goodsTitle + '\'' +
+                ", goodsPicture='" + goodsPicture + '\'' +
                 ", goodsContent='" + goodsContent + '\'' +
                 ", goodsPrice=" + goodsPrice +
+                ", goodsId='" + goodsId + '\'' +
                 ", usersIcon='" + usersIcon + '\'' +
                 ", userName='" + userName + '\'' +
-                ", userId='" + userId + '\'' +
+                ", MerchantId='" + merchantId + '\'' +
+                ", ConsumerId='" + consumerId + '\'' +
+                ", userEmail='" + userEmail + '\'' +
                 ", orderId='" + orderId + '\'' +
                 ", orderStatus='" + orderStatus + '\'' +
+                ", orderDate='" + orderDate + '\'' +
+                ", EvaluateContent='" + EvaluateContent + '\'' +
+                ", EvaluateLevel='" + EvaluateLevel + '\'' +
                 '}';
     }
 }

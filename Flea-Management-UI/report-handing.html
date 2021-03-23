@@ -17,6 +17,9 @@
           <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
           <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
         <![endif]-->
+  <style>
+    
+  </style>
 </head>
 
 <body>
@@ -38,9 +41,18 @@
           <div class="layui-card-body ">
             <form class="layui-form layui-col-space5">
               <div class="layui-inline layui-show-xs-block">
-                <input id="inputname" type="text" name="username" placeholder="请输入用户名" autocomplete="off"
+                <input id="inputnameid" type="text" name="username" placeholder="请输入用户ID" autocomplete="off"
                   class="layui-input">
               </div>
+              <div class="layui-inline layui-show-xs-block">
+                <input id="inputgoodsid" type="text" name="username" placeholder="请输入商品ID" autocomplete="off"
+                  class="layui-input">
+              </div>
+              <select id="report-type" name="contrller">
+                <option value="2">举报类型</option>
+                <option value="0">买方举报</option>
+                <option value="1">卖方举报</option>
+            </select>
               <div class="layui-inline layui-show-xs-block">
                 <button type="button" id="search-user" class="layui-btn"><i class="layui-icon">&#xe615;</i></button>
               </div>
@@ -86,6 +98,14 @@
   <span   class="ban-action layui-btn layui-btn-warm" lay-event="handle-user">处理</span>
 </script>
 
+<script type="text/html" id="goodsinfo">
+  <span class="layui-table-link" lay-event="goodsinfo">{{d.goods_id}}</span>
+</script>
+
+<script type="text/html" id="orderinfo">
+  <span class="layui-table-link" lay-event="orderinfo">{{d.order_id}}</span>
+</script>
+
 <script type="text/html" id="check">
   <span class="layui-btn " lay-event="pass">通过</span>
   <span class="layui-btn layui-btn-danger " lay-event="refuse">拒绝<span>
@@ -111,10 +131,15 @@
       elem: '#demo'
       , height: 312
       , url: 'http://127.0.0.1:8082/report/getPendingReports' //数据接口
+      , where:{
+        type:'2',
+      }
       , page: true //开启分页
       , cols: [[ //表头
         { field: 'complain_userid', title: '举报人ID', width: 120, sort: true, fixed: 'left', toolbar: '#complainuserinfo' }
         , { field: 'complained_userid', title: '被举报人ID', width: 80, toolbar: '#complaineduserinfo' }
+        , { field: 'goods_id', title: '商品ID', width: 80,toolbar: '#goodsinfo'}
+        , { field: 'order_id', title: '订单ID', width: 80,toolbar: '#orderinfo'}
         , { field: 'complain_type', title: '举报类型', width: 80, sort: true }
         , { field: 'complain_content', title: '举报理由', width: 90 }
         , { field: 'complain_photos', title: '举报证据', width: 90, toolbar: '#image' }
@@ -127,11 +152,21 @@
     });
 
     $("#search-user").click(function () {
-      var value = $("#inputname").val();
+      console.log("hello world");
+      // var type = document.getElementById("#report-type");
+      var typevalue = $("#report-type").val();
+    
+      // var typeindex = type.selectedIndex
+      // var typevalue = type.options[typeindex].value;
+      var userid = $("#inputnameid").val();
+      var goodsid = $("#inputgoodsid").val();
+      console.log("hello",typevalue,userid,goodsid)
       table.reload('aa', {
-        url: 'http://127.0.0.1:8082/user/getCheckedUsersByName',
+        url: 'http://127.0.0.1:8082/report/getPendingReports',
         where: { //设定异步数据接口的额外参数，任意设
-          nickname: value
+          type: typevalue,
+          flea_id:userid,
+          goodsId:goodsid
         }
         , page: {
           curr: 1 //重新从第 1 页开始
@@ -147,10 +182,41 @@
       if (layEvent === "banning") {
         if (tr.children("[data-field='handle']").text() === "   封禁   ") {//如果为true
           //封禁
-          $.get("http://127.0.0.1:8082/user/updateUserStatus/ban/" + data.flea_id, function (data, status) {
-            tr.children("[data-field='handle']").children("div").children("div").children("span").text("解禁").css("background-color", "rgb(30,159,255)")
-            tr.children("[data-field='status']").children("div").children("span").text("封禁中").css("color", "red")
-          })
+          // $.get("http://127.0.0.1:8082/user/updateUserStatus/ban/" + data.flea_id, function (data, status) {
+          //   tr.children("[data-field='handle']").children("div").children("div").children("span").text("解禁").css("background-color", "rgb(30,159,255)")
+          //   tr.children("[data-field='status']").children("div").children("span").text("封禁中").css("color", "red")
+          // })
+          layer.open({
+            type: 1,
+            content: $('.input') //这里content是一个普通的String
+            , btn: ['确定', '取消']
+            , yes: function (index, layero) {
+              if($('#ban-type').val()==='0'){//永久封禁
+                $.get("http://127.0.0.1:8082/user/updateUserStatus/ban/"+data.flea_id,function(data,status){
+                  tr.children("[data-field='handle']").children("div").children("div").children("span").text("解封").css("background-color","rgb(30,159,255)")
+                  tr.children("[data-field='status']").children("div").children("span").text("永久封禁中").css("color","red")
+                })
+                layer.close(index);
+              }else {//暂时封禁
+                var day =$('.short-ban').children().val()
+                console.log("0:"+day)
+                if(day!==null&&day.length>0){
+                  console.log(1)
+                  $.get('http://127.0.0.1:8082/user/temporaryBanUser/'+data.flea_id+'/'+day,function(data,status){
+                    tr.children("[data-field='handle']").children("div").children("div").children("span").text("解封").css("background-color","rgb(30,159,255)")
+                    tr.children("[data-field='status']").children("div").children("span").text("暂时封禁("+day+"天后解封)").css("color","red")
+                  })
+                  layer.close(index);
+                }else{
+                  layer.msg('输入日期不能为空', {icon: 5});
+                }
+                
+                
+              }
+              
+              
+            }
+          });
 
         } else {
           $.get("http://127.0.0.1:8082/user/updateUserStatus/unban/" + data.flea_id, function (data, status) {
@@ -163,14 +229,14 @@
         layer.confirm('确认通过审核？', function (index) {
           obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
           layer.close(index);
-          $.get("http://127.0.0.1:8082/report/disposeReport/"+data.complain_id+"/"+data.audit_result+"/1", function (data, status) {
+          $.get("http://127.0.0.1:8082/report/disposeReport/"+data.complain_id+"/"+data.audit_result+"/1/"+data.complained_userid+'/'+data.goods_id, function (data, status) {
             console.log(data, status)
           });
         });
       } else if (layEvent === 'refuse') {
 
         layer.confirm('真的拒绝通过吗？', function (index) {
-          $.get("http://127.0.0.1:8082/report/disposeReport/"+data.complain_id+"/"+data.audit_result+"/0", function (data, status) {
+          $.get("http://127.0.0.1:8082/report/disposeReport/"+data.complain_id+"/"+data.audit_result+"/0/"+data.complained_userid+'/'+data.goods_id, function (data, status) {
             console.log(data, status)
           });
           obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
@@ -195,8 +261,13 @@
         var photos = data.complain_photos.split(",")
         xadmin.open('展示图片', 'report-photo.html?photos='+data.complain_photos, 600, 400);
       }else if(layEvent === "handle-user"){//封禁用户
-        xadmin.open('处理用户', 'report-edit-user.html?userid='+data.complained_userid, 300, 100);
+        xadmin.open('处理用户', 'report-edit-user.html?userid='+data.complained_userid, 300, 200);
         
+      } else if(layEvent === "goodsinfo"){
+        console.log("hello world")
+        xadmin.open('商品信息', 'show-goods-detail.html?goods_id=' + data.goods_id, 600, 400);
+      }else if(layEvent === "orderinfo"){
+        xadmin.open('订单信息', 'show-order-detail.html?order_id=' + data.order_id, 600, 400);
       }
     });
   });

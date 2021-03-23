@@ -237,61 +237,17 @@
       console.log("asff")
       var value = $("#inputname").val();
       console.log(value + "dd")
-    // $.get("http://127.0.0.1:8082/user/disposeRegisterApply/" + obj.data.flea_id + "/1", function (data, status) {
-    //   console.log(data, status)
-    // });
       table.reload('aa', {
         url: 'http://127.0.0.1:8082/user/getUncheckedUsersByName',
         where: { //设定异步数据接口的额外参数，任意设
           nickname: value
-          // , bbb: 'yyy'
-          // //…
         }
         , page: {
           curr: 1 //重新从第 1 页开始
         }
       }); //只重载数据
-
-    // table.reload('aa', {
-    //   where: { //设定异步数据接口的额外参数，任意设
-    //     nickname: value
-    //     // , bbb: 'yyy'
-    //     // //…
-    //   }
-    //   , page: {
-    //     curr: 1 //重新从第 1 页开始
-    //   }
-    // }); //只重载数据
   });
     
-
-    // $("#search-user").click(function () {
-    //   console.log("asff")
-    //   var value = $(".layui-input").val();
-    //   console.log(value + "dd")
-    //   $.get("http://127.0.0.1:8082/user/getUncheckedUsers/" + value, function (data, status) {
-    //     console.log("结果",data.code)
-    //   });
-    // });
-    // $('#search-user').click(function () {
-    //   var inputVal = $('.layui-input').val()
-    //   console.log("输入的值为ddd："+inputVal)
-    //   table.reload('testReload', {
-    //     url: 'http://127.0.0.1:8082/user/getUncheckedUsers/'+inputVal
-    //     ,methods:"get"
-    //     ,methods:"post"
-    //     , request: {
-    //       pageName: 'page' //页码的参数名称，默认：page
-    //       , limitName: 'pageSize' //每页数据量的参数名，默认：limit
-    //     }
-    //     , where: {
-    //       query: inputVal
-    //     }
-    //     , page: {
-    //       curr: 1
-    //     }
-    //   });
-    // })
 
     table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
       var data = obj.data; //获得当前行数据
@@ -302,14 +258,14 @@
         layer.confirm('确认通过审核？', function (index) {
           obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
           layer.close(index);
-          $.get("http://127.0.0.1:8082/user/disposeRegisterApply/" + obj.data.flea_id + "/1", function (data, status) {
+          $.get("http://127.0.0.1:8082/user/disposeRegisterApply/" + obj.data.flea_id + "/1/"+data.email, function (data, status) {
             console.log(data, status)
           });
         });
       } else if (layEvent === 'refuse') {
 
         layer.confirm('真的拒绝通过吗？', function (index) {
-          $.get("http://127.0.0.1:8082/user/disposeRegisterApply/" + obj.data.flea_id + "/0", function (data, status) {
+          $.get("http://127.0.0.1:8082/user/disposeRegisterApply/" + obj.data.flea_id + "/0/"+data.email, function (data, status) {
             console.log(data, status)
           });
           obj.del(); //删除对应行（tr）的DOM结构，并更新缓存

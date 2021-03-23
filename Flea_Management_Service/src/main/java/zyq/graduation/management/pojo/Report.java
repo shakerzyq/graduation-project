@@ -9,6 +9,8 @@ import java.io.Serializable;
 public class Report implements Serializable {
 
     private String complain_id;
+    private String goods_id;
+    private String order_id;
     private String complain_userid;
     private String complained_userid;
     private String complain_content;
@@ -35,6 +37,22 @@ public class Report implements Serializable {
                 ", complain_email='" + complain_email + '\'' +
                 ", complained_email='" + complained_email + '\'' +
                 '}';
+    }
+
+    public String getGoods_id() {
+        return goods_id;
+    }
+
+    public void setGoods_id(String goods_id) {
+        this.goods_id = goods_id;
+    }
+
+    public String getOrder_id() {
+        return order_id;
+    }
+
+    public void setOrder_id(String order_id) {
+        this.order_id = order_id;
     }
 
     public String getComplain_id() {
