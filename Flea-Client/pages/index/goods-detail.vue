@@ -864,9 +864,23 @@
 						confirmText: "确定",
 						success: (res) => {
 							if (res.confirm) {
-								uni.showToast({
-									title: '举报成功'
+								const result = this.$myRequest({
+									url:'/comment/reportComment',
+									method:'PUT',
+									data:{
+										informer_id:this.flea_id,
+										rank:index_2===null?0:1,
+										violate_comment_id:comment.comment_id,
+										violate_user_id:comment.observer_id,
+										content:comment.comment,
+									}
 								})
+								if(result){
+									uni.showToast({
+										title: '举报成功'
+									})
+								}
+								
 							} else if (res.cancel) {
 							}
 						}

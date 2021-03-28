@@ -171,9 +171,6 @@
 				
 				for (this.i = 0; this.i < this.goods.length; this.i++) {
 					const number = Math.round(Math.random() * (4 - 1)) + 1
-					
-					console.log("i为",this.i)
-					console.log("this.i取模为："+this.i%2)
 					this.goods[this.i].classtype = "img_goods" + number
 					if(this.i%2===1){
 						this.goodsb.push(this.goods[this.i])
@@ -181,6 +178,7 @@
 						this.goodsa.push(this.goods[this.i])
 					}
 				}
+				
 			},
 			//导航到商品详情页
 			goGoodsDetail(userId,goodsId){
@@ -192,11 +190,13 @@
 		},
 		//监听是否触底了
 		onReachBottom() {
-			console.log()
 			if(this.goods.length<this.pagenum*8) return this.flag=true
 			console.log("触底了")
 			this.pagenum++
 			this.getGoodsInfo(this.status)
+			console.log("hello world")
+			console.log("hello",this.goodsa)
+			console.log("world",this.goodsb)
 		},
 	}
 </script>

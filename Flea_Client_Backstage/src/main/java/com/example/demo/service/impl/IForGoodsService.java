@@ -106,9 +106,10 @@ public class IForGoodsService implements ForGoodsService {
     }
 
     @Override
-    public ArrayList<GoodsIndex> s_getGoodsForIndex(int from, int size,String status) {
+    public ArrayList<GoodsIndex> s_getGoodsForIndex(int from, int size,String status,String status2) {
         QueryBuilder queryBuilder = QueryBuilders.boolQuery()
-                .mustNot(QueryBuilders.matchQuery("status",status));
+                .mustNot(QueryBuilders.matchQuery("status",status))
+                .mustNot(QueryBuilders.matchQuery("status",status2));
         return esDataDao.selectGoods("goods", queryBuilder,from,size);
     }
 
@@ -417,6 +418,7 @@ public class IForGoodsService implements ForGoodsService {
     public Boolean s_reportGoods(GoodsReport goodsReport,String type) {
         if (type.equals("false")){//添加举报
             return forGoodsMapper.insertGoodsReport(
+                    UUID.randomUUID().toString(),
                     goodsReport.getInformer_id(),
                     goodsReport.getViolate_goods_id(),
                     goodsReport.getViolate_user_id(),

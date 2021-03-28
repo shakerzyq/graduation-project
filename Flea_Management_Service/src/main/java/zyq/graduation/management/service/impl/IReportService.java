@@ -74,25 +74,26 @@ public class IReportService implements ReportService {
     @Override
     public ArrayList<Report> getPendingReports(Integer page, Integer limit, Integer type, String flea_id
             , String goodsId) {
+        System.out.println(page+":"+limit);
         ArrayList<Report> reports=null;
         Integer type2=null;
         String goodsid=null;
         String fleaid=null;
         String result=null;
-        if (goodsId==null){
+        if (goodsId==null||goodsId.length()==0){
             goodsid="0";
         }else{
             goodsid="1";
         }
 
-        if(flea_id==null){
+        if(flea_id==null||flea_id.length()==0){
             fleaid="0";
         }else{
             fleaid="1";
         }
 
         result=type+goodsid+fleaid;
-
+        System.out.println("result为："+result);
         switch (result){
             case "000"://买方举报、没有goodsid和fleaid
                 return reportMapper.selectReport000_100(page,limit,0+"");
@@ -122,12 +123,20 @@ public class IReportService implements ReportService {
         return reports;
     }
 
+    /**
+     * 获取处理完成的举报单
+     * @param page
+     * @param limit
+     * @param reportType
+     * @param resultType
+     * @return
+     */
     @Override
     public ArrayList<Report> getAccomplishReports(Integer page, Integer limit,Integer reportType, Integer resultType) {
 
         String type=reportType+""+resultType;
         switch(type){
-            case "22":
+            case "22"://不分类
                 return reportMapper.selectAccomplishReport(page,limit);
             case "12":
             case "02":

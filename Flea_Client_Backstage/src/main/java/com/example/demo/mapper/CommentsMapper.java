@@ -1,10 +1,8 @@
 package com.example.demo.mapper;
 
 import com.example.demo.pojo.Comment;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import com.example.demo.pojo.putpojo.CommentReport;
+import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -66,4 +64,11 @@ public interface CommentsMapper {
 
     @Delete("delete from comment_1 where comment_f_id=#{commentid}")
     Boolean deleteChildComment(String commentid);
+
+    @Insert("insert into violate_comment (complain_id,rank,informer_id,violate_comment_id,violate_user_id,content,start_time) values " +
+            "(#{obj.complain_id},#{obj.rank},#{obj.informer_id},#{obj.violate_comment_id},#{obj.violate_user_id},#{obj.content},now())")
+    Boolean reportComment(@Param("obj") CommentReport commentReport);
+
+    @Select("select count(*) from violate_comment where informer_id=#{informer_id} and violate_comment_id=#{violate_comment_id}")
+    Integer JudgeCommentExist(String informer_id,String violate_comment_id);
 }

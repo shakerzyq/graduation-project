@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.pojo.Comment;
 import com.example.demo.pojo.CommentShow;
+import com.example.demo.pojo.putpojo.CommentReport;
 import com.example.demo.service.CommentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -76,6 +77,18 @@ public class CommentsController {
         System.out.println("评论id为："+commentid+"rank为："+rank);
 
         return  commentsService.s_commentDelete(commentid,Integer.parseInt(rank));
+    }
+
+    /**
+     * 评论举报处理
+     * @return
+     */
+    @CrossOrigin(origins = "*",maxAge = 3600)
+    @PutMapping("/reportComment")
+    public Boolean reportComment(@RequestBody CommentReport commentReport){
+        System.out.println("收到的commentReport为："+commentReport);
+        return commentsService.reportComment(commentReport);
+
     }
 
 }

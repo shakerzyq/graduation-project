@@ -18,10 +18,10 @@ public interface GoodsMapper {
     Goods selectGoodsByGoodsId(String goodsId);
 
     @Update("update products set status=#{status} where merchant_id=#{flea_id} and (status=#{nowStatus} or status=#{nowStatus2})")
-    void updateGoodsFreeze(String flea_id,Integer status,Integer nowStatus,Integer nowStatus2);
+    Boolean updateGoodsFreeze(String flea_id,Integer status,Integer nowStatus,Integer nowStatus2);
 
     @Update("update products set status=#{status} where merchant_id=#{flea_id} and status=#{nowStatus}")
-    void updateGoodsUnFreeze(String flea_id,Integer status,Integer nowStatus);
+    Boolean updateGoodsUnFreeze(String flea_id,Integer status,Integer nowStatus);
 
     @Select("select product_id from products where merchant_id=#{flea_id} and status=#{status}")
     ArrayList<String> selectGoodsByUserId(String flea_id,Integer status);

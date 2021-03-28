@@ -391,7 +391,7 @@ class DemoApplicationTests {
 
     @Test
     public void test15(){
-        esDataDao.updateGoodsStatus("goods","6721fe12-6bbd-419b-ac00-9645cb29ee76","dead");
+        esDataDao.updateGoodsStatus("goods","5579fa87-f8be-49db-abfb-4089a75b79e8","living");
     }
 
     /**
@@ -461,5 +461,36 @@ class DemoApplicationTests {
     @Test
     public void test20(){
         System.out.println(browseLogMapper.selectBrowseLog("db3a3b065"));
+    }
+
+    /**
+     * 冒泡排序
+     */
+    @Test
+    public void sort(){
+        int j=0;
+        int stemp=0;
+        int[] arr = {1,4,2,9,5,6,3,8,7,0};
+        for(int i=0;i<arr.length;i++){
+            for(j=i+1;j<arr.length;j++){
+                if (arr[j]>arr[i]){
+                    stemp=arr[i];
+                    arr[i]=arr[j];
+                    arr[j]=stemp;
+                }
+            }
+        }
+        for(int a:arr){
+            System.out.println(a);
+        }
+
+    }
+
+    /**
+     * 将mysql中的信息转移到es中
+     */
+    @Test
+    public void test21(){
+
     }
 }

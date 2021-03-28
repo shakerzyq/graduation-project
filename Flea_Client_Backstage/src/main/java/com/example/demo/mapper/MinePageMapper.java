@@ -62,8 +62,8 @@ public interface MinePageMapper {
     @Select("select fans_id from fans where fansed_id=#{userId}")
     ArrayList<String> selectFans(String userId);
 
-    @Insert("insert into violate_order (complain_id,order_id,goods_id,complain_userid,complained_userid,complain_content,complain_type,complain_photos,complain_status)" +
-            " values (#{userComplain.complain_id},#{userComplain.order_id},#{userComplain.goods_id},#{userComplain.complain_userid},#{userComplain.complained_userid},#{userComplain.complain_content},#{userComplain.complain_type},#{userComplain.complain_photos},2)")
+    @Insert("insert into violate_order (complain_id,order_id,goods_id,complain_userid,complained_userid,complain_content,complain_type,complain_photos,complain_status,start_time)" +
+            " values (#{userComplain.complain_id},#{userComplain.order_id},#{userComplain.goods_id},#{userComplain.complain_userid},#{userComplain.complained_userid},#{userComplain.complain_content},#{userComplain.complain_type},#{userComplain.complain_photos},2,now())")
     Boolean insertComplain(@Param("userComplain") UserComplain userComplain);
 
 

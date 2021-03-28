@@ -6,7 +6,6 @@ import zyq.graduation.management.dao.ESDataDao;
 import zyq.graduation.management.mapper.GoodsMapper;
 import zyq.graduation.management.mapper.OrderMapper;
 import zyq.graduation.management.mapper.UserMapper;
-import zyq.graduation.management.pojo.Goods;
 import zyq.graduation.management.pojo.User;
 import zyq.graduation.management.pojo.UserReturn;
 import zyq.graduation.management.service.UserService;
@@ -148,24 +147,33 @@ public class UserController {
      * @return
      */
     @CrossOrigin(origins = "*",maxAge = 3600)
-    @GetMapping("/updateUserStatus/{order}/{flea_id}/{email}")
-    public Boolean updateUserStatus(@PathVariable("order") String order
-            ,@PathVariable("flea_id") String flea_id
-            ,@PathVariable("email") String email){
+    @GetMapping("/updateUserStatus/{order}/{flea_id}/{email}/{credit}")
+    public boolean updateUserStatus(@PathVariable("order") String order
+            , @PathVariable("flea_id") String flea_id
+            , @PathVariable("email") String email
+            , @PathVariable("credit") String credit){
         System.out.println("order:"+order+"flea_id:"+flea_id);
+
         if (order.equals("ban")){
-            sendEmailMessage.sendMessage(email,"你已被管理员永久封禁，正在交易的订单已被取消，所有上架物品已被强制下架，如有驳回可找管理员商议");
+            sendEmailMessage.sendMessage(email,"你已被管理员永久封禁，信誉积分被扣除"+credit+"分，正在交易的订单已被取消，所有上架物品已被强制下架，如有驳回可找管理员商议");
             //下架所有正在发布的商品
 
-            goodsMapper.updateGoodsFreeze(flea_id,3,0,1);
-            ArrayList<String> goodsList = goodsMapper.selectGoodsByUserId(flea_id,3);
-            for(String goodsId:goodsList){
-                esDataDao.updateGoodsStatus("goods",goodsId,"freezing");
-            }
-
-            //强制删除所有正在交易的订单
-            orderMapper.deleteOrder(flea_id);
-            return userMapper.updateBanstatus(1,flea_id);
+            if(goodsMapper.updateGoodsFreeze(flea_id,3,0,1)){
+                ArrayList<String> goodsList = goodsMapper.selectGoodsByUserId(flea_id,3);
+                if (goodsList.size()>0){
+                    for(String goodsId:goodsList){
+                        esDataDao.updateGoodsStatus("goods",goodsId,"freezing");
+                    }
+                    //强制删除所有正在交易的订单
+                    if(orderMapper.deleteOrder(flea_id)&userMapper.updateUserCredit(flea_id,credit)){
+                        return userMapper.updateBanstatus(1,flea_id);
+                    }else{
+                        return false;
+                    }
+                }else
+                    return false;
+            }else
+                return false;
         }else {
             sendEmailMessage.sendMessage(email,"你已解封，一定要遵守跳蚤APP用户使用守则");
             //商品解除冻结
@@ -176,6 +184,7 @@ public class UserController {
             }
             return userMapper.updateBanstatus(0,flea_id);
         }
+
     }
 
     /**
@@ -185,15 +194,16 @@ public class UserController {
      * @return
      */
     @CrossOrigin(origins = "*",maxAge = 3600)
-    @GetMapping("/temporaryBanUser/{flea_id}/{day}/{email}")
+    @GetMapping("/temporaryBanUser/{flea_id}/{day}/{email}/{credit}")
     public Boolean temporaryBanUser(@PathVariable("flea_id") String flea_id
             ,@PathVariable("day") Integer day
-            ,@PathVariable("email") String email){
-        System.out.println("flea_id为："+flea_id+"  day:"+day);
-        sendEmailMessage.sendMessage(email,"你已被封禁"+day+"正在交易的订单已被取消，所有上架物品已被强制下架");
+            ,@PathVariable("email") String email
+            , @PathVariable("credit") String credit){
+        System.out.println("flea_id为："+flea_id+"  day:"+day+" credit为"+credit);
+        sendEmailMessage.sendMessage(email,"你已被封禁"+day+"天，信誉积分被扣除"+credit+"分，正在交易的订单已被取消，所有上架物品已被强制下架");
         //所有正在发布的商品
         goodsMapper.updateGoodsFreeze(flea_id,3,0,1);
-
+        userMapper.updateUserCredit(flea_id,credit);
         //强制删除所有正在交易的订单
         orderMapper.deleteOrder(flea_id);
         return userService.temporaryBanUser(flea_id,day);

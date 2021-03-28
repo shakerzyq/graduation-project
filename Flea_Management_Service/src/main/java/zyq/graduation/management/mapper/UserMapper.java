@@ -50,4 +50,7 @@ public interface UserMapper {
 
     @Delete("delete from user where flea_id=#{flea_id}")
     Boolean deleteUser(String flea_id);
+
+    @Update("update user set credit=credit-#{credit} where flea_id=#{flea_id}")
+    Boolean updateUserCredit(String flea_id, String credit);
 }

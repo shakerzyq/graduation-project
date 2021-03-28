@@ -94,9 +94,8 @@ public class ForGoodsController {
     public ArrayList<GoodsIndex> getGoodsForIndex(@PathVariable("pagenum")String pagenum, @PathVariable("flea_id") String flea_id){
         System.out.println("获取跳蚤id为："+flea_id+" pagenum为："+pagenum);
         //获取所有商品
-//        ArrayList<GoodsIndex> result = iForGoodsService.getGoods(((Integer.parseInt(pagenum)-1)*8),8);
-
-        ArrayList<GoodsIndex> result = iForGoodsService.s_getGoodsForIndex(((Integer.parseInt(pagenum)-1)*8),8,"dead");
+        ArrayList<GoodsIndex> result = iForGoodsService.s_getGoodsForIndex(((Integer.parseInt(pagenum)-1)*8),8,"dead","freezing");
+        System.out.println("输出结果：");
         System.out.println(result);
         return result;
     }

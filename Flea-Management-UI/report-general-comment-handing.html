@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+  <meta charset="UTF-8">
+  <title>欢迎页面-X-admin2.2</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+  <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+  <link rel="stylesheet" href="./css/font.css">
+  <link rel="stylesheet" href="./css/xadmin.css">
+  <script src="./lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="./js/xadmin.js"></script>
+  <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+  <style>
+    
+  </style>
+</head>
+
+<body>
+  <div class="x-nav">
+    <span class="layui-breadcrumb">
+      <a href="">首页</a>
+      <a href="">演示</a>
+      <a>
+        <cite>导航元素</cite></a>
+    </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+      onclick="location.reload()" title="刷新">
+      <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+  </div>
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body ">
+            <form class="layui-form layui-col-space5">
+                <div class="layui-inline layui-show-xs-block">
+                  <input id="inputnameid" type="text" name="username" placeholder="请输入用户ID" autocomplete="off"
+                    class="layui-input">
+                </div>
+                <div class="layui-input-inline layui-show-xs-block">
+                    <select id="report-type" name="contrller">
+                      <option value="2">类型</option>
+                      <option value="1">举报方</option>
+                      <option value="0">被举报</option>
+                    </select>
+                </div>
+                <div class="layui-inline layui-show-xs-block">
+                  <button type="button" id="search-report" class="layui-btn"><i class="layui-icon">&#xe615;</i></button>
+                </div>
+              </form>
+          </div>
+          <div class="layui-card-body layui-table-body layui-table-main">
+            <table class="layui-table layui-form" id="demo" lay-filter="test">
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script type="text/html" id="complainuserinfo">
+<span class="layui-table-link" lay-event="todetail">{{d.informer_id}}</span>
+</script>
+
+<script type="text/html" id="complaineduserinfo">
+<span class="layui-table-link" lay-event="todetail2">{{d.violate_user_id}}</span>
+</script>
+
+<!-- 封禁或者解禁用户 -->
+<script type="text/html" id="handle-user">
+  <span   class="ban-action layui-btn layui-btn-warm" lay-event="handle-user">处理</span>
+</script>
+
+<script type="text/html" id="goodsinfo">
+  <span class="layui-table-link" lay-event="goodsinfo">{{d.goods_id}}</span>
+</script>
+
+<script type="text/html" id="orderinfo">
+  <span class="layui-table-link" lay-event="orderinfo">{{d.order_id}}</span>
+</script>
+
+<script type="text/html" id="status">
+    <span  >处理中</span>
+</script>
+
+<script type="text/html" id="check">
+  <span class="layui-btn " lay-event="pass">通过</span>
+  <span class="layui-btn layui-btn-danger " lay-event="refuse">拒绝<span>
+</script>
+
+<script type="text/html" id="image">
+  <span class="layui-btn" lay-event="openphoto">查看</span>
+</script>
+
+<script>
+
+  // 查询用户
+
+
+  $(document).ready(function () {
+  });
+
+  layui.use('table', function () {
+    var table = layui.table;
+
+    //第一个实例
+    var table1 = table.render({
+      elem: '#demo'
+      , height: 312
+      , url: 'http://127.0.0.1:8082/comment/getCommentReports' //数据接口
+      , page: true //开启分页
+      , cols: [[ //表头
+        { field: 'informer_id', title: '举报人ID', width: 120, sort: true, fixed: 'left', toolbar: '#complainuserinfo' }
+        , { field: 'violate_user_id', title: '被举报人ID', width: 120, toolbar: '#complaineduserinfo' }
+        , { field: 'start_time', title: '举报时间', width: 160, sort: true }
+        , { field: 'content', title: '评论内容', width: 90 }
+        , { field: 'status', title: '状态', width: 80, templet: '#status'}
+        , { field: 'handle_user', title: '处理用户', width: 90, toolbar: '#handle-user' }
+        , { field: 'handle', title: '处理', width: 177, toolbar: '#check' }
+      ]]
+      , id: 'aa'
+    });
+
+    $("#search-report").click(function () {
+      var userid = $("#inputnameid").val();
+      var typevalue = $("#report-type").val();
+      console.log("hello",userid)
+      table.reload('aa', {
+        url: 'http://127.0.0.1:8082/comment/getCommentReports',
+        where: { //设定异步数据接口的额外参数，任意设
+          type:typevalue,
+          userId:userid,
+        }
+        , page: {
+          curr: 1 //重新从第 1 页开始
+        }
+      }); //只重载数据
+    });
+
+    table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+      var data = obj.data; //获得当前行数据
+      var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+      var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+
+      if (layEvent === "banning") {
+        if (tr.children("[data-field='handle']").text() === "   封禁   ") {//如果为true
+          //封禁
+          // $.get("http://127.0.0.1:8082/user/updateUserStatus/ban/" + data.flea_id, function (data, status) {
+          //   tr.children("[data-field='handle']").children("div").children("div").children("span").text("解禁").css("background-color", "rgb(30,159,255)")
+          //   tr.children("[data-field='status']").children("div").children("span").text("封禁中").css("color", "red")
+          // })
+          layer.open({
+            type: 1,
+            content: $('.input') //这里content是一个普通的String
+            , btn: ['确定', '取消']
+            , yes: function (index, layero) {
+              if($('#ban-type').val()==='0'){//永久封禁
+                $.get("http://127.0.0.1:8082/user/updateUserStatus/ban/"+data.flea_id,function(data,status){
+                  tr.children("[data-field='handle']").children("div").children("div").children("span").text("解封").css("background-color","rgb(30,159,255)")
+                  tr.children("[data-field='status']").children("div").children("span").text("永久封禁中").css("color","red")
+                })
+                layer.close(index);
+              }else {//暂时封禁
+                var day =$('.short-ban').children().val()
+                console.log("0:"+day)
+                if(day!==null&&day.length>0){
+                  console.log(1)
+                  $.get('http://127.0.0.1:8082/user/temporaryBanUser/'+data.flea_id+'/'+day,function(data,status){
+                    tr.children("[data-field='handle']").children("div").children("div").children("span").text("解封").css("background-color","rgb(30,159,255)")
+                    tr.children("[data-field='status']").children("div").children("span").text("暂时封禁("+day+"天后解封)").css("color","red")
+                  })
+                  layer.close(index);
+                }else{
+                  layer.msg('输入日期不能为空', {icon: 5});
+                }                
+              }      
+            }
+          });
+
+        } else {
+          $.get("http://127.0.0.1:8082/user/updateUserStatus/unban/" + data.flea_id, function (data, status) {
+            tr.children("[data-field='handle']").children("div").children("div").children("span").text("封禁").css("background-color", "rgb(255,87,34)")
+            tr.children("[data-field='status']").children("div").children("span").text("正常").css("color", "green") 
+          })
+          this.status = true;
+        }
+      } else if (layEvent === 'pass') {
+        layer.confirm('确认通过审核？', function (index) {
+          obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+          layer.close(index);
+          $.get("http://127.0.0.1:8082/comment/disposeReport/"+data.complain_id+"/1", function (data, status) {
+            console.log(data, status)
+          });
+        });
+      } else if (layEvent === 'refuse') {
+
+        layer.confirm('真的拒绝通过吗？', function (index) {
+          $.get("http://127.0.0.1:8082/comment/disposeReport/"+data.complain_id+"/0", function (data, status) {
+            console.log(data, status)
+          });
+          obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+          layer.close(index);
+          //向服务端发送删除指令
+        });
+      } else if (layEvent === 'todetail') {
+        xadmin.open('查询举报人信息', 'member-detail.html?flea_id=' + data.informer_id, 600, 400);
+      } else if (layEvent === 'todetail2') {
+        xadmin.open('查询被举报人信息', 'member-detail.html?flea_id=' + data.violate_user_id, 600, 400);
+      } else if (layEvent === "openphoto") {//展示举报图片
+        var photos = data.complain_photos.split(",")
+        xadmin.open('展示图片', 'report-photo.html?photos='+data.complain_photos, 600, 400);
+      }else if(layEvent === "handle-user"){//封禁用户
+        xadmin.open('处理用户', 'report-edit-user.html?userid='+data.violate_user_id, 300, 300);
+        
+      } else if(layEvent === "goodsinfo"){
+        console.log("hello world")
+        xadmin.open('商品信息', 'show-goods-detail.html?goods_id=' + data.goods_id, 600, 400);
+      }else if(layEvent === "orderinfo"){
+        xadmin.open('订单信息', 'show-order-detail.html?order_id=' + data.order_id, 600, 400);
+      }
+    });
+  });
+
+
+  layui.use(['laydate', 'form'], function () {
+    var laydate = layui.laydate;
+    var form = layui.form;
+
+
+    // 监听全选
+    form.on('checkbox(checkall)', function (data) {
+
+      if (data.elem.checked) {
+        $('tbody input').prop('checked', true);
+      } else {
+        $('tbody input').prop('checked', false);
+      }
+      form.render('checkbox');
+    });
+
+    //执行一个laydate实例
+    laydate.render({
+      elem: '#start' //指定元素
+    });
+
+    //执行一个laydate实例
+    laydate.render({
+      elem: '#end' //指定元素
+    });
+
+
+  });
+
+
+
+  /*用户-停用*/
+  function member_stop(obj, id) {
+    layer.confirm('确认要停用吗？', function (index) {
+
+      if ($(obj).attr('title') == '启用') {
+
+        //发异步把用户状态进行更改
+        $(obj).attr('title', '停用')
+        $(obj).find('i').html('&#xe62f;');
+
+        $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+        layer.msg('已停用!', { icon: 5, time: 1000 });
+
+      } else {
+        $(obj).attr('title', '启用')
+        $(obj).find('i').html('&#xe601;');
+
+        $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+        layer.msg('已启用!', { icon: 5, time: 1000 });
+      }
+    });
+  }
+
+  /*用户-删除*/
+  function member_del(obj, id) {
+    layer.confirm('确认要删除吗？', function (index) {
+      //发异步删除数据
+      $(obj).parents("tr").remove();
+      layer.msg('已删除!', { icon: 1, time: 1000 });
+    });
+  }
+
+
+
+  function delAll(argument) {
+    var ids = [];
+
+    // 获取选中的id 
+    $('tbody input').each(function (index, el) {
+      if ($(this).prop('checked')) {
+        ids.push($(this).val())
+      }
+    });
+
+    layer.confirm('确认要删除吗？' + ids.toString(), function (index) {
+      //捉到所有被选中的，发异步进行删除
+      layer.msg('删除成功', { icon: 1 });
+      $(".layui-form-checked").not('.header').parents('tr').remove();
+    });
+  }
+</script>
+
+</html>

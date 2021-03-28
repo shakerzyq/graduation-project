@@ -7,7 +7,10 @@ import zyq.graduation.management.mapper.UserMapper;
 import zyq.graduation.management.pojo.User;
 import zyq.graduation.management.util.SendEmailMessage;
 
+import java.net.InetAddress;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @SpringBootTest
 class ManagementApplicationTests {
@@ -22,5 +25,6 @@ class ManagementApplicationTests {
     void contextLoads() {
         sendEmailMessage.sendMessage("1312197142@qq.com","sf");
     }
+
 
 }

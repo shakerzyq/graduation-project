@@ -19,12 +19,21 @@ public class GoodsIndex {
     private String goodsDes;
     private String goodsType;
     private String goodsPhoto;
+    private String addPlace;
     private Double goodsPrice;
     private Integer goodsWanter;//收藏数
     private String goodsId;
     private Integer viewsNum;//浏览数，默认排序
     private Integer likesNum;//喜欢数
     private String status;
+
+    public String getAddPlace() {
+        return addPlace;
+    }
+
+    public void setAddPlace(String addPlace) {
+        this.addPlace = addPlace;
+    }
 
     public String getStatus() {
         return status;
@@ -145,13 +154,17 @@ public class GoodsIndex {
                 ", userName='" + userName + '\'' +
                 ", userIcon='" + userIcon + '\'' +
                 ", userCredit=" + userCredit +
+                ", goodsTitle='" + goodsTitle + '\'' +
                 ", goodsDes='" + goodsDes + '\'' +
+                ", goodsType='" + goodsType + '\'' +
                 ", goodsPhoto='" + goodsPhoto + '\'' +
+                ", addPlace='" + addPlace + '\'' +
                 ", goodsPrice=" + goodsPrice +
-                ", goodsWanter='" + goodsWanter + '\'' +
+                ", goodsWanter=" + goodsWanter +
                 ", goodsId='" + goodsId + '\'' +
-                ", viewsNum='" + viewsNum + '\'' +
-                ", likesNum='" + likesNum + '\'' +
+                ", viewsNum=" + viewsNum +
+                ", likesNum=" + likesNum +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

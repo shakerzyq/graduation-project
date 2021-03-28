@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
+import zyq.graduation.management.pojo.CommentReport;
 import zyq.graduation.management.pojo.Report;
 import zyq.graduation.management.pojo.ReportReturn;
 
@@ -29,10 +30,10 @@ public interface ReportMapper {
      * 查询处理完成的举报
      * @return
      */
-    @Select("select * from violate_order limit #{page},#{limit}")
+    @Select("select * from violate_order where complain_status!=2 limit #{page},#{limit}")
     ArrayList<Report> selectAccomplishReport(Integer page, Integer limit);
 
-    @Select("select * from violate_order where  complain_type=#{reportType} limit #{page},#{limit}")
+    @Select("select * from violate_order where complain_status!=2  complain_type=#{reportType} limit #{page},#{limit}")
     ArrayList<Report> selectAccomplishReport1(Integer page, Integer limit,Integer reportType);
 
     @Select("select * from violate_order where  complain_status=#{resultType} limit #{page},#{limit}")
@@ -93,4 +94,15 @@ public interface ReportMapper {
 
     @Select("select * from violate_order  where complain_status=2 and complain_type=#{type}")
     ArrayList<Report> selectReportSecond3(Integer type);
+
+    @Select("select * from violate_comment where status=2 and (informer_id=#{userId} or violate_user_id=#{userId}) limit #{page},#{limit}")
+    ArrayList<CommentReport> selectCommentsReportById(Integer page, Integer limit, String userId);
+
+    @Select("select * from violate_comment where status=2 limit #{page},#{limit}")
+    ArrayList<CommentReport> selectCommentsReport(Integer page, Integer limit);
+
+    @Select("select * from violate_comment where status=2 and  violate_user_id=#{userId} limit #{page},#{limit}")
+    ArrayList<CommentReport> selectCommentsReportComplainedById(Integer page, Integer limit, String userId, String type);
+    @Select("select * from violate_comment where status=2 and informer_id=#{userId} limit #{page},#{limit}")
+    ArrayList<CommentReport> selectCommentsReportComplainById(Integer page, Integer limit, String userId, String type);
 }

@@ -20,9 +20,6 @@ import java.util.ArrayList;
 public class ReportController {
 
     @Autowired
-    ReportMapper reportMapper;
-
-    @Autowired
     ReportService reportService;
 
     @Autowired
@@ -88,7 +85,6 @@ public class ReportController {
             ,@PathVariable("complained_userid") String complained_userid
             ,@PathVariable("goods_id") String goods_id){
         return reportService.disposeReport(type,reportId,content,complain_userid,complained_userid,goods_id);
-
     }
 
     /**

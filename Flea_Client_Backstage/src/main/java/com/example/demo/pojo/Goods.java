@@ -22,6 +22,7 @@ public class Goods {
     private Double now_price;
     private String  photos;
     private Long add_date;
+    private String add_place;
     private Integer views;
 
     public String getProduct_id() {

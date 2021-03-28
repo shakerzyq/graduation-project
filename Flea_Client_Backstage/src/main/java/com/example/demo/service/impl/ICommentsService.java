@@ -5,6 +5,7 @@ import com.example.demo.mapper.ForGoodsMapper;
 import com.example.demo.pojo.Comment;
 import com.example.demo.pojo.CommentShow;
 import com.example.demo.pojo.User;
+import com.example.demo.pojo.putpojo.CommentReport;
 import com.example.demo.service.CommentsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -223,6 +224,20 @@ public class ICommentsService implements CommentsService {
             return  commentsMapper.deleteComment1(commentid);
         }
 
+
+    }
+
+
+    @Override
+    public Boolean reportComment(CommentReport commentReport) {
+        String id = UUID.randomUUID().toString();
+        System.out.println(id);
+        commentReport.setComplain_id(id);
+        if (commentsMapper.JudgeCommentExist(commentReport.getInformer_id(),commentReport.getViolate_comment_id())==0){
+            return commentsMapper.reportComment(commentReport);
+        }else{
+            return true;
+        }
 
     }
 }

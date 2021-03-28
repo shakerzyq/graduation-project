@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.pojo.Comment;
 import com.example.demo.pojo.CommentShow;
+import com.example.demo.pojo.putpojo.CommentReport;
 import io.swagger.models.auth.In;
 import org.springframework.stereotype.Component;
 
@@ -21,4 +22,6 @@ public interface CommentsService  {
     Boolean s_commentLikeAction(String commentedid, String fledid, Integer type,String goodsid);
 
     Boolean s_commentDelete(String commentid, Integer rank);
+
+    Boolean reportComment(CommentReport commentReport);
 }

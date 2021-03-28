@@ -19,30 +19,47 @@
         <![endif]-->
   <style>
     .input {
-      width: 83%;
-      display: flex;
-      flex-direction: column;
-      margin: 0 auto;
+            width: 83%;
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
 
-    }
+        }
 
-    #ban-type {
-      width: 100px;
-      margin-bottom: 10px;
-      padding: 3px;
-    }
+        #ban-type {
+            width: 100px;
+            margin-bottom: 10px;
+            padding: 3px;
+        }
 
-    .short-ban {
-      width: 100px;
-      display: flex;
-      flex-direction: row;
-    }
+        .short-ban {
+            width: 100px;
+            display: flex;
+            flex-direction: row;
+        }
 
-    .short-ban input {
-      width: 50px;
-      padding: 3px;
-      text-align: left;
-    }
+        .short-ban input {
+            width: 50px;
+            padding: 3px;
+            text-align: left;
+        }
+
+        .cut-credit{
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 110px;
+        }
+        .cut-credit input{
+            width: 80px;
+            padding: 3px;
+            text-align: left;
+            margin-top: 10px;
+        }
+        .cut-credit text{
+            margin-top: 10px;
+            margin-left: 3px;
+        }
   </style>
 </head>
 
@@ -78,18 +95,6 @@
               </tbody>
             </table>
           </div>
-          <div class="layui-card-body ">
-            <div class="page">
-              <div>
-                <a class="prev" href="">&lt;&lt;</a>
-                <a class="num" href="">1</a>
-                <span class="current">2</span>
-                <a class="num" href="">3</a>
-                <a class="num" href="">489</a>
-                <a class="next" href="">&gt;&gt;</a>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -97,14 +102,19 @@
 
   <div class="input" style="display:none">
     <select id="ban-type" name="contrller">
-      <option class="ban-item" value="0">永久封禁</option>
-      <option class="ban-item" value="1">暂时封禁</option>
+        <option class="ban-item" value="0">永久封禁</option>
+        <option class="ban-item" value="1">暂时封禁</option>
     </select>
-    <div class="short-ban" style="display:none">
-      <input type='number' min=1 placeholder='天数'>
-      <text>天</text>
+    <div class="short-ban" style="display: none">
+        <input type='number' min=1 placeholder='天数'>
+        <text>天</text>
     </div>
-  </div>
+    <div class="cut-credit" >
+        <input type='number' min=1 placeholder='扣除信誉分'>
+        <text>分</text>
+    </div>
+
+</div>
 </body>
 
 <script type="text/html" id="userinfo">
@@ -202,8 +212,9 @@
             content: $('.input') //这里content是一个普通的String
             , btn: ['确定', '取消']
             , yes: function (index, layero) {
+              var credit = $('.cut-credit').children().val()
               if ($('#ban-type').val() === '0') {//永久封禁
-                $.get("http://127.0.0.1:8082/user/updateUserStatus/ban/" + data.flea_id, function (data, status) {
+                $.get("http://127.0.0.1:8082/user/updateUserStatus/ban/" + data.flea_id+"/"+data.email+"/"+credit, function (data, status) {
                   tr.children("[data-field='handle']").children("div").children("div").children("span").text("解封").css("background-color", "rgb(30,159,255)")
                   tr.children("[data-field='status']").children("div").children("span").text("永久封禁中").css("color", "red")
                 })
@@ -211,13 +222,13 @@
               } else {//暂时封禁
                 var day = $('.short-ban').children().val()
                 if (day !== null && day.length > 0) {
-                  $.get('http://127.0.0.1:8082/user/temporaryBanUser/' + data.flea_id + '/' + day, function (data, status) {
+                  $.get('http://127.0.0.1:8082/user/temporaryBanUser/' + data.flea_id + '/' + day+"/"+data.email+"/"+credit, function (data, status) {
                     tr.children("[data-field='handle']").children("div").children("div").children("span").text("解封").css("background-color", "rgb(30,159,255)")
                     tr.children("[data-field='status']").children("div").children("span").text("暂时封禁(" + day + "天后解封)").css("color", "red")
                   })
                   layer.close(index);
                 } else {
-                  layer.msg('输入日期不能为空', { icon: 5 });
+                  layer.msg('内容不能为空', { icon: 5 });
                 }
               }
             }
@@ -227,7 +238,7 @@
           // obj.data.status==="正常"
           console.log("**************解封****************")
           //解禁
-          $.get("http://127.0.0.1:8082/user/updateUserStatus/unban/" + data.flea_id, function (data, status) {
+          $.get("http://127.0.0.1:8082/user/updateUserStatus/unban/" + data.flea_id+"/"+data.email+"/0", function (data, status) {
             tr.children("[data-field='handle']").children("div").children("div").children("span").text("封禁").css("background-color", "rgb(255,87,34)")
             tr.children("[data-field='status']").children("div").children("span").text("正常").css("color", "green")
           })
