@@ -20,14 +20,15 @@
         <div class="layui-form-item">
             <label class="layui-form-label">真实姓名</label>
             <div class="layui-input-inline">
-                <input type="text" name="title" required lay-verify="required" placeholder="请输入标题" autocomplete="off"
+                <input type="text" name="name" required lay-verify="required" placeholder="输入真实姓名" autocomplete="off"
                     class="layui-input">
             </div>
         </div>
+
         <div class="layui-form-item">
             <label class="layui-form-label">账号</label>
             <div class="layui-input-inline">
-                <input type="text" name="title" required lay-verify="email" placeholder="输入邮箱" autocomplete="off"
+                <input type="text" name="email" required lay-verify="email" placeholder="输入邮箱" autocomplete="off"
                     class="layui-input">
             </div>
         </div>
@@ -38,6 +39,19 @@
                     autocomplete="off" class="layui-input">
             </div>
             <div class="layui-form-mid layui-word-aux">辅助文字</div>
+        </div>
+
+        <div class="layui-form-item">
+            <label class="layui-form-label">微信号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="weixin" required placeholder="输入微信号" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">微信号</label>
+            <div class="layui-input-inline">
+                <input type="text" name="stuNum" required placeholder="输入学号" autocomplete="off" class="layui-input">
+            </div>
         </div>
         <div class="layui-form-item">
             <label class="layui-form-label" onclick="console.log('world')">地址</label>
@@ -90,10 +104,13 @@
             </div>
             <div class="layui-form-item">
                 <label class="layui-form-label">在校证明</label>
+
                 <div class="layui-input-inline">
-                    <button class="layui-btn layui-btn-primary" id="uploadPicture">上传图片</button>
+                    <button type="button" class="layui-btn layui-btn-primary" id="uploadPicture"
+                        name="file">上传图片</button>
                 </div>
             </div>
+            <input type="text" id="uploadHid" name="uploadHid" hidden />
             <!-- <div class="layui-form-item">
                 <label class="layui-form-label">校区</label>
                 <div class="layui-input-inline">
@@ -209,8 +226,10 @@
         //执行实例
         var uploadInst = upload.render({
             elem: '#uploadPicture' //绑定元素
-            , url: '/upload/' //上传接口
+            , url: 'http://127.0.0.1:8082/loginRegister/upload/admin_photo' //上传接口
             , done: function (res) {
+                console.log("图片路径为" + res.data)
+                $("#uploadHid").val(res.data)
                 //上传完毕回调
             }
             , error: function () {
@@ -274,6 +293,54 @@
 
                     })
                 });
+            form.on('submit(formDemo)', function (data) {
+                console.log(data.field.weixin)
+                // layer.msg(JSON.stringify("hello world",data.field));
+                var obj = {
+                    weixin: data.field.weixin,
+                    stu_num: data.field.stuNum,
+                    name: data.field.name,
+                    account: data.field.email,
+                    password: data.field.password,
+                    province: data.field.province,
+                    college: data.field.college,
+                    area: data.field.area,
+                    picture: data.field.uploadHid,
+                    status: "0"
+                }
+                $.ajax({
+                    url: 'http://127.0.0.1:8082/loginRegister/submitAdminInfo',
+                    type: "POST",
+                    data: JSON.stringify(obj),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        console.log("hello world", res.code, res.msg)
+                        if (res.code == "0") {
+                            layer.msg("已发送申请等待管理员邮件回复",{time:3000})
+                            setTimeout(() => {
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                            }, 3000)
+
+                        } else {
+                            layer.msg(res.msg)
+                        }
+                        // if (res) {
+                        //     layer.msg("success")
+                        //     setTimeout(() => { location.href = 'index.html' }, 2000)
+                        // } else {
+                        //     layer.msg("账号或密码错误！")
+                        // }
+                    },
+                    error: function (e) {
+                        console.log(e.status);
+                        console.log(e.responseText);
+                        layer.msg("请求失败！")
+                    }
+                })
+                return false;
+            });
         });
 
     function renderForm() {

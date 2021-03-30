@@ -8,7 +8,7 @@
 					<text>{{good.goodsWanter}}人想要</text>
 				</view>
 				<text class="name">
-					{{good.goodsDes}}
+					{{good.goodsTitle}}:{{good.goodsDes}}
 				</text>
 				<view class="user">
 					<image :src="good.userIcon"></image>
@@ -25,7 +25,7 @@
 					<text>{{good.goodsWanter}}人想要</text>
 				</view>
 				<text class="name">
-					{{good.goodsDes}}
+					{{good.goodsTitle}}:{{good.goodsDes}}
 				</text>
 				<view class="user">
 					<image :src="good.userIcon"></image>

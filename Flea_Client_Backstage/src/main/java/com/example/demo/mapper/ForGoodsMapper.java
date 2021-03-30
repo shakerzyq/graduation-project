@@ -14,8 +14,8 @@ import java.util.List;
 @Mapper
 @Component
 public interface ForGoodsMapper {
-    @Insert("insert into products (product_id,merchant_id,product_title,product_des,quality,brand,atype,btype,ctype,old_price,now_price,photos,add_date" +
-            ") values (#{goods.product_id},#{goods.merchant_id},#{goods.product_title},#{goods.product_des},#{goods.quality},#{goods.brand},#{goods.atype},#{goods.btype},#{goods.ctype},#{goods.old_price},#{goods.now_price},#{goods.photos},#{goods.add_date})")
+    @Insert("insert into products (product_id,merchant_id,product_title,product_des,quality,brand,atype,btype,ctype,old_price,now_price,photos,add_date,add_place" +
+            ") values (#{goods.product_id},#{goods.merchant_id},#{goods.product_title},#{goods.product_des},#{goods.quality},#{goods.brand},#{goods.atype},#{goods.btype},#{goods.ctype},#{goods.old_price},#{goods.now_price},#{goods.photos},#{goods.add_date},#{goods.add_place})")
     Boolean InsertProduct(@Param("goods")Goods goods);
 
     //分页查询,商品信息
@@ -132,6 +132,9 @@ public interface ForGoodsMapper {
      */
     @Select("select count(*) from orders where consumer_id=#{userid} and goods_id=#{goodsId}")
     Integer selectOrders(String userid, String goodsId);
+
+    @Select("select concat(college,'-',area) from user where flea_id=#{userId}")
+    String selectCollegeAreas(String userId);
 
 
 

@@ -137,6 +137,7 @@ public class ESDataDao {
         goodsIndex.setGoodsId(map.get("goodsId").toString());
         goodsIndex.setViewsNum((Integer) map.get("viewsNum"));
         goodsIndex.setLikesNum((Integer) map.get("likesNum"));
+        goodsIndex.setAddPlace(map.get("addPlace").toString());
 
         ESUser esUser = selectUserIndex(goodsIndex.getUserId());
         goodsIndex.setUserName(esUser.getUserName());
@@ -428,7 +429,8 @@ public class ESDataDao {
                 .should(QueryBuilders.matchQuery("goodsTitle",value))
                 .should(QueryBuilders.matchQuery("goodsDes",value))
                 .should(QueryBuilders.matchQuery("goodsType",value))
-                .mustNot(QueryBuilders.matchQuery("status","dead"));
+                .mustNot(QueryBuilders.matchQuery("status","dead"))
+                .mustNot(QueryBuilders.matchQuery("status","freezing"));
 //                .must(QueryBuilders.matchQuery("status","living"));
         searchSourceBuilder.query(queryBuilder);
         searchSourceBuilder.from(from);

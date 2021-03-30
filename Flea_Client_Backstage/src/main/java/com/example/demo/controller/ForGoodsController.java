@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.dao.ESDataDao;
+import com.example.demo.mapper.ForGoodsMapper;
 import com.example.demo.pojo.*;
 import com.example.demo.service.impl.IForGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,9 @@ public class ForGoodsController {
 
     @Autowired
     IForGoodsService iForGoodsService;
+
+    @Autowired
+    ForGoodsMapper forGoodsMapper;
 
     //上架商品
     @CrossOrigin(origins = "*",maxAge = 3600)
@@ -90,11 +94,11 @@ public class ForGoodsController {
      * @return
      */
     @CrossOrigin(origins = "*",maxAge = 3600)
-    @GetMapping("/getgoodslist/{pagenum}/{flea_id}")
-    public ArrayList<GoodsIndex> getGoodsForIndex(@PathVariable("pagenum")String pagenum, @PathVariable("flea_id") String flea_id){
-        System.out.println("获取跳蚤id为："+flea_id+" pagenum为："+pagenum);
+    @GetMapping("/getgoodslist/{pagenum}/{flea_id}/{addPlace}")
+    public ArrayList<GoodsIndex> getGoodsForIndex(@PathVariable("pagenum")String pagenum, @PathVariable("flea_id") String flea_id,@PathVariable("addPlace") String addPlace){
+        System.out.println("获取跳蚤id为："+flea_id+" pagenum为："+pagenum+" 地址为："+addPlace);
         //获取所有商品
-        ArrayList<GoodsIndex> result = iForGoodsService.s_getGoodsForIndex(((Integer.parseInt(pagenum)-1)*8),8,"dead","freezing");
+        ArrayList<GoodsIndex> result = iForGoodsService.s_getGoodsForIndex(((Integer.parseInt(pagenum)-1)*8),8,"dead","freezing",addPlace);
         System.out.println("输出结果：");
         System.out.println(result);
         return result;
@@ -188,5 +192,10 @@ public class ForGoodsController {
     public Integer judgeGoodsToUser(@PathVariable("userId") String userid,@PathVariable("goodsId") String goodsId){
         System.out.println("收到的userId为："+userid+" 收到的goodsId为："+goodsId);
         return iForGoodsService.s_judgeGoodsToUser(userid,goodsId);
+    }
+    @CrossOrigin(origins = "*",maxAge = 3600)
+    @GetMapping("/getAddPlace/{userId}")
+    public String getAddPlace(@PathVariable("userId") String userId){
+        return forGoodsMapper.selectCollegeAreas(userId);
     }
 }

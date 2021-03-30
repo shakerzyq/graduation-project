@@ -1,6 +1,7 @@
 <template>
 	<view>
-		<product-info @delIcon="delIcon" class="product_info" :aClass="aclass" :bClass="bclass" :cClass="cclass" fromType="addProduct" :addInfo="add_info"></product-info>
+		<product-info @delIcon="delIcon" class="product_info" :aClass="aclass" :bClass="bclass" :cClass="cclass" fromType="addProduct"
+		 :addInfo="add_info"></product-info>
 		<view class="update-operation">
 			<view class="delete" @click="deleteProduct">删除</view>
 			<view class="put" @click="putProduct">修改</view>
@@ -58,7 +59,7 @@
 					btypeTag: null, //记录btype的索引位置
 					ctypeTag: null, //记录ctype的索引位置
 				},
-				add_info2:this.add_info,//add_info 的备份用于刷新操作
+				add_info2: this.add_info, //add_info 的备份用于刷新操作
 				aclass: [],
 				bclass: [],
 				cclass: [],
@@ -70,7 +71,7 @@
 				arr: null,
 				add_info_judge: false, //判断add_info中的属性是全不为null
 				photoFlag: 0, //遍历photos的标签
-				newPhotos:[],//存储新上传的图片
+				newPhotos: [], //存储新上传的图片
 			}
 		},
 		components: {
@@ -177,35 +178,35 @@
 		 */
 		onPullDownRefresh() {
 			// this.add_info=this.add_info2
-			this.add_info.qualities=[{
-							name: '全新',
-							choice: false,
-							bgcolor: '#eee'
-						},
-						{
-							name: '9成新',
-							choice: false,
-							bgcolor: '#eee'
-						},
-						{
-							name: '轻微使用痕迹',
-							choice: false,
-							bgcolor: '#eee'
-						},
-						{
-							name: '明显使用痕迹',
-							choice: false,
-							bgcolor: '#eee'
-						},
-						{
-							name: '部分有磨损',
-							choice: false,
-							bgcolor: '#eee'
-						}
-					],
-			this.getGoodsInfo(()=>{
-				uni.stopPullDownRefresh()
-			})
+			this.add_info.qualities = [{
+						name: '全新',
+						choice: false,
+						bgcolor: '#eee'
+					},
+					{
+						name: '9成新',
+						choice: false,
+						bgcolor: '#eee'
+					},
+					{
+						name: '轻微使用痕迹',
+						choice: false,
+						bgcolor: '#eee'
+					},
+					{
+						name: '明显使用痕迹',
+						choice: false,
+						bgcolor: '#eee'
+					},
+					{
+						name: '部分有磨损',
+						choice: false,
+						bgcolor: '#eee'
+					}
+				],
+				this.getGoodsInfo(() => {
+					uni.stopPullDownRefresh()
+				})
 		},
 		onBackPress() {
 			//如果有值
@@ -250,12 +251,12 @@
 			// }
 		},
 		methods: {
-			
+
 			// 删除picture
-			delIcon(index){
-				
-				this.add_info.photos.splice(index,1)
-				this.pictures.splice(index,1)
+			delIcon(index) {
+
+				this.add_info.photos.splice(index, 1)
+				this.pictures.splice(index, 1)
 			},
 
 			async getGoodsInfo(callBack) {
@@ -265,7 +266,7 @@
 				// this.add_info=result.data
 				console.log("获取到的结果为" + res.data)
 				this.add_info.description = res.data.product_des
-				this.pictures=res.data.photos.split(',')
+				this.pictures = res.data.photos.split(',')
 				this.add_info.photos = res.data.photos.split(',')
 				console.log("photos为：" + res.data.photos)
 				this.add_info.quality_choice = res.data.quality
@@ -292,7 +293,7 @@
 					console.log("2:" + this.add_info.atype)
 					this.drawTypes()
 				}
-				
+
 				callBack && callBack() //通过&&判断，有callback就调用，没有就不调用
 			},
 			//检测是否存在type，存在就渲染
@@ -369,7 +370,7 @@
 
 			// 上传图片到服务器
 			uploadImage(filepath, index) {
-				if(filepath.indexOf('blob')>=0){
+				if (filepath.indexOf('blob') >= 0) {
 					uni.uploadFile({
 						url: 'http://10.19.31.49:8083/register/upload/goods_photos',
 						filePath: filepath,
@@ -383,29 +384,58 @@
 							}else{
 								this.user.testify_img = uploadFileRes.data//上传的是证明照片
 							} */
-							if (uploadFileRes.data !== null){
-									// this.pictures = this.pictures + "," + uploadFileRes.data
-									this.pictures.push(uploadFileRes.data)	
+							if (uploadFileRes.data !== null) {
+								// this.pictures = this.pictures + "," + uploadFileRes.data
+								this.pictures.push(uploadFileRes.data)
 							}
-							
+
 							// if (this.pictures !== null) {
 							// 	this.pictures = this.pictures + "," + uploadFileRes.data
 							// } else {
 							// 	this.pictures = this.+uploadFileRes.data
 							// }
-					
+
 							// this.add_info.photos[index]=uploadFileRes.data
-					
-					
+
+
 							console.log("this.pictures为" + this.pictures);
 						}
 					})
 				}
-				
+
+			},
+
+			async putProductInfo() {
+				const result = await this.$myRequest({
+					url: '/product/update',
+					data: {
+						product_id: this.goodsId,
+						merchant_id: this.flea_id,
+						product_title: this.add_info.title,
+						product_des: this.add_info.description,
+						quality: this.add_info.quality_choice,
+						brand: this.add_info.brand,
+						atype: this.add_info.atype,
+						btype: this.add_info.btype,
+						ctype: this.add_info.ctype,
+						now_price: this.add_info.nowprice,
+						old_price: this.add_info.oldprice,
+						photos: this.pictures.join(","),
+						views: 0
+					},
+					method: "POST"
+				})
+				if (result.data) {
+					uni.showToast({
+						icon: "none",
+						title: '修改成功',
+						duration: 2000
+					})
+				}
 			},
 
 			putProduct() {
-				
+
 				console.log(this.add_info.description, this.add_info.brand, this.add_info.atype, this.add_info.btype, this.add_info
 					.ctype, this.add_info.atypeTag, this.add_info.btypeTag, this.add_info.ctypeTag, this.add_info.photos,
 					this.add_info.quality_choice,
@@ -450,27 +480,13 @@
 					}
 					this.isget = true
 					console.log("最后检查图片" + this.pictures)
+
+					this.putProductInfo()
+
 					setTimeout(() => {
-						const result = this.$myRequest({
-							url: '/product/update',
-							data: {
-								product_id:this.goodsId,
-								merchant_id: this.flea_id,
-								product_title: this.add_info.title,
-								product_des: this.add_info.description,
-								quality: this.add_info.quality_choice,
-								brand: this.add_info.brand,
-								atype: this.add_info.atype,
-								btype: this.add_info.btype,
-								ctype: this.add_info.ctype,
-								now_price: this.add_info.nowprice,
-								old_price: this.add_info.oldprice,
-								photos: this.pictures.join(","),
-								views: 0
-							},
-							method: "POST"
-						})
+						uni.navigateBack();
 					}, 2000)
+
 
 					//移除记录
 					// uni.removeStorage({
@@ -481,27 +497,27 @@
 					// uni.navigateBack();
 				}
 			},
-			
-			deleteProduct(){
+
+			deleteProduct() {
 				uni.showModal({
-				    title: '警告',
-				    content: '确定删除？',
-					cancelText:"取消",
-					confirmText:"确定",
-				    success: (res)=> {
-				        if (res.confirm) {
-				            const result = this.$myRequest({
-				            	url:'/product/delete/'+this.goodsId
-				            })
-							
-								uni.navigateBack({
-									delta:2
-								})
-							
-				        } else if (res.cancel) {
-				            
-				        }
-				    }
+					title: '警告',
+					content: '确定删除？',
+					cancelText: "取消",
+					confirmText: "确定",
+					success: (res) => {
+						if (res.confirm) {
+							const result = this.$myRequest({
+								url: '/product/delete/' + this.goodsId
+							})
+
+							uni.navigateBack({
+								delta: 2
+							})
+
+						} else if (res.cancel) {
+
+						}
+					}
 				});
 
 			}
@@ -519,19 +535,19 @@
 		bottom: 30rpx;
 		right: 30rpx;
 		width: 690rpx;
-		
+
 		.put {
 			border-radius: 20rpx;
-			background-color:$uni-color-blue ;
+			background-color: $uni-color-blue;
 			width: 140rpx;
 			text-align: center;
 			padding: 10rpx;
-			color: #fff;	
+			color: #fff;
 		}
 
 		.delete {
 			border-radius: 20rpx;
-			background-color:orange ;
+			background-color: orange;
 			width: 140rpx;
 			text-align: center;
 			padding: 10rpx;

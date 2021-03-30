@@ -25,6 +25,14 @@ public class Goods {
     private String add_place;
     private Integer views;
 
+    public String getAdd_place() {
+        return add_place;
+    }
+
+    public void setAdd_place(String add_place) {
+        this.add_place = add_place;
+    }
+
     public String getProduct_id() {
         return product_id;
     }
@@ -150,6 +158,7 @@ public class Goods {
         return "Goods{" +
                 "product_id='" + product_id + '\'' +
                 ", merchant_id='" + merchant_id + '\'' +
+                ", product_title='" + product_title + '\'' +
                 ", product_des='" + product_des + '\'' +
                 ", quality='" + quality + '\'' +
                 ", class_choice='" + class_choice + '\'' +
@@ -160,7 +169,8 @@ public class Goods {
                 ", old_price=" + old_price +
                 ", now_price=" + now_price +
                 ", photos='" + photos + '\'' +
-                ", add_time=" + add_date +
+                ", add_date=" + add_date +
+                ", add_place='" + add_place + '\'' +
                 ", views=" + views +
                 '}';
     }

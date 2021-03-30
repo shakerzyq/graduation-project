@@ -69,6 +69,7 @@ public class ESSearchTypeController {
     @CrossOrigin(origins = "*",maxAge = 3600)
     @GetMapping("/searchTitle/{content}")
     public ArrayList<RetrievalResult> searchTitle(@PathVariable("content") String content){
+        System.out.println("内容"+content);
         return elasticSearchService.s_searchTitle(content);
     }
 

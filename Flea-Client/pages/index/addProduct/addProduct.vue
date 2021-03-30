@@ -68,6 +68,7 @@
 				arr:null,
 				add_info_judge:false,//判断add_info中的属性是全不为null
 				photoFlag:0,//遍历photos的标签
+				addPlace:null
 			}
 		},
 		components: {
@@ -88,41 +89,8 @@
 				},
 				success: (res) => {
 					this.aclass=res.data.hits.hits
-					// const list = res.data.hits.hits
-					
-					// console.log("你好"+list.length)
-					// list.forEach((a)=>{
-					// 	this.obj={
-					// 		'type':a._source.atype,
-					// 		'choice':false,
-					// 		'bgcolor':'#eee'
-					// 	}
-					// 	this.aclass[this.i]=this.obj
-					// 	// this.aclass[this.i].type=
-					// 	// this.aclass[this.i].choice=false
-					// 	// this.aclass[this.i].bgcolor='#eee'
-					// 	this.i++
-					// 	console.log(this.aclass[this.i].type)
-					// })
-					// console.log("你好"+this.aclass.length)
-					// this.i=0
-					// this.obj=null
 				}
 			})
-			
-			// uni.$on('add_info',(e)=>{
-			// 	this.add_info.description = e.description
-			// 	this.add_info.photos=e.photos
-			// 	this.add_info.quality_choice = e.quality_choice
-			// 	this.add_info.qualities = e.qualities
-			// 	this.add_info.classes = e.classes
-			// 	this.add_info.nowprice = e.nowprice
-			// 	this.add_info.oldprice = e.oldprice
-			// 	this.add_info.brand = e.brand
-			// 	this.add_info.atype=e.atype
-			// 	this.add_info.btype=e.btype
-			// 	this.add_info.ctype=e.ctype
-			// })
 			console.log("quality为："+this.add_info.quality_choice)
 			uni.getStorage({
 			    key: 'flea_id',
@@ -147,13 +115,6 @@
 					this.add_info.title = res.data.title
 				}
 			})
-			
-			
-			// if(this.add_info.atype===null||this.add_info.ctype===null){
-			// 	this.getTypesB()
-			// 	this.getTypesC()
-			// }
-			//this.getTypesA()
 			if((typeof this.add_info.atype)==='undefined'||this.add_info.atype===null){
 				console.log("1")
 				this.getTypesA2()
@@ -161,7 +122,7 @@
 				console.log("2:"+this.add_info.atype)
 				this.drawTypes()
 			}
-			
+			this.getCollegeArea();
 			
 			
 			
@@ -215,7 +176,6 @@
 			}
 		},
 		methods: {
-			
 			// 删除picture
 			delIcon(index){
 				
@@ -304,52 +264,29 @@
 					formData: {
 						'user': 'test'
 					},
-					success: (uploadFileRes) => {
-						/* if(type===0){
-							this.user.user_icon=uploadFileRes.data//上传的是头像
-						}else{
-							this.user.testify_img = uploadFileRes.data//上传的是证明照片
-						} */
-						
+					success: (uploadFileRes) => {				
 						if(this.pictures!==null){
 							this.pictures=this.pictures+","+uploadFileRes.data
 						}else{
 							this.pictures=uploadFileRes.data
-						}
-						
-						// this.add_info.photos[index]=uploadFileRes.data
-						
-						
+						}					
 						console.log("this.pictures为"+this.pictures);
 					}
 				})
 			},
 			
+			//查询用户所在学校校区
+			async getCollegeArea(){
+				const result = await this.$myRequest({
+					url:"/product/getAddPlace/"+this.flea_id
+				})
+				this.addPlace=result.data;
+			},
+			
+			/**
+			 * 发布商品
+			 */
 			putProduct(){		
-				/* this.add_info.classes.forEach((classify)=>{
-						if(classify.choice===true){
-							console.log("选中的class为"+classify.name,"class_choice为："+this.class_choice)
-							if(this.class_choice===null){
-								this.class_choice=classify.name
-							}else{
-								this.class_choice=this.class_choice+"&"+classify.name
-							}
-						}
-				})	 */
-// description:null,
-					// photos:[],
-					// quality_choice:null,//选中的品质
-					// brand:null,//选中的品牌
-					
-					// brand:null,
-					// atype:null,
-					// btype:null,
-					// ctype:null,
-					// nowprice:null,
-					// oldprice:null,
-					// atypeTag:null,
-					// btypeTag:null,
-					// ctypeTag:null,
 				console.log(this.add_info.description,this.add_info.brand,this.add_info.atype,
 				this.add_info.btype,this.add_info.ctype,this.add_info.atypeTag,
 				this.add_info.btypeTag,this.add_info.ctypeTag
@@ -411,7 +348,8 @@
 								now_price:this.add_info.nowprice,
 								old_price:this.add_info.oldprice,
 								photos:this.pictures,	
-								views:0
+								views:0,
+								add_place:this.$store.state.addPlace
 							},
 							method:"POST"
 						})
@@ -427,6 +365,15 @@
 					uni.navigateBack();
 					
 				}
+				
+				// //查询发布地点
+				// async getAddPlace(){
+				// 	const result = await this.$myRequest({
+				// 		url:'/product/getUserPlace'
+				// 	})
+				// 	this.addPlace=result.data
+				// 	console.log("place为：",this.addPlace)
+				// }
 				
 			}
 		

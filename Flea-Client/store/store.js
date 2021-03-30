@@ -7,6 +7,7 @@ const store = new Vuex.Store({
 			collectNum:null,
 			attentionNum:null,
 			history:null,
+			addPlace:null,
 		},
     mutations: {
 		

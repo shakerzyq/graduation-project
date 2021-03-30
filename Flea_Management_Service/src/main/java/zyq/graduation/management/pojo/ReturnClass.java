@@ -17,6 +17,11 @@ public class ReturnClass<T> {
         this.data = data;
     }
 
+    public ReturnClass(Integer code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
     public Integer getCode() {
         return code;
     }

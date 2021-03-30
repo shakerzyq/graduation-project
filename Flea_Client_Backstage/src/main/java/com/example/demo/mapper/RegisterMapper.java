@@ -2,6 +2,7 @@ package com.example.demo.mapper;
 
 import com.example.demo.pojo.Account;
 import com.example.demo.pojo.User;
+import com.example.demo.pojo.register.CollegeAreas;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -19,7 +20,7 @@ public interface RegisterMapper {
      * @param province
      * @return
      */
-    @Select("select name from colleges where address = #{province}")
+    @Select("select concat(college,',',area) from service_area where province = #{province}")
     public ArrayList<String> getColleges(String province);
 
     @Insert("insert into account (flea_id,email,password) values (#{flea_id},#{email},#{password})")

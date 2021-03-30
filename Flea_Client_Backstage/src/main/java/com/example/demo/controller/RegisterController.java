@@ -5,6 +5,7 @@ import com.example.demo.pojo.Account;
 import com.example.demo.pojo.AccountUsers;
 import com.example.demo.pojo.College;
 import com.example.demo.pojo.User;
+import com.example.demo.pojo.register.CollegeAreas;
 import com.example.demo.service.RegisterService;
 import com.example.demo.util.JedisPoolUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,7 @@ import javax.xml.ws.Service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -98,11 +100,22 @@ public class RegisterController {
      */
     @CrossOrigin(origins = "*",maxAge = 3600)
     @RequestMapping("/college/{province}")
-    public List<String> PictureTypes(@PathVariable("province") String province){
-        return registerMapper.getColleges(province);
+    public List<CollegeAreas> PictureTypes(@PathVariable("province") String province){
+        ArrayList<String> colleges = registerMapper.getColleges(province);
+        ArrayList<CollegeAreas> collegeAreasArrayList = new ArrayList<>();
+        String [] strArray=null;
+
+        for (String str:colleges){
+            strArray =str.split(",");
+            CollegeAreas collegeAreas = new CollegeAreas();
+            collegeAreas.setCollege(strArray[0]);
+            collegeAreas.setArea(Arrays.asList(strArray[1].split("-")));
+            collegeAreasArrayList.add(collegeAreas);
+        }
+        return collegeAreasArrayList;
     }
     /**
-     * 实现简单的文件上传递
+     * 实现简单的文件上传
      * @param file
      * @return
      */

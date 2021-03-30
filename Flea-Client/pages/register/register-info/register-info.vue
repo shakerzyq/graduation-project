@@ -30,6 +30,8 @@
 			<picker mode="selector" @change="choiceProvince" :range="provinces">{{user.province}}</picker>
 			<view class="province">学校</view>
 			<picker mode="selector" @change="choiceCollege" :range="schools">{{user.college}}</picker>
+			<view class="province">校区</view>
+			<picker mode="selector" @change="choiceArea" :range="areas">{{user.area}}</picker>
 		</view>
 		<view class="contact">
 			
@@ -62,7 +64,9 @@
 					'陕西', '山西', '天津', '新疆', '西藏', '云南', '浙江'
 				],
 				province: '安徽',
+				list:[],
 				schools: [],
+				areas:[],
 				school: null,
 				imgArr: [],
 				photoArr: [],
@@ -77,6 +81,7 @@
 					stu_num: null,
 					province: '安徽',
 					college: null,
+					area:null,
 					academy:null,
 					grade:null,
 					user_icon:null,
@@ -144,15 +149,29 @@
 			//选择大学
 			choiceCollege(e) {
 				this.user.college = this.schools[e.detail.value]
+				this.user.area=this.list[e.detail.value].area[0]
+				this.areas=this.list[e.detail.value].area
 				console.log("user的college为"+this.user.college)
+			},
+			//选择校区
+			choiceArea(e){
+				this.user.area = this.areas[e.detail.value]
 			},
 			//通过省份获取大学
 			async getColleges(province) {
 				const list = await this.$myRequest({
 					url: '/register/college/' + province
 				})
-				this.schools = list.data
+				this.list = list.data
+				this.list.forEach((a)=>{
+					console.log("学校：",a.college)
+					this.schools.push(a.college);
+				})
+				console.log("schools",this.schools)
+				
+				this.areas=this.list[0].area
 				this.user.college = this.schools[0]
+				this.user.area=this.list[0].area[0]
 			},
 			allFinsh(){
 				this.uploadImage(this.imgArr[0],0)
@@ -192,7 +211,7 @@
 			console.log("密码为",option.pwd,"账号为",option.email)
 			this.account.email = option.email
 			this.account.password = option.pwd
-			this.getColleges(this.provinces[0])	
+			this.getColleges(this.provinces[0])
 		},
 		onReachBottom(){
 			console.log(this.user)

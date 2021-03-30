@@ -18,7 +18,16 @@ public class ESGoods {
     private String goodsId;
     private Integer viewsNum;//浏览数，默认排序
     private Integer likesNum;//喜欢数
+    private String addPlace;//发布地点
     private String status;//订单状态
+
+    public String getAddPlace() {
+        return addPlace;
+    }
+
+    public void setAddPlace(String addPlace) {
+        this.addPlace = addPlace;
+    }
 
     public String getStatus() {
         return status;

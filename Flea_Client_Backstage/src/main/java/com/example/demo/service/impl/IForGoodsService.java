@@ -86,6 +86,7 @@ public class IForGoodsService implements ForGoodsService {
         }
         esGoods.setGoodsPrice(goods.getNow_price());
         esGoods.setGoodsId(goods.getProduct_id());
+        esGoods.setAddPlace(goods.getAdd_place());
         //添加商品操作默认都为零
         esGoods.setViewsNum(0);
         esGoods.setGoodsWanter(0);
@@ -106,10 +107,11 @@ public class IForGoodsService implements ForGoodsService {
     }
 
     @Override
-    public ArrayList<GoodsIndex> s_getGoodsForIndex(int from, int size,String status,String status2) {
+    public ArrayList<GoodsIndex> s_getGoodsForIndex(int from, int size,String status,String status2,String addPlace) {
         QueryBuilder queryBuilder = QueryBuilders.boolQuery()
                 .mustNot(QueryBuilders.matchQuery("status",status))
-                .mustNot(QueryBuilders.matchQuery("status",status2));
+                .mustNot(QueryBuilders.matchQuery("status",status2))
+                .must(QueryBuilders.matchQuery("addPlace",addPlace));
         return esDataDao.selectGoods("goods", queryBuilder,from,size);
     }
 

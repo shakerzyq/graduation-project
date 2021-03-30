@@ -46,6 +46,7 @@
 		onLoad:function() {
 			//获取本地存储的跳蚤id
 			this.flea_id
+			
 			//获取本地存储的flea_id和locken
 			try {
 			    const value = uni.getStorageSync('locken');
@@ -60,9 +61,10 @@
 			} catch (e) {
 			    // error
 			}
+			this.getCollegeArea();
 			
 			//获取后台商品数据，并渲染
-			this.getGoodsList()
+			
 			
 			if(this.locken===null){
 				this.locken = this.$uuid()
@@ -72,7 +74,10 @@
 				    // error
 				}
 			}
+			setTimeout(()=>{ this.getGoodsList()},500)
 			this.connectSocketInit()
+			
+			
 		},
 		
 		
@@ -99,6 +104,14 @@
 		},
 
 		methods: {
+			async getCollegeArea(){
+				const result = await this.$myRequest({
+					url:"/product/getAddPlace/"+this.flea_id
+				})
+				console.log("dizhiwei:",result.data)
+				this.$store.state.addPlace=result.data;
+				console.log("dizhiwei2:",this.$store.state.addPlace)
+			},
 			// 导航到搜索界面
 			goSearch(){
 				uni.navigateTo({
@@ -109,7 +122,7 @@
 			//获取商品数据
 			async getGoodsList(callBack){
 				const result = await this.$myRequest({
-					url:'/product/getgoodslist/'+this.pagenum+'/'+this.flea_id
+					url:'/product/getgoodslist/'+this.pagenum+'/'+this.flea_id+'/'+this.$store.state.addPlace
 				})
 				console.log("服务器的商品数据为"+result.data.length)
 				
