@@ -119,4 +119,7 @@ public interface OrderMapper {
 
     @Select("select email from account where flea_id=#{userid}")
     String selectUserEmail(String userid);
+
+    @Select("select complain_status from violate_order where order_id=#{orderId} and complain_userid=#{userid}")
+    String selectReportStatus(String orderId,String userid);
 }

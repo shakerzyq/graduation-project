@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @date 2021/3/18 23:32
  */
 @Mapper
-public interface UserMapper {
+public interface AdminUserMapper {
     @Select("select a.*,b.status from user a join user_status b on a.flea_id=b.flea_id " +
             "where b.status=3 limit #{page},#{limit}")
     ArrayList<User> selectUncheckedUser(Integer page,Integer limit);

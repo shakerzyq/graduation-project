@@ -146,7 +146,7 @@ public class IMinePageService implements MinePageService {
     @Override
     public ArrayList<UserComplain> s_getUserComplains(String userId, String orderStatus) {
         if (orderStatus.equals("todo")){
-            ArrayList<UserComplain> userComplains = minePageMapper.selectUserComplain(userId, "处理中");
+            ArrayList<UserComplain> userComplains = minePageMapper.selectUserComplain(userId, "2");
             for (UserComplain userComplain:userComplains){
                 if (userId.equals(userComplain.getComplain_userid())){
                     userComplain.setEmail(minePageMapper.selectUserEmail(userComplain.getComplained_userid()));
@@ -156,7 +156,7 @@ public class IMinePageService implements MinePageService {
             }
             return userComplains;
         }else {
-            return minePageMapper.selectUserComplain(userId,"处理完成");
+            return minePageMapper.selectUserComplainFinished(userId,"2");
         }
 
     }
@@ -168,7 +168,7 @@ public class IMinePageService implements MinePageService {
      */
     @Override
     public Object s_getComplainDetail(String complain_id,String status) {
-        if (status.equals("处理中")){
+        if (status.equals("2")){
             return minePageMapper.selectDetailComplain(complain_id,status);
         }else{
             return minePageMapper.selectHistoryDetailComplain(complain_id,status);

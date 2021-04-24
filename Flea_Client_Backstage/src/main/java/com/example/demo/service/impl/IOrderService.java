@@ -105,6 +105,8 @@ public class IOrderService implements OrderService {
 
                     ordersShow.setUserEmail(orderMapper.selectUserEmail(order.getMerchant_id()));
 
+
+
                     orderShowList.add(ordersShow);
                 }
             }else {
@@ -133,6 +135,8 @@ public class IOrderService implements OrderService {
                     ordersShow.setConsumerId(order.getConsumer_id());
 
                     ordersShow.setUserEmail(orderMapper.selectUserEmail(order.getConsumer_id()));
+
+
 
                     orderShowList.add(ordersShow);
                 }
@@ -172,6 +176,8 @@ public class IOrderService implements OrderService {
                 ordersShow.setUsersIcon(goodsIndex.getUserIcon());
                 ordersShow.setMerchantId(goodsIndex.getUserId());
                 ordersShow.setConsumerId(historyOrder.getConsumer_id());
+
+                ordersShow.setReportStatus(orderMapper.selectReportStatus(ordersShow.getOrderId(),userId));
                 orderShowList.add(ordersShow);
             }
 
@@ -230,10 +236,10 @@ public class IOrderService implements OrderService {
     public Boolean s_accomplishOrder(CommitEvaluate commitEvaluate) {
         Order order = orderMapper.selectOrdersByOrderId(commitEvaluate.getOrderId());
 
-        Date date = new Date();
-        DateFormat df1 = DateFormat.getDateInstance(DateFormat.SHORT, Locale.CHINA);
-        DateFormat df2 = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.CHINA);
-        order.setOrder_date(df1.format(date)+df2.format(date));
+//        Date date = new Date();
+//        DateFormat df1 = DateFormat.getDateInstance(DateFormat.SHORT, Locale.CHINA);
+//        DateFormat df2 = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.CHINA);
+//        order.setOrder_date(df1.format(date)+df2.format(date));
         int evaluateScore =  commitEvaluate.getGoodsEvaluate()+commitEvaluate.getMerchantEvaluate();
         String evaluate = null;
         if (commitEvaluate.getMerchantEvaluate()>=4&&commitEvaluate.getGoodsEvaluate()>=4){

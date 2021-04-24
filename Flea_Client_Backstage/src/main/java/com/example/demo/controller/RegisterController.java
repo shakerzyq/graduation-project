@@ -134,10 +134,10 @@ public class RegisterController {
      */
     @CrossOrigin(origins = "*",maxAge = 3600)
     @PostMapping("/putInfo")
-    public void registerUser(@RequestBody AccountUsers accountUsers) throws Exception{
+    public Boolean registerUser(@RequestBody AccountUsers accountUsers) throws Exception{
         System.out.println("收到消息"+accountUsers);
         System.out.println("用户头像为："+accountUsers.getUser().getUser_icon());
-        registerService.registerUser(accountUsers);
+        return registerService.registerUser(accountUsers);
     }
 
     /**

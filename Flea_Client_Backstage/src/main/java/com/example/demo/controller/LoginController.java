@@ -22,8 +22,8 @@ public class LoginController {
     @CrossOrigin(origins = "*",maxAge = 3600)
     @PostMapping("/pwdlogin")
     public String pwdLogin(@RequestBody Account account){
-        System.out.println("密码为"+account);
-        System.out.println("返回的值为"+loginService.verifyPwd(account));
+//        System.out.println("密码为"+account);
+//        System.out.println("返回的值为"+loginService.verifyPwd(account));
         return loginService.verifyPwd(account);
     }
 

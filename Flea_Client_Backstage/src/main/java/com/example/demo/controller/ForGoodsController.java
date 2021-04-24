@@ -123,16 +123,16 @@ public class ForGoodsController {
     /**
      * 用户关注相关
      * @param flea_id
-     * @param merchan_id
+     * @param merchant_id
      * @param type  fans关注  unfans取关
      * @return
      */
     @CrossOrigin(origins = "*",maxAge = 3600)
     @GetMapping("/fansAction/{flea_id}/{merchant_id}/{type}")
-    public Boolean fansAction(@PathVariable("flea_id") String flea_id,@PathVariable("merchant_id") String merchan_id,@PathVariable("type") String type) {
-        System.out.println("feal_id:"+flea_id+" merchant_id"+merchan_id+" type:"+type);
+    public Boolean fansAction(@PathVariable("flea_id") String flea_id,@PathVariable("merchant_id") String merchant_id,@PathVariable("type") String type) {
+        System.out.println("feal_id:"+flea_id+" merchant_id"+merchant_id+" type:"+type);
 
-        return iForGoodsService.s_fansAction(flea_id, merchan_id, type) == 1;
+        return iForGoodsService.s_fansAction(flea_id, merchant_id, type) == 1;
     }
 
     /**

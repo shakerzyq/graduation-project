@@ -22,7 +22,7 @@
 						</view>
 					</view>
 					<view v-if="flea_id===userId?false:true" class="attention-action" @click="fansAction(flea_id,userId)">
-						<view class="attention" v-if="userInfo.fansJudge===1?false:true">
+						<view class="attention" v-if="userInfo.fansJudge?false:true">
 							<view class="iconfont icon">&#xe8a1;</view>
 							<text>关注</text>
 						</view>
@@ -116,21 +116,22 @@
 			
 			/* 关注与取关 */
 			async fansAction(flea_id, userId) {
-				this.type = (this.userInfo.fansJudge === 0) ? 'fans' : 'unfans'
+				this.type = (this.userInfo.fansJudge) ? 'unfans' : 'fans'
 				
-				if(this.userInfo.fansJudge===0){
+				if(this.userInfo.fansJudge){
 					if(this.$store.state.attentionNum!==null){
-						this.$store.dispatch('incrementAttention')
+						this.$store.dispatch('decrementAttention')
 					}
 				}else{
 					if(this.$store.state.attentionNum!==null){
-						this.$store.dispatch('decrementAttention')
+						this.$store.dispatch('incrementAttention')
 					}
 				}
 				
 				const result = await this.$myRequest({
 					url: '/product/fansAction/' + flea_id + '/' + userId + '/' + this.type,
 				})
+				console.log("返回的结果为：",result.data)
 				this.userInfo.fansJudge = result.data
 			},
 			

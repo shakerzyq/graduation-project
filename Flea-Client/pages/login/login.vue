@@ -12,8 +12,6 @@
 		<view>
 			<view class="explain">点击登录即表明您已经阅读并同意<text>《跳蚤用户服务协议》</text></view>
 		</view>
-		
-		<button @click="gotest">ToTest</button>
 	</view>
 </template>
 

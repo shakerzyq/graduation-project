@@ -70,11 +70,14 @@ public interface MinePageMapper {
     @Select("select * from violate_order where complain_status=#{status} and (complain_userid=#{userId} or complained_userid=#{userId})")
     ArrayList<UserComplain> selectUserComplain(String userId,String status);
 
-    @Select("select * from violate_order where complain_id=#{complain_id}")
+    @Select("select * from violate_order where complain_status!=#{status} and (complain_userid=#{userId} or complained_userid=#{userId})")
+    ArrayList<UserComplain> selectUserComplainFinished(String userId, String status);
+
+    @Select("select * from violate_order where complain_id=#{complain_id} and complain_status=#{status}")
     UserComplain selectDetailComplain(String complain_id,String status);
 
-    @Select("select * from violate_order where complain_id=#{complain_id}")
-    UserComplainHistory selectHistoryDetailComplain(String complain_id,String status);
+    @Select("select * from violate_order where complain_id=#{complain_id} and complain_status=#{status}")
+    UserComplain selectHistoryDetailComplain(String complain_id,String status);
 
     @Delete("delete from violate_order where complain_id=#{complain_id}")
     Boolean deleteComplain(String complain_id);
@@ -82,7 +85,7 @@ public interface MinePageMapper {
     @Update("update user set user_icon=#{user.user_icon},nickname=#{user.nickname},weixin=#{user.weixin},self_introduction=#{user.self_introduction} where flea_id=#{user.flea_id}")
     Boolean updateUserInfo(@Param("user") User user);
 
-    @Select("select count(*) from tb_browse_log where user_id=#{user_id}")
+    @Select("select count(*) from browse_log where user_id=#{user_id}")
     Integer selectHistoryNum(String userid);
 
     @Select("select email from account where flea_id=#{userid}")

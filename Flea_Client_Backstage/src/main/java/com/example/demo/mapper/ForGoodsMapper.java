@@ -14,12 +14,12 @@ import java.util.List;
 @Mapper
 @Component
 public interface ForGoodsMapper {
-    @Insert("insert into products (product_id,merchant_id,product_title,product_des,quality,brand,atype,btype,ctype,old_price,now_price,photos,add_date,add_place" +
+    @Insert("insert into goods (product_id,merchant_id,product_title,product_des,quality,brand,atype,btype,ctype,old_price,now_price,photos,add_date,add_place" +
             ") values (#{goods.product_id},#{goods.merchant_id},#{goods.product_title},#{goods.product_des},#{goods.quality},#{goods.brand},#{goods.atype},#{goods.btype},#{goods.ctype},#{goods.old_price},#{goods.now_price},#{goods.photos},#{goods.add_date},#{goods.add_place})")
     Boolean InsertProduct(@Param("goods")Goods goods);
 
     //分页查询,商品信息
-    @Select("select product_id,merchant_id,product_des,quality,class_choice,old_price,now_price,photos from products " +
+    @Select("select product_id,merchant_id,product_des,quality,class_choice,old_price,now_price,photos from goods " +
             "limit #{start},#{end}")
     ArrayList<Goods> selectGoods(Integer start,Integer end);
 
@@ -32,7 +32,7 @@ public interface ForGoodsMapper {
     Integer selectFans(String merchantId, String fleaId);
 
     //查询商品信息
-    @Select("select * from products where product_id = #{goodsId}")
+    @Select("select * from goods where product_id = #{goodsId}")
     Goods slectGoodsByGoodsId(String goodsId);
 
     //查询商品的点赞信息
@@ -41,7 +41,7 @@ public interface ForGoodsMapper {
     LikeAndCollect selectLikeByGoodsId(String goodsId);
 
     //更新商品浏览量
-    @Update("update products set  views=views+1 where product_id=#{goodsId} ")
+    @Update("update goods set  views=views+1 where product_id=#{goodsId} ")
     public void updateGoodsViews(String goodsId);
 
     //关注用户
@@ -98,10 +98,10 @@ public interface ForGoodsMapper {
     String selectReportContent(String fleaId, String goodsId);
 
     //查询单个商品内容--用于管理商品功能
-    @Select("select * from products where product_id=#{goodsId}")
+    @Select("select * from goods where product_id=#{goodsId}")
     Goods selectGoodsByGoodsId(String goodsId);
 
-    @Update("update products set product_title=#{goods.product_title},product_des=#{goods.product_des}," +
+    @Update("update goods set product_title=#{goods.product_title},product_des=#{goods.product_des}," +
             "quality=#{goods.quality},atype=#{goods.atype},btype=#{goods.btype}" +
             ",ctype=#{goods.ctype},brand=#{goods.brand},old_price=#{goods.old_price},now_price=#{goods.now_price}," +
             "photos=#{goods.photos} where product_id=#{goods.product_id}")
@@ -112,7 +112,7 @@ public interface ForGoodsMapper {
      * @param goodsId
      * @return
      */
-    @Delete("delete from products where product_id=#{goodsId}")
+    @Delete("delete from goods where product_id=#{goodsId}")
     Boolean deleteGoodsInfo(String goodsId);
 
     @Delete("delete from comment where goods_id=#{goodsId}")

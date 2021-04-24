@@ -15,8 +15,9 @@
 				<view class="complan-type-status">
 					<view class="type" v-if="complain.complain_userid===flea_id">举报</view>
 					<view v-else>被举报</view>
-					<view class="status">{{complain.complain_status}}</view>
-					
+					<view class="status" v-if="complain.complain_status==='2'" style="color:yellow">处理中</view>
+					<view class="status" v-if="complain.complain_status==='0'" style="color:red">拒绝</view>
+					<view class="status" v-if="complain.complain_status==='1'" style="color:#00ff00">通过</view>
 				</view>
 			
 				<view v-if="complain.complain_userid===flea_id" class="buttons">
@@ -96,7 +97,8 @@
 					margin-right: 30rpx;
 				}
 				.status{
-					color: red;
+					width:160rpx;
+					text-align: right;
 				}
 				
 			}

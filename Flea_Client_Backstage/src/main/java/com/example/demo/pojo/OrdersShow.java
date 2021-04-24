@@ -23,6 +23,16 @@ public class OrdersShow {
     private String EvaluateContent;
     private String EvaluateLevel;
 
+    private String reportStatus;
+
+    public String getReportStatus() {
+        return reportStatus;
+    }
+
+    public void setReportStatus(String reportStatus) {
+        this.reportStatus = reportStatus;
+    }
+
     public String getMerchantId() {
         return merchantId;
     }

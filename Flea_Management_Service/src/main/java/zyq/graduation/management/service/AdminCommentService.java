@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author 周杨清
  * @date 2021/3/27 15:58
  */
-public interface CommentService {
+public interface AdminCommentService {
     ArrayList<CommentReport> getCommentReport(Integer page, Integer limit, String userId,String type);
 
     ArrayList<CommentReport> getAccomplishReports(Integer page,Integer limit,String userId,String status);

@@ -273,8 +273,9 @@
 				</view>
 				<view class="observer-right" v-else>
 					<view v-if="goodsUserInfo.status==='trading'">
-						<view v-if="isOrder" style="background-color: #fff;color: #808080;">您已下单</view>
-						<view v-else style="background-color: #fff;color: #808080;width:160rpx ;">别人已下单</view>
+						<view  style="background-color: #fff;color: #808080;">交易中</view>
+						<!-- <view v-if="isOrder" style="background-color: #fff;color: #808080;">您已下单</view>
+						<view v-else style="background-color: #fff;color: #808080;width:160rpx ;">别人已下单</view> -->
 					</view>
 					<view v-else>
 						<view style="background-color: #fff;color: #808080;">已售卖</view>

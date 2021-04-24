@@ -5,7 +5,7 @@
 				<image :src="user.userIcon" @click="goToPersonalCenter(user.userId)"></image>
 				<view class="name-credit">
 					<view class="user-name">{{user.userName}}</view>
-					<view class="user-credit">信誉值：{{user.userCredit}}</view>
+					<!-- <view class="user-credit">信誉值：{{user.userCredit}}</view> -->
 				</view>
 			</view>
 		</view>

@@ -372,7 +372,7 @@
 			uploadImage(filepath, index) {
 				if (filepath.indexOf('blob') >= 0) {
 					uni.uploadFile({
-						url: 'http://10.19.31.49:8083/register/upload/goods_photos',
+						url: 'http://127.0.0.1:8083/register/upload/goods_photos',
 						filePath: filepath,
 						name: 'file',
 						formData: {

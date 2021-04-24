@@ -2,7 +2,7 @@ package zyq.graduation.management.service.impl;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import zyq.graduation.management.service.LoginRegisterService;
+import zyq.graduation.management.service.AdminLoginRegisterService;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.io.IOException;
  * @date 2021/3/30 16:44
  */
 @Service
-public class ILoginRegisterService implements LoginRegisterService {
+public class IAdminLoginRegisterService implements AdminLoginRegisterService {
 
     private static String url="http://localhost:8091/test_images/";
 

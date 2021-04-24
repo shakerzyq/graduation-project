@@ -39,6 +39,14 @@
 					}
 				}
 			},
+			
+			//导航到商品详情页
+			goGoodsDetail(userId,goodsId){
+				console.log("跳转需要的id"+goodsId,userId)
+				uni.navigateTo({
+					url:'/pages/index/goods-detail?goodsId='+goodsId+'&'+'userId='+userId
+				})
+			},
 		}
 	}
 </script>

@@ -39,6 +39,7 @@
   </div>
 
   <script>
+    
     $(function () {
       layui.use('form', function () {
         var form = layui.form;
@@ -48,6 +49,8 @@
         //监听提交
 
         form.on('submit(login)', function (data) {
+          var url2='http://127.0.0.1:8082/loginRegister/adminLogin'
+          var targetIndex = 'index.html?account='
           // alert(888)
           // layer.msg(JSON.stringify(data.field),function(){
           //   console.log(data.field.username,"密码为："+data.field.password)
@@ -72,19 +75,27 @@
             account: data.field.username,
             password: data.field.password
           }
+
+          
+          if(obj.account.indexOf("super")!=-1){
+            console.log("hello world")
+            url2='http://127.0.0.1:8082/loginRegister/superLogin'
+            targetIndex='index-super.html?account='
+          }
+          console.log("url为："+url2)
           $.ajax({
-            url: 'http://127.0.0.1:8082/loginRegister/adminLogin',
+            url: url2,
             type: "POST",
             data: JSON.stringify(obj),
             contentType: "application/json; charset=utf-8",
             dataType: "json",
             success: function (res) {
-              
-              if(res){
+              console.log("返回的结果类型为"+res.code)
+              if(res.code===1){
                 layer.msg("success")
-                setTimeout(()=>{location.href='index.html'},2000)
+                setTimeout(()=>{location.href=targetIndex+obj.account},4000)
               }else{
-                layer.msg("账号或密码错误！")
+                layer.msg(res.msg)
               }
             },
             error : function(e){
@@ -93,6 +104,30 @@
                 layer.msg("请求失败！")
             }
           })
+          // setTimeout(()=>{
+          //   $.ajax({
+          //   url: url2,
+          //   type: "POST",
+          //   data: JSON.stringify(obj),
+          //   contentType: "application/json; charset=utf-8",
+          //   dataType: "json",
+          //   success: function (res) {
+              
+          //     if(res){
+          //       layer.msg("success")
+          //       setTimeout(()=>{location.href=targetIndex+obj.account},4000)
+          //     }else{
+          //       layer.msg("账号或密码错误！")
+          //     }
+          //   },
+          //   error : function(e){
+          //       console.log(e.status);
+          //       console.log(e.responseText);
+          //       layer.msg("请求失败！")
+          //   }
+          // })
+          // },500)
+          
           return false;
         });
       });

@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * @date 2021/3/22 18:04
  */
 @Mapper
-public interface OrderMapper {
+public interface AdminOrderMapper {
     @Select("select * from history_orders where order_id=#{orderId}")
     Order selectHistoryOrderByOrderId(String orderId);
 

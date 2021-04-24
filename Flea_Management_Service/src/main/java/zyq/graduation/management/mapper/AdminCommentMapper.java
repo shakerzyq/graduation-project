@@ -12,7 +12,7 @@ import java.util.ArrayList;
  * @date 2021/3/27 15:59
  */
 @Mapper
-public interface CommentMapper {
+public interface AdminCommentMapper {
     @Update("update violate_comment set status=#{status},end_time=now() where complain_id=#{complainId}")
     Boolean updataReportStatus(String complainId, Integer status);
 

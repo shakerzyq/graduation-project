@@ -73,10 +73,6 @@ public class IRegisterService implements RegisterService {
         //获取缓存中的验证码
         Jedis jedis = JedisPoolUtils.getJedis();
 
-        System.out.println("验证码是否正确");
-        System.out.println("authCode为"+authCode);
-        System.out.println("email:"+email);
-        System.out.println("redis："+jedis.get(email));
 
         if (authCode.equals(jedis.get(email))) {
             if (type.equals("login")){
@@ -124,20 +120,19 @@ public class IRegisterService implements RegisterService {
      * @return
      */
     @Override
-    public String registerUser(AccountUsers accountUsers) throws Exception{
+    public Boolean registerUser(AccountUsers accountUsers) throws Exception{
         //生成跳蚤ID
         String flea_id = accountUsers.getAccount().getPassword().substring(0,9);
         accountUsers.getUser().setFlea_id(flea_id);
         accountUsers.getAccount().setFlea_id(flea_id);
         System.out.println("md5密码为"+accountUsers.getAccount().getPassword());
         System.out.println("跳蚤id："+flea_id);
-        registerMapper.InsertAccount(accountUsers.getAccount());
-        registerMapper.InsertUser(accountUsers.getUser());
-        //将用户信息插入ES
-        esDataDao.insertUser(accountUsers.getUser());
-
-
-        return null;
+        if (registerMapper.InsertAccount(accountUsers.getAccount())&registerMapper.InsertUser(accountUsers.getUser())){
+            //将用户信息插入ES
+            esDataDao.insertUser(accountUsers.getUser());
+            return true;
+        }else
+            return false;
     }
 
     /**

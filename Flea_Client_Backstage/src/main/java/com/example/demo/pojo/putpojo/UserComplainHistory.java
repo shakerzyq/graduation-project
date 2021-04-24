@@ -18,6 +18,24 @@ public class UserComplainHistory {
     private String audit_result;
     private String audit_content;
     private String complain_status;
+    private String start_time;
+    private String end_time;
+
+    public String getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(String end_time) {
+        this.end_time = end_time;
+    }
+
+    public String getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(String start_time) {
+        this.start_time = start_time;
+    }
 
     public String getAudit_result() {
         return audit_result;

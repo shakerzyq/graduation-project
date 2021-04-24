@@ -20,6 +20,7 @@ import org.springframework.messaging.MessagingException;
  * @author 周杨清
  * @date 2021/2/24 14:04
  */
+/*
 @Slf4j
 @Configuration
 public class MqttInboundConfig {
@@ -58,3 +59,4 @@ public class MqttInboundConfig {
         };
     }
 }
+*/

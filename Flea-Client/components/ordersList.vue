@@ -22,7 +22,8 @@
 			<view class="order-action" v-if="dealType==='buy'">
 				<!-- 历史 -->
 				<view class="history-order" v-if="order.orderStatus==='交易完成'">
-					<view  class="order-report" @click="goToReport(order)">举报</view>
+					<view v-if="order.reportStatus===null||order.reportStatus.length===0||order.reportStatus==='0'"  class="order-report" @click="goToReport(order)">举报</view>
+					<view v-else  class="order-report" style="background-color: #999999;">已举报</view>
 					<view class="order-details" @click="goToOrderDetails(order.orderId,order.orderStatus)">详情</view>
 				</view>
 				<!-- 待处理 -->
@@ -40,8 +41,8 @@
 			<view class="order-action" v-else>
 				<!-- 历史 -->
 				<view class="history-order" v-if="order.orderStatus==='交易完成'">
-					
-					<view  class="order-report" @click="goToReport(order)">举报</view>
+					<view v-if="order.reportStatus===null||order.reportStatus.length===0"  class="order-report" @click="goToReport(order)">举报</view>
+					<view v-else  class="order-report" style="background-color: #999999;">已举报</view>
 					<view class="order-details" @click="goToOrderDetails(order.orderId,order.orderStatus)">详情</view>
 				</view>
 				<!-- <view v-if="order.orderStatus==='发起'?true:false " class="alter-order">修改订单</view> -->
@@ -232,6 +233,7 @@
 			.todo-order{
 				display: flex;
 				flex-direction: row;
+				color: #fff;
 			}
 			.order-details{
 				margin-left: 20rpx;

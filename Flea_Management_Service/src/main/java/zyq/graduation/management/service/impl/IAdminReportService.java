@@ -2,13 +2,13 @@ package zyq.graduation.management.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import zyq.graduation.management.mapper.GoodsMapper;
-import zyq.graduation.management.mapper.ReportMapper;
-import zyq.graduation.management.mapper.UserMapper;
+import zyq.graduation.management.mapper.AdminGoodsMapper;
+import zyq.graduation.management.mapper.AdminReportMapper;
+import zyq.graduation.management.mapper.AdminUserMapper;
 import zyq.graduation.management.pojo.Goods;
 import zyq.graduation.management.pojo.Report;
 import zyq.graduation.management.pojo.User;
-import zyq.graduation.management.service.ReportService;
+import zyq.graduation.management.service.AdminReportService;
 import zyq.graduation.management.util.SendEmailMessage;
 
 import java.util.ArrayList;
@@ -19,16 +19,16 @@ import java.util.ArrayList;
  */
 
 @Service
-public class IReportService implements ReportService {
+public class IAdminReportService implements AdminReportService {
 
     @Autowired
-    ReportMapper reportMapper;
+    AdminReportMapper adminReportMapper;
 
     @Autowired
-    UserMapper userMapper;
+    AdminUserMapper adminUserMapper;
 
     @Autowired
-    GoodsMapper goodsMapper;
+    AdminGoodsMapper adminGoodsMapper;
 
     @Autowired
     SendEmailMessage sendEmailMessage;
@@ -42,9 +42,9 @@ public class IReportService implements ReportService {
      */
     @Override
     public Boolean disposeReport(String type, String reportId, String content,String complain_userid,String flea_id,String goods_id) {
-        User user1 = userMapper.selectUser(flea_id);
-        User user2 = userMapper.selectUser(complain_userid);
-        Goods goods = goodsMapper.selectGoodsByGoodsId(goods_id);
+        User user1 = adminUserMapper.selectUser(flea_id);
+        User user2 = adminUserMapper.selectUser(complain_userid);
+        Goods goods = adminGoodsMapper.selectGoodsByGoodsId(goods_id);
         if(type.equals("1")){
             //查询被举报人email
             String content1 = "你发布的商品("+goods.getProduct_title()+")已被认定为违规(详细请看举报单)"+"已作出信誉积分扣除或封禁惩罚"+"管理员留言："+content;
@@ -52,14 +52,14 @@ public class IReportService implements ReportService {
             //查询举报人email
             String content2 = "你举报的商品("+goods.getProduct_title()+")已被认定为违规(详细请看举报单)"+"该用户("+user1.getNickname()+")已被进行信誉积分扣除或封禁惩罚，如果对方没能执行要求请与管理员联系"+"管理员留言："+content;
             sendEmailMessage.sendMessage(user2.getEmail(),content2);
-            return reportMapper.receiveReport(reportId,content);
+            return adminReportMapper.receiveReport(reportId,content);
         }else{
             String content1 = "你发布的商品("+goods.getProduct_title()+")没有违规，管理员留言："+content;
             sendEmailMessage.sendMessage(user1.getEmail(),content1);
             //查询举报人email
             String content2 = "你举报的商品("+goods.getProduct_title()+")没有违规，如有问题可以管理员联系，管理员留言："+content;
             sendEmailMessage.sendMessage(user2.getEmail(),content2);
-            return reportMapper.refuseReport(reportId,content);
+            return adminReportMapper.refuseReport(reportId,content);
         }
     }
 
@@ -96,29 +96,29 @@ public class IReportService implements ReportService {
         System.out.println("result为："+result);
         switch (result){
             case "000"://买方举报、没有goodsid和fleaid
-                return reportMapper.selectReport000_100(page,limit,0+"");
+                return adminReportMapper.selectReport000_100(page,limit,0+"");
             case "001"://买方举报、通过用户id查询
-                return reportMapper.selectReport001(page,limit,0+"", flea_id);
+                return adminReportMapper.selectReport001(page,limit,0+"", flea_id);
             case "010"://买方举报、通过商品id查询
-                return reportMapper.selectReport010(page,limit,0+"", goodsId);
+                return adminReportMapper.selectReport010(page,limit,0+"", goodsId);
             case "011"://买方举报、通过用户id查询、商品id查询
-                return reportMapper.selectReport011(page,limit,0+"",goodsId, flea_id);
+                return adminReportMapper.selectReport011(page,limit,0+"",goodsId, flea_id);
             case "100"://卖方举报、没有goodsid和fleaid
-                return reportMapper.selectReport000_100(page,limit,1+"");
+                return adminReportMapper.selectReport000_100(page,limit,1+"");
             case "101"://卖方举报、输入fleaid
-                return reportMapper.selectReport001(page,limit,1+"", flea_id);
+                return adminReportMapper.selectReport001(page,limit,1+"", flea_id);
             case "110"://卖方举报、输入goodsid
-                return reportMapper.selectReport010(page,limit,1+"", goodsId);
+                return adminReportMapper.selectReport010(page,limit,1+"", goodsId);
             case "111"://卖方举报、输入goodsid、输入fleaid
-                return reportMapper.selectReport011(page,limit,1+"",goodsId, flea_id);
+                return adminReportMapper.selectReport011(page,limit,1+"",goodsId, flea_id);
             case "200"://综合查询，没有条件
-                return reportMapper.selectReport(page,limit);
+                return adminReportMapper.selectReport(page,limit);
             case "201"://通过用户id查询
-                return reportMapper.selectReport201(page,limit,flea_id);
+                return adminReportMapper.selectReport201(page,limit,flea_id);
             case "210"://通过商品id查询
-                return reportMapper.selectReport210(page,limit,goodsId);
+                return adminReportMapper.selectReport210(page,limit,goodsId);
             case "211"://通过商品id查询、用户id查询
-                return reportMapper.selectReport211(page,limit,goodsId, flea_id);
+                return adminReportMapper.selectReport211(page,limit,goodsId, flea_id);
         }
         return reports;
     }
@@ -137,18 +137,18 @@ public class IReportService implements ReportService {
         String type=reportType+""+resultType;
         switch(type){
             case "22"://不分类
-                return reportMapper.selectAccomplishReport(page,limit);
+                return adminReportMapper.selectAccomplishReport(page,limit);
             case "12":
             case "02":
-                return reportMapper.selectAccomplishReport1(page,limit,reportType);
+                return adminReportMapper.selectAccomplishReport1(page,limit,reportType);
             case "21":
             case "20":
-                return reportMapper.selectAccomplishReport2(page,limit,resultType);
+                return adminReportMapper.selectAccomplishReport2(page,limit,resultType);
             case "11":
             case "10":
             case "01":
             case "00":
-                return reportMapper.selectAccomplishReport3(page,limit,reportType,resultType);
+                return adminReportMapper.selectAccomplishReport3(page,limit,reportType,resultType);
             default:
                 return null;
         }

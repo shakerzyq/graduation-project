@@ -2,18 +2,18 @@ package zyq.graduation.management.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import zyq.graduation.management.mapper.UserMapper;
-import zyq.graduation.management.service.UserService;
+import zyq.graduation.management.mapper.AdminUserMapper;
+import zyq.graduation.management.service.AdminUserService;
 
 /**
  * @author 周杨清
  * @date 2021/3/23 18:42
  */
 @Service
-public class IUserService implements UserService {
+public class IAdminUserService implements AdminUserService {
 
     @Autowired
-    UserMapper userMapper;
+    AdminUserMapper adminUserMapper;
 
     /**
      * 暂时封禁用户
@@ -26,6 +26,6 @@ public class IUserService implements UserService {
 //        86400000
         long deadline = System.currentTimeMillis()+day*86400000;//计算截止日期
         //插入截止日期
-        return userMapper.updateDeadline(deadline,flea_id);
+        return adminUserMapper.updateDeadline(deadline,flea_id);
     }
 }

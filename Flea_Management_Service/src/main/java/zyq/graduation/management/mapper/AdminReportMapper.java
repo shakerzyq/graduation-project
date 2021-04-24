@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * @date 2021/3/20 3:45
  */
 @Mapper
-public interface ReportMapper {
+public interface AdminReportMapper {
 
     @Select("select * from violate_order where complain_status=2 limit #{page},#{limit}")
     ArrayList<Report> selectReport(Integer page, Integer limit);

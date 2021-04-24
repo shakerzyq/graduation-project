@@ -152,7 +152,7 @@
 				callBack && callBack() //通过&&判断，有callback就调用，没有就不调用
 			},
 			
-			//导航到商品详情页
+			 //导航到商品详情页
 			goGoodsDetail(userId,goodsId){
 				console.log("跳转需要的id"+goodsId,userId)
 				uni.navigateTo({
@@ -168,7 +168,7 @@
 				// 创建一个this.socketTask对象【发送、接收、关闭socket都由这个对象操作】
 				this.socketTask = uni.connectSocket({
 					// 【非常重要】必须确保你的服务器是成功的,如果是手机测试千万别使用ws://127.0.0.1:9099【特别容易犯的错误】
-					url: "ws://192.168.43.199:8081/login/"+this.flea_id+"/"+this.locken,
+					url: "ws://127.0.0.1:8081/login/"+this.flea_id+"/"+this.locken,
 					success(data) {
 						console.log("websocket连接成功");
 					},

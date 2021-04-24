@@ -282,10 +282,13 @@
                             layer.msg("该学校未开启服务")
                         } else {
                             var i = 0;
+                            console.log("data为："+data)
+                            
                             for (i = 0; i < data.length; i++) {
                                 // <option value="浙江">浙江</option>
                                 // "<option value="+data[i]+">"+data[i]+"</option>"
-                                console.log(data[i])
+                                
+                                console.log("hello",data[i])
                                 $("#area").append("<option value=" + data[i] + ">" + data[i] + "</option>")
                                 renderForm()
                             }

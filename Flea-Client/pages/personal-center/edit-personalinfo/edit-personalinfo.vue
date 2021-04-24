@@ -116,7 +116,7 @@
 			// 上传图片到服务器
 			async uploadImage(filepath) {
 				uni.uploadFile({
-					url: 'http://192.168.43.199:8083/register/upload/user_photos',
+					url: 'http://127.0.0.1:8083/register/upload/user_photos',
 					filePath: filepath,
 					name: 'file',
 					formData: {

@@ -41,7 +41,7 @@ import java.util.Map;
  * @date 2021/3/4 20:38
  */
 @Component
-public class ESDataDao {
+public class AdminESDataDao {
 
     @Autowired
     private RestHighLevelClient client;

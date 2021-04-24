@@ -57,7 +57,7 @@
 				console.log("登录返回的值为"+result.data)
 				if(result.data!=null&&result.data.length===9){
 						uni.hideLoading()
-						this.setStorage()
+						
 						try {
 						    uni.setStorageSync('flea_id', result.data);
 							

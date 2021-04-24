@@ -11,7 +11,7 @@ public interface RegisterService {
     public String verifyCode(String authCode,String email,String type);
     public String upload(MultipartFile file,String type);
 
-    public String registerUser(AccountUsers accountUsers) throws Exception;
+    public Boolean registerUser(AccountUsers accountUsers) throws Exception;
 
     public Boolean verifyEmail(String email);
 }

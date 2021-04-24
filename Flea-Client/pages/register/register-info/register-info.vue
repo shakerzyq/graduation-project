@@ -121,7 +121,7 @@
 			// 上传图片到服务器
 			uploadImage(filepath,type) {
 				uni.uploadFile({
-					url: 'http://10.19.31.49:8083/register/upload/user_photos',
+					url: 'http://127.0.0.1:8083/register/upload/user_photos',
 					filePath: filepath,
 					name: 'file',
 					formData: {

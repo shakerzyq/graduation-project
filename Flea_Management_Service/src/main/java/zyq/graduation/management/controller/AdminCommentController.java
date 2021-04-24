@@ -1,13 +1,11 @@
 package zyq.graduation.management.controller;
 
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import zyq.graduation.management.mapper.CommentMapper;
+import zyq.graduation.management.mapper.AdminCommentMapper;
 import zyq.graduation.management.pojo.CommentReport;
-import zyq.graduation.management.pojo.ReportReturn;
 import zyq.graduation.management.pojo.ReturnClass;
-import zyq.graduation.management.service.CommentService;
+import zyq.graduation.management.service.AdminCommentService;
 
 import javax.websocket.server.PathParam;
 import java.util.ArrayList;
@@ -18,13 +16,13 @@ import java.util.ArrayList;
  */
 @RestController
 @RequestMapping("/comment")
-public class CommentController {
+public class AdminCommentController {
 
     @Autowired
-    CommentMapper commentMapper;
+    AdminCommentMapper adminCommentMapper;
 
     @Autowired
-    CommentService commentService;
+    AdminCommentService adminCommentService;
 
     /**
      * 查询所有未处理的评论举报单
@@ -40,7 +38,7 @@ public class CommentController {
             , @PathParam("userId") String userId
             , @PathParam("type") String type){
         System.out.println("page:"+page+"limit:"+limit+" type:"+type);
-        ArrayList<CommentReport> commentReport = commentService.getCommentReport(page-1,limit,userId,type);
+        ArrayList<CommentReport> commentReport = adminCommentService.getCommentReport(page-1,limit,userId,type);
         System.out.println(commentReport);
         return new ReturnClass<>(0,"",commentReport.size(),commentReport);
     }
@@ -55,7 +53,7 @@ public class CommentController {
     @GetMapping("/disposeReport/{complainId}/{status}")
     public Boolean disposeReport(@PathVariable("complainId") String complainId,@PathVariable("status") Integer status){
         System.out.println("complainId:"+complainId+"status:"+status);
-        return commentMapper.updataReportStatus(complainId,status);
+        return adminCommentMapper.updataReportStatus(complainId,status);
     }
 
     /**
@@ -72,7 +70,7 @@ public class CommentController {
             ,@PathParam("userId") String userId
             , @PathParam("status") String status){
         System.out.println("userId:"+userId+"status:"+status);
-        ArrayList<CommentReport> commentReport = commentService.getAccomplishReports(page-1,limit,userId,status);
+        ArrayList<CommentReport> commentReport = adminCommentService.getAccomplishReports(page-1,limit,userId,status);
         return new ReturnClass<>(0,"",commentReport.size(),commentReport);
     }
 

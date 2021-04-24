@@ -17,7 +17,34 @@ public class UserComplain {
     private Integer complain_type;
     private String complain_photos;
     private String complain_status;
+    private String start_time;
+    private String end_time;
+    private String audit_result;
     private String email;
+
+    public String getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(String start_time) {
+        this.start_time = start_time;
+    }
+
+    public String getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(String end_time) {
+        this.end_time = end_time;
+    }
+
+    public String getAudit_result() {
+        return audit_result;
+    }
+
+    public void setAudit_result(String audit_result) {
+        this.audit_result = audit_result;
+    }
 
     public String getOrder_id() {
         return order_id;

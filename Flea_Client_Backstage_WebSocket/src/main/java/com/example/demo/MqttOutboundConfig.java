@@ -18,6 +18,7 @@ import org.springframework.messaging.MessageHandler;
  * @author 周杨清
  * @date 2021/2/24 14:08
  */
+/*
 @Configuration
 public class MqttOutboundConfig {
     @Autowired
@@ -49,3 +50,4 @@ public class MqttOutboundConfig {
         return new DirectChannel();
     }
 }
+*/
