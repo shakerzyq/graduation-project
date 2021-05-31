@@ -19,6 +19,7 @@ public class User implements Serializable {
     private String stu_num;
     private String province;
     private String college;
+    private String area;
     private String academy;
     private String grade;
     private String user_icon;
@@ -59,6 +60,14 @@ public class User implements Serializable {
     public void setDeadline(String deadline) {
 
         this.deadline = a.format(new Date(Long.parseLong(deadline)));
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public String getFlea_id() {

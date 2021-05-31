@@ -1,10 +1,10 @@
 <template>
 	<view class="login_box">
 		<view class="textarea">
-			<input class="input-account" placeholder="请输入账号" focus v-model="account.email"/>
-			<input class="input-password" id="a" placeholder="请输入密码" password="true" v-model="account.password"/>
-			<view><text @click="findPassword" >忘记密码?</text></view>
-			<button @click="goToIndex">登录</button>
+			<input class="input-account" placeholder="请输入账号" focus v-model="account.email" />
+			<input class="input-password" id="a" placeholder="请输入密码" password="true" v-model="account.password" />
+			<view><text @click="findPassword">忘记密码?</text></view>
+			<button @click="loginFlow">登录</button>
 		</view>
 		<!-- <input class="uni-input-input" placeholder="test"/> -->
 	</view>
@@ -14,12 +14,13 @@
 	export default {
 		data() {
 			return {
-				account:{
-					flea_id:null,
-					email:null,
-					password:null,
-					status:null,
-				}
+				account: {
+					flea_id: null,
+					email: null,
+					password: null,
+					status: null,
+				},
+				serviceStatus: true,
 			}
 		},
 		methods: {
@@ -28,45 +29,148 @@
 					url: '/pages/login/password-login/forget-password/forget-password'
 				})
 			},
-			async goToIndex(){
+			loginFlow() {
+				this.goToIndex().then(result => {
+					// if (result) {
+					console.log("hello", result)
+					if (result != null && result.length === 9) {
+						uni.hideLoading()
+						try {
+							this.account.flea_id = result;
+							uni.setStorageSync('flea_id', result);
+							console.log("存储了flea_id" + result)
+
+						} catch (e) {
+							// error
+						}
+						this.getCollegeArea(result).then(result2 => {
+							console.log("hellow", result2)
+							this.inquireServiceStatus(result2).then(result3 => {
+								console.log("res3為", result3)
+								if (result3) {
+									uni.reLaunch({
+										url: '/pages/index/index'
+									})
+								} else {
+									uni.showToast({
+										icon: 'none',
+										title: "该校区已关闭服务",
+										duration: 3000
+									})
+								}
+							})
+						});
+					} else {
+						uni.showToast({
+							title: "账号或密码错误",
+							icon: "none",
+							duration: 3000
+						})
+					}
+
+					// } else {
+					// 	uni.showToast({
+					// 		title: "账号或密码错误",
+					// 		icon: "none",
+					// 		duration: 3000
+					// 	})
+					// }
+				})
+			},
+			async goToIndex() {
 				//this.setStorageAsync()
 				uni.showLoading({
-					title:"登录中"
+					title: "登录中"
 				})
-				
-				const result =await this.$myRequest({
-					url:'/login/pwdlogin',
-					data:{
-						email:this.account.email,
-						password:this.account.password
-						
+
+				const result = await this.$myRequest({
+					url: '/login/pwdlogin',
+					data: {
+						email: this.account.email,
+						password: this.account.password
+
 					},
-					method:'POST',
-					
+					method: 'POST',
+
 				})
-				
-				if(result.data!=null&&result.data.length===9){
-					uni.hideLoading()
-					try {
-					    uni.setStorageSync('flea_id', result.data);
-						console.log("存储了flea_id"+result.data)
-						
-					} catch (e) {
-					    // error
-					}
-					uni.reLaunch({
-						url: '/pages/index/index'
-					})
-				}else{
-					uni.showToast({
-						title:"账号或密码错误",
-						icon:"none",
-						duration:3000
-					})
-				}
-				
-				
+				return Promise.resolve(result.data);
+				// if (result.data != null && result.data.length === 9) {
+				// 	uni.hideLoading()
+				// 	try {
+				// 		this.account.flea_id = result.data;
+				// 		uni.setStorageSync('flea_id', result.data);
+				// 		console.log("存储了flea_id" + result.data)
+
+				// 	} catch (e) {
+				// 		// error
+				// 	}
+				// 	return Promise.resolve(result.data);
+				// } else {
+
+				// }
+
+
+				// if(result.data!=null&&result.data.length===9){
+				// 	uni.hideLoading()
+				// 	try {
+				// 		this.account.flea_id=result.data;
+				// 	    uni.setStorageSync('flea_id', result.data);
+				// 		console.log("存储了flea_id"+result.data)
+
+				// 	} catch (e) {
+				// 	    // error
+				// 	}
+
+				// 	this.getCollegeArea();
+				// 	this.inquireServiceStatus(this.$store.state.addPlace);
+				// 	if(this.serviceStatus===true){
+				// 		uni.reLaunch({
+				// 			url: '/pages/index/index'
+				// 		})
+				// 	}else{
+				// 		uni.showToast({
+				// 			icon:'none',
+				// 			title:"该校区已关闭服务",
+				// 			duration:3000
+				// 		})
+				// 	}
+
+				// }else{
+				// 	uni.showToast({
+				// 		title:"账号或密码错误",
+				// 		icon:"none",
+				// 		duration:3000
+				// 	})
+				// }
+
+
 			},
+			async getCollegeArea(userId) {
+				console.log("userId为：", userId)
+				const result = await this.$myRequest({
+					url: "/product/getAddPlace/" + userId
+				})
+				console.log("dizhiwei:", result.data)
+				this.$store.state.addPlace = result.data;
+				console.log("dizhiwei2:", this.$store.state.addPlace)
+				if (result.data != null) {
+					return Promise.resolve(result.data);
+				} else {
+
+				}
+			},
+			async inquireServiceStatus(address) {
+				console.log("address为：", address)
+				const result = await this.$myRequest({
+					url: "/login/inquireServiceStatus/" + address
+				})
+				this.serviceStatus = result.data
+				if (result) {
+					return Promise.resolve(result.data);
+				} else {
+
+				}
+			}
 			/* setStorageAsync() {
 				plus.storage.setItemAsync("login_mark", true, function(){
 					console.log("setItemAsync success");

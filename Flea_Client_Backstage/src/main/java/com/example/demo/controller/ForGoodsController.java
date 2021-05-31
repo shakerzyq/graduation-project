@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * @author 周杨清
@@ -94,11 +95,15 @@ public class ForGoodsController {
      * @return
      */
     @CrossOrigin(origins = "*",maxAge = 3600)
-    @GetMapping("/getgoodslist/{pagenum}/{flea_id}/{addPlace}")
-    public ArrayList<GoodsIndex> getGoodsForIndex(@PathVariable("pagenum")String pagenum, @PathVariable("flea_id") String flea_id,@PathVariable("addPlace") String addPlace){
-        System.out.println("获取跳蚤id为："+flea_id+" pagenum为："+pagenum+" 地址为："+addPlace);
+    @GetMapping("/getgoodslist/{pagenum}/{flea_id}/{addPlace}/{type}")
+    public ArrayList<GoodsIndex> getGoodsForIndex(
+            @PathVariable("pagenum")String pagenum,
+            @PathVariable("flea_id") String flea_id,
+            @PathVariable("addPlace") String addPlace,
+            @PathVariable("type") String type){
+        System.out.println("获取跳蚤id为："+flea_id+" pagenum为："+pagenum+" 地址为："+addPlace+"type为："+type);
         //获取所有商品
-        ArrayList<GoodsIndex> result = iForGoodsService.s_getGoodsForIndex(((Integer.parseInt(pagenum)-1)*8),8,"dead","freezing",addPlace);
+        ArrayList<GoodsIndex> result = iForGoodsService.s_getGoodsForIndex(((Integer.parseInt(pagenum)-1)*8),8,"dead","freezing",addPlace,type);
         System.out.println("输出结果：");
         System.out.println(result);
         return result;
@@ -131,7 +136,6 @@ public class ForGoodsController {
     @GetMapping("/fansAction/{flea_id}/{merchant_id}/{type}")
     public Boolean fansAction(@PathVariable("flea_id") String flea_id,@PathVariable("merchant_id") String merchant_id,@PathVariable("type") String type) {
         System.out.println("feal_id:"+flea_id+" merchant_id"+merchant_id+" type:"+type);
-
         return iForGoodsService.s_fansAction(flea_id, merchant_id, type) == 1;
     }
 
@@ -193,9 +197,18 @@ public class ForGoodsController {
         System.out.println("收到的userId为："+userid+" 收到的goodsId为："+goodsId);
         return iForGoodsService.s_judgeGoodsToUser(userid,goodsId);
     }
+
+    /**
+     * 获取商品添加地点
+     * @param userId
+     * @return
+     */
     @CrossOrigin(origins = "*",maxAge = 3600)
     @GetMapping("/getAddPlace/{userId}")
     public String getAddPlace(@PathVariable("userId") String userId){
-        return forGoodsMapper.selectCollegeAreas(userId);
+        System.out.println("获取地址的id为："+userId);
+        String s = forGoodsMapper.selectCollegeAreas(userId);
+        System.out.println("获取到的地址为："+s);
+        return s;
     }
 }

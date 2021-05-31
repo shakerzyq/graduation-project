@@ -50,8 +50,8 @@
 	
 		<view class="content">
 			<view class="title">
-				<view class="trading" :class="tradingClass" @click="getGoodsInfomiddleware('living')">上架中{{userInfo.tradingNum}}</view>
-				<view class="sold" :class="soldClass" @click="getGoodsInfomiddleware('dead')">成交{{userInfo.deadNum}}</view>
+				<view  :class="tradingClass" @click="getGoodsInfomiddleware('living')">上架中{{userInfo.tradingNum}}</view>
+				<view  :class="soldClass" @click="getGoodsInfomiddleware('dead')">成交{{userInfo.deadNum}}</view>
 			</view>
 			
 			<goodsList v-if="goods.length>0" @goodsItemClick="goGoodsDetail" :goodsa="goodsa" :goodsb="goodsb"></goodsList>

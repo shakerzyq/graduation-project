@@ -20,6 +20,15 @@ public class ESGoods {
     private Integer likesNum;//喜欢数
     private String addPlace;//发布地点
     private String status;//订单状态
+    private Long addTime;
+
+    public Long getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Long addTime) {
+        this.addTime = addTime;
+    }
 
     public String getAddPlace() {
         return addPlace;

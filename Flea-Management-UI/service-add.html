@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.2</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+        content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <style>
+        .zoneinfo{
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body class="zoneinfo">
+    <form class="layui-form " action="">
+
+        <div class="layui-form-item ">
+            <label class="layui-form-label" onclick="console.log('world')">地址</label>
+            <div class="layui-input-inline">
+                <select id="province" name="province" lay-verify="required" lay-filter="province" lay-search>
+                    <option value="">请选择省份</option>
+                    <option value="安徽">安徽</option>
+                    <option value="北京">北京</option>
+                    <option value="重庆">重庆</option>
+                    <option value="福建">福建</option>
+                    <option value="广东">广东</option>
+                    <option value="甘肃">甘肃</option>
+                    <option value="广西">广西</option>
+                    <option value="贵州">贵州</option>
+                    <option value="河北">河北</option>
+                    <option value="黑龙江">黑龙江</option>
+                    <option value="河南">河南</option>
+                    <option value="海南">海南</option>
+                    <option value="湖北">湖北</option>
+                    <option value="湖南">湖南</option>
+                    <option value="吉林">吉林</option>
+                    <option value="江苏">江苏</option>
+                    <option value="江西">江西</option>
+                    <option value="辽宁">辽宁</option>
+                    <option value="宁夏">宁夏</option>
+                    <option value="内蒙古">内蒙古</option>
+                    <option value="青海">青海</option>
+                    <option value="山东">山东</option>
+                    <option value="上海">上海</option>
+                    <option value="陕西">陕西</option>
+                    <option value="山西">山西</option>
+                    <option value="天津">天津</option>
+                    <option value="四川">四川</option>
+                    <option value="新疆">新疆</option>
+                    <option value="西藏">西藏</option>
+                    <option value="云南">云南</option>
+                    <option value="浙江">浙江</option>
+                </select>
+            </div>
+        </div>
+
+
+
+            <div class="layui-form-item">
+                <label class="layui-form-label">学校</label>
+                <div class="layui-input-inline">
+                    <select id="college" name="college" lay-verify="required" lay-filter="college" lay-search>
+                        <option value="">请选择学校</option>
+                    </select>
+                </div>
+
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">校区</label>
+                <div class="layui-input-inline">
+                    <select id="area" name="area"  lay-filter="area" lay-search>
+                        <option value="">已开放校区</option>
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">添加校区</label>
+                <div class="layui-input-inline">
+                    <input id="inputarea" type="text" required lay-verify="required" name="inputarea" placeholder="请输入校区名"
+                                    autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <button class="layui-btn" lay-submit lay-filter="formDemo">立即提交</button>
+                    <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                </div>
+            </div>
+    </form>
+    <script>
+
+        $(() => {
+            $('#province').change(() => {
+                console.log($('#province').val());
+            });
+        });
+
+    </script>
+</body>
+<script>
+
+    layui.use('upload', function () {
+        var upload = layui.upload;
+
+        //执行实例
+        var uploadInst = upload.render({
+            elem: '#uploadPicture' //绑定元素
+            , url: 'http://127.0.0.1:8082/loginRegister/upload/admin_photo' //上传接口
+            , done: function (res) {
+                console.log("图片路径为" + res.data)
+                $("#uploadHid").val(res.data)
+                //上传完毕回调
+            }
+            , error: function () {
+                //请求异常回调
+            }
+        });
+    });
+
+
+    layui.use(['laydate', 'form'],
+        function () {
+            var laydate = layui.laydate;
+            var form = layui.form;
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#start' //指定元素
+            });
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#end' //指定元素
+            });
+
+            form.on('select(province)',
+                function (data) {
+                    console.log("hello", data.value)
+                    $("#college").empty();
+                    $.get('http://127.0.0.1:8082/manageServicedZone/getCollegesOfProvince/' + data.value, function (data1, status) {
+                        // console.log(data)
+                        var i = 0;
+                        for (i = 0; i < data1.length; i++) {
+                            // <option value="浙江">浙江</option>
+                            // "<option value="+data[i]+">"+data[i]+"</option>"
+                            console.log(data1[i])
+                            $("#college").append("<option value=" + data1[i] + ">" + data1[i] + "</option>")
+                            $("#college").first().attr("selected", true);
+
+                            renderForm()
+
+                        }
+                        $.get('http://127.0.0.1:8082/loginRegister/selectSchoolArea/' + data.value, function (data, status) {
+                            // console.log(data)
+                            if (data === null || data.length === 0) {
+                                layer.msg("该学校未开启服务")
+                            } else {
+                                var i = 0;
+                                console.log("data为：" + data)
+
+                                for (i = 0; i < data.length; i++) {
+                                    // <option value="浙江">浙江</option>
+                                    // "<option value="+data[i]+">"+data[i]+"</option>"
+
+                                    console.log("hello", data[i])
+                                    $("#area").append("<option value=" + data[i] + ">" + data[i] + "</option>")
+                                    renderForm()
+                                }
+                            }
+
+                        })
+                    })
+                });
+
+            form.on('select(college)',
+                function (data) {
+                    console.log("hello", data.value)
+                    $("#area").empty();
+                    $.get('http://127.0.0.1:8082/loginRegister/selectSchoolArea/' + data.value, function (data, status) {
+                        // console.log(data)
+                        if (data === null || data.length === 0) {
+                            layer.msg("该学校未开启服务")
+                        } else {
+                            var i = 0;
+                            console.log("data为：" + data)
+
+                            for (i = 0; i < data.length; i++) {
+                                // <option value="浙江">浙江</option>
+                                // "<option value="+data[i]+">"+data[i]+"</option>"
+
+                                console.log("hello", data[i])
+                                $("#area").append("<option value=" + data[i] + ">" + data[i] + "</option>")
+                                renderForm()
+                            }
+                        }
+
+                    })
+                });
+            form.on('submit(formDemo)', function (data) {
+                console.log("hello world",data.field.inputarea)
+                var obj = {
+                    province: data.field.province,
+                    college: data.field.college,
+                    area: data.field.inputarea,
+                }
+              
+                $.ajax({
+                    url: 'http://127.0.0.1:8082/manageServicedZone/addServeZone',
+                    type: "POST",
+                    data: JSON.stringify(obj),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (res) {
+                        if (res.code === true) {
+                            layer.msg("已经添加了服务院校", { time: 3000 })
+                            setTimeout(() => {
+                                var index = parent.layer.getFrameIndex(window.name);
+                                parent.layer.close(index);
+                            }, 3000)
+
+                        } else {
+                            layer.msg(res.msg)
+                        }
+                    },
+                    error: function (e) {
+                        console.log(e.status);
+                        console.log(e.responseText);
+                        layer.msg("请求失败！")
+                    }
+                })
+                return false;
+            });
+        });
+
+    function renderForm() {
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
+        });
+    }
+
+    /*用户-停用*/
+    function member_stop(obj, id) {
+        layer.confirm('确认要停用吗？',
+            function (index) {
+
+                if ($(obj).attr('title') == '启用') {
+
+                    //发异步把用户状态进行更改
+                    $(obj).attr('title', '停用');
+                    $(obj).find('i').html('&#xe62f;');
+
+                    $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                    layer.msg('已停用!', {
+                        icon: 5,
+                        time: 1000
+                    });
+
+                } else {
+                    $(obj).attr('title', '启用');
+                    $(obj).find('i').html('&#xe601;');
+
+                    $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                    layer.msg('已启用!', {
+                        icon: 5,
+                        time: 1000
+                    });
+                }
+
+            });
+    }
+
+    /*用户-删除*/
+    function member_del(obj, id) {
+        layer.confirm('确认要删除吗？',
+            function (index) {
+                //发异步删除数据
+                $(obj).parents("tr").remove();
+                layer.msg('已删除!', {
+                    icon: 1,
+                    time: 1000
+                });
+            });
+    }
+
+    function delAll(argument) {
+
+        var data = tableCheck.getData();
+
+        layer.confirm('确认要删除吗？' + data,
+            function (index) {
+                //捉到所有被选中的，发异步进行删除
+                layer.msg('删除成功', {
+                    icon: 1
+                });
+                $(".layui-form-checked").not('.header').parents('tr').remove();
+            });
+    }</script>
+
+</html>

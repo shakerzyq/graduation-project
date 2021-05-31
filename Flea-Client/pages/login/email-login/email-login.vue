@@ -28,6 +28,7 @@
 					type:'login',
 					detection:'该邮箱没有注册',
 				},
+				serviceStatus:false
 			}
 		},
 		
@@ -64,9 +65,20 @@
 						} catch (e) {
 						    // error
 						}
-						uni.reLaunch({
-							url: '/pages/index/index'
-						})
+						this.getCollegeArea();
+						this.inquireServiceStatus(this.$store.state.addPlace);
+						if(this.serviceStatus==true){
+							uni.reLaunch({
+								url: '/pages/index/index'
+							})
+						}else{
+							uni.showToast({
+								icon:'none',
+								title:"该校区已关闭服务",
+								duration:3000
+							})
+						}
+						
 					}else{
 						uni.showToast({
 							icon:'none',
@@ -75,6 +87,20 @@
 						})
 					}
 			},	
+			async getCollegeArea(){
+				const result = await this.$myRequest({
+					url:"/product/getAddPlace/"+this.flea_id
+				})
+				console.log("dizhiwei:",result.data)
+				this.$store.state.addPlace=result.data;
+				console.log("dizhiwei2:",this.$store.state.addPlace)
+			},
+			async inquireServiceStatus(address){
+				const result = await this.$myRequest({
+					url:"/login/inquireServiceStatus/"+address
+				})
+				this.serviceStatus=result.data
+			}
 			/* setStorage() {
 				uni.setStorage({
 					key: 'login_mark',
@@ -91,6 +117,9 @@
 				this.auth_code=e.auth_code
 				this.button_judge = e.button_judge
 			})
+			
+			//查询该校区服务是否关闭
+			
 			
 		},
 		onUnload() {

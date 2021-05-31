@@ -21,7 +21,7 @@ public interface AdminLoginRegisterMapper {
     ArrayList<String> selectCollegeByProvince(String province);
 
     @Select("select area from service_area where college=#{college}")
-    String selectAreaByCollege(String college);
+    ArrayList<String> selectAreaByCollege(String college);
 
     @Insert("insert into admin_general (uuid,name,stu_num,account,password,weixin,picture,province,college,area,status) " +
             "values (#{uuid},#{name},#{stu_num},#{account},#{password},#{weixin},#{picture},#{province},#{college},#{area},3)")
@@ -36,15 +36,9 @@ public interface AdminLoginRegisterMapper {
     @Select("select count(*) from admin_super where account=#{account} and password=#{password}")
     Integer selectSuperAdmin(AdminSuper admin);
 
-    @Select("select * from admin_general where status='3' limit #{page},#{limit}")
-    ArrayList<AdminGeneral> selectUncheckedInfo(int page, Integer limit);
 
-    @Update("update admin_general set status=0 where uuid=#{id}")
-    Boolean updateAdminStatus(String id);
 
-    @Delete("delete from admin_general where uuid=#{id}")
-    Boolean deleteAdmin(String id);
 
-    @Select("select * from admin_general where status!='3' limit #{page},#{limit}")
-    ArrayList<AdminGeneral> selectCheckedInfo(int page, Integer limit);
+
+
 }

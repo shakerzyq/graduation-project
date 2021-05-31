@@ -77,11 +77,11 @@
 </body>
 
 <script type="text/html" id="complainuserinfo">
-<span class="layui-table-link" lay-event="todetail">{{d.complain_userid}}</span>
+<span class="layui-table-link" lay-event="todetail">{{d.informer_id}}</span>
 </script>
 
 <script type="text/html" id="complaineduserinfo">
-<span class="layui-table-link" lay-event="todetail2">{{d.complained_userid}}</span>
+<span class="layui-table-link" lay-event="todetail2">{{d.violate_user_id}}</span>
 </script>
 
 <script type="text/html" id="comment">
@@ -94,11 +94,7 @@
 </script>
 
 <script type="text/html" id="goodsinfo">
-  <span class="layui-table-link" lay-event="goodsinfo">{{d.goods_id}}</span>
-</script>
-
-<script type="text/html" id="orderinfo">
-  <span class="layui-table-link" lay-event="orderinfo">{{d.order_id}}</span>
+  <span class="layui-table-link" lay-event="goodsinfo">{{d.violate_goods_id}}</span>
 </script>
 
 <script type="text/html" id="check">
@@ -114,31 +110,31 @@
 
   // 查询用户
 
-
+  var adminAccount;
   $(document).ready(function () {
+    adminAccount = localStorage.getItem("adminaccount");
   });
 
   layui.use('table', function () {
     var table = layui.table;
-
+    var adminaccount = localStorage.getItem("adminaccount");
+    console.log("管理员账号"+adminaccount);
     //第一个实例
     var table1 = table.render({
       elem: '#demo'
       , height: 312
-      , url: 'http://127.0.0.1:8082/report/getPendingReports' //数据接口
+      , url: 'http://127.0.0.1:8082/goods/getGoodsReports/'+adminaccount //数据接口
       , where:{
         type:'2',
       }
       , page: true //开启分页
       , cols: [[ //表头
-        { field: 'complain_userid', title: '举报人ID', width: 120, sort: true, fixed: 'left', toolbar: '#complainuserinfo' }
-        , { field: 'complained_userid', title: '被举报人ID', width: 80, toolbar: '#complaineduserinfo' }
-        , { field: 'goods_id', title: '商品ID', width: 80,toolbar: '#goodsinfo'}
-        , { field: 'order_id', title: '订单ID', width: 80,toolbar: '#orderinfo'}
-        , { field: 'complain_type', title: '举报类型', width: 80, sort: true }
-        , { field: 'complain_content', title: '举报理由', width: 90 }
-        , { field: 'complain_photos', title: '举报证据', width: 90, toolbar: '#image' }
-        , { field: 'complain_status', title: '状态', width: 80 }
+      { field: 'complain_id', title: '举报单ID', width: 120, sort: true, fixed: 'left' }
+        ,{ field: 'informer_id', title: '举报人ID', width: 120, sort: true, toolbar: '#complainuserinfo' }
+        , { field: 'violate_user_id', title: '被举报人ID', width: 80, toolbar: '#complaineduserinfo' }
+        , { field: 'violate_goods_id', title: '商品ID', width: 80,toolbar: '#goodsinfo'}
+        , { field: 'violate_content', title: '举报理由', width: 90 }
+        , { field: 'start_time', title: '举报时间', width: 80 }
         , { field: 'comment', title: '留言', width: 90, toolbar: '#comment' }
         , { field: 'handle_user', title: '处理用户', width: 90, toolbar: '#handle-user' }
         , { field: 'handle', title: '处理', width: 177, toolbar: '#check' }
@@ -224,14 +220,14 @@
         layer.confirm('确认通过审核？', function (index) {
           obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
           layer.close(index);
-          $.get("http://127.0.0.1:8082/report/disposeReport/"+data.complain_id+"/"+data.audit_result+"/1/"+data.complained_userid+'/'+data.goods_id, function (data, status) {
+          $.get("http://127.0.0.1:8082/goods/disposeReport/"+data.complain_id+"/"+data.comment+"/1/"+data.informer_id+'/'+data.violate_user_id+"/"+data.violate_goods_id+"/"+adminAccount, function (data, status) {
             console.log(data, status)
           });
         });
       } else if (layEvent === 'refuse') {
 
         layer.confirm('真的拒绝通过吗？', function (index) {
-          $.get("http://127.0.0.1:8082/report/disposeReport/"+data.complain_id+"/"+data.audit_result+"/0/"+data.complained_userid+'/'+data.goods_id, function (data, status) {
+          $.get("http://127.0.0.1:8082/goods/disposeReport/"+data.complain_id+"/"+data.comment+"/0/"+data.informer_id+'/'+data.violate_user_id+"/"+data.violate_goods_id+"/"+adminAccount, function (data, status) {
             console.log(data, status)
           });
           obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
@@ -239,16 +235,16 @@
           //向服务端发送删除指令
         });
       } else if (layEvent === 'todetail') {
-        xadmin.open('查询举报人信息', 'member-detail.html?flea_id=' + obj.data.complain_userid, 600, 400);
+        xadmin.open('查询举报人信息', 'member-detail.html?flea_id=' + obj.data.informer_id, 600, 400);
       } else if (layEvent === 'todetail2') {
-        xadmin.open('查询被举报人信息', 'member-detail.html?flea_id=' + obj.data.complained_userid, 600, 400);
+        xadmin.open('查询被举报人信息', 'member-detail.html?flea_id=' + obj.data.violate_user_id, 600, 400);
       } else if (layEvent === 'comment') {
         layer.prompt({
           fromType: 2,
-          value: data.audit_result
+          value: data.comment
         }, function (value, index) {
           obj.update({
-            audit_result: value
+            comment: value
           })
           layer.close(index);
         })
@@ -260,7 +256,7 @@
         
       } else if(layEvent === "goodsinfo"){
         console.log("hello world")
-        xadmin.open('商品信息', 'show-goods-detail.html?goods_id=' + data.goods_id, 600, 400);
+        xadmin.open('商品信息', 'show-goods-detail.html?goods_id=' + data.violate_goods_id, 600, 400);
       }else if(layEvent === "orderinfo"){
         xadmin.open('订单信息', 'show-order-detail.html?order_id=' + data.order_id, 600, 400);
       }

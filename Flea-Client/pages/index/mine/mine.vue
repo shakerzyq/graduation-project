@@ -47,19 +47,19 @@
 			<view class="issue-order-sold-bought">
 				<view class="issue" @click="goToNext('mine-publish')">
 					<view class="iconfont icon">&#xe7f6;</view>
-					<text>我的发布0</text>
+					<text>我的发布</text>
 				</view>
 				<view class="order" @click="goToNext('mine-sold')">
 					<view class="iconfont icon">&#xe801;</view>
-					<text>我卖出的0</text>
+					<text>我卖出的</text>
 				</view>
 				<view class="sold" @click="goToNext('mine-orders')">
 					<view class="iconfont icon">&#xe8f9;</view>
-					<text>我的订单0</text>
+					<text>我的订单</text>
 				</view>
 				<view class="bought" @click="goToNext('mine-bought')">
 					<view class="iconfont icon">&#xe902;</view>
-					<text>我买到的0</text>
+					<text>我买到的</text>
 				</view>
 						 
 			</view> 

@@ -92,6 +92,7 @@ public class IForGoodsService implements ForGoodsService {
         esGoods.setGoodsWanter(0);
         esGoods.setLikesNum(0);
         esGoods.setStatus("living");
+        esGoods.setAddTime(goods.getAdd_date());
         esDataDao.insertGoods(esGoods);
         return result;
     }
@@ -107,12 +108,24 @@ public class IForGoodsService implements ForGoodsService {
     }
 
     @Override
-    public ArrayList<GoodsIndex> s_getGoodsForIndex(int from, int size,String status,String status2,String addPlace) {
-        QueryBuilder queryBuilder = QueryBuilders.boolQuery()
-                .mustNot(QueryBuilders.matchQuery("status",status))
-                .mustNot(QueryBuilders.matchQuery("status",status2))
-                .must(QueryBuilders.matchQuery("addPlace",addPlace));
-        return esDataDao.selectGoods("goods", queryBuilder,from,size);
+    public ArrayList<GoodsIndex> s_getGoodsForIndex(int from, int size,String status,String status2,String addPlace,String type) {
+        QueryBuilder queryBuilder=null;
+        ArrayList<GoodsIndex> goodsList=null;
+        if (type.equals("new")){
+            queryBuilder= QueryBuilders.boolQuery()
+                    .mustNot(QueryBuilders.matchQuery("status",status))
+                    .mustNot(QueryBuilders.matchQuery("status",status2))
+                    .must(QueryBuilders.matchQuery("addPlace",addPlace));
+            goodsList= esDataDao.selectGoods("goods", queryBuilder,from,size);
+//            Collections.reverse(goodsList);
+        }else{
+            queryBuilder= QueryBuilders.boolQuery()
+                    .mustNot(QueryBuilders.matchQuery("status",status))
+                    .mustNot(QueryBuilders.matchQuery("status",status2))
+                    .must(QueryBuilders.matchQuery("addPlace",addPlace));
+            goodsList=esDataDao.hotGoodsSort("goods",queryBuilder);
+        }
+        return goodsList;
     }
 
     /**
@@ -155,8 +168,10 @@ public class IForGoodsService implements ForGoodsService {
         // comment_likes,
         forGoodsMapper.deleteComment_likeByGoodsId(goodsId);
         // comment_relation数据
-        //
-
+        // 删除collect数据
+        forGoodsMapper.deleteCollect(goodsId);
+        // 删除likes数据
+        forGoodsMapper.deleteLikes(goodsId);
         //删除ES数据
         esDataDao.deleteGoodsInfo(goodsId);
 
@@ -255,6 +270,7 @@ public class IForGoodsService implements ForGoodsService {
 
         //增加一次浏览量
         forGoodsMapper.updateGoodsViews(goodsId);
+        esDataDao.upGoodsViews("goods",goodsId);
 
         //查询关注关系
         Integer fansJudge = forGoodsMapper.selectFans(merchantId,fleaId);
@@ -419,12 +435,16 @@ public class IForGoodsService implements ForGoodsService {
     @Override
     public Boolean s_reportGoods(GoodsReport goodsReport,String type) {
         if (type.equals("false")){//添加举报
+            String address =forGoodsMapper.selectAddress(goodsReport.getInformer_id());
+            goodsReport.setAddress(address);
             return forGoodsMapper.insertGoodsReport(
                     UUID.randomUUID().toString(),
                     goodsReport.getInformer_id(),
                     goodsReport.getViolate_goods_id(),
                     goodsReport.getViolate_user_id(),
-                    goodsReport.getViolate_content());
+                    goodsReport.getViolate_content(),
+                    goodsReport.getAddress()
+                    );
         }else{//更新举报
             return forGoodsMapper.updateGoodsReport(
                     goodsReport.getInformer_id(),

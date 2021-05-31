@@ -101,6 +101,8 @@
   <span class="layui-btn" lay-event="openphoto">查看</span>
 </script>
 
+
+
 <script>
 
   // 查询用户
@@ -119,11 +121,12 @@
       , url: 'http://127.0.0.1:8082/comment/getCommentReports' //数据接口
       , page: true //开启分页
       , cols: [[ //表头
-        { field: 'informer_id', title: '举报人ID', width: 120, sort: true, fixed: 'left', toolbar: '#complainuserinfo' }
+        { field: 'complain_id', title: '举报单ID', width: 120, sort: true, fixed: 'left',  }
+        ,{ field: 'informer_id', title: '举报人ID', width: 120, sort: true, toolbar: '#complainuserinfo' }
         , { field: 'violate_user_id', title: '被举报人ID', width: 120, toolbar: '#complaineduserinfo' }
         , { field: 'start_time', title: '举报时间', width: 160, sort: true }
         , { field: 'content', title: '评论内容', width: 90 }
-        , { field: 'status', title: '状态', width: 80, templet: '#status'}
+        
         , { field: 'handle_user', title: '处理用户', width: 90, toolbar: '#handle-user' }
         , { field: 'handle', title: '处理', width: 177, toolbar: '#check' }
       ]]

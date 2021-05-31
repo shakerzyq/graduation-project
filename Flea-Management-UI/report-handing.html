@@ -97,6 +97,9 @@
 <script type="text/html" id="orderinfo">
   <span class="layui-table-link" lay-event="orderinfo">{{d.order_id}}</span>
 </script>
+<script type="text/html" id="startTime">
+  <span class="layui-table-link">{{d.start_time}}</span>
+</script>
 
 <script type="text/html" id="type">
   {{#  if(d.complain_type==='0'){ }}
@@ -123,9 +126,10 @@
 <script>
 
   // 查询用户
-
+  var adminAccount
 
   $(document).ready(function () {
+    adminAccount = localStorage.getItem("adminaccount");
   });
 
   layui.use('table', function () {
@@ -146,6 +150,7 @@
         , { field: 'goods_id', title: '商品ID', width: 80, toolbar: '#goodsinfo' }
         , { field: 'order_id', title: '订单ID', width: 80, toolbar: '#orderinfo' }
         , { field: 'complain_type', title: '举报类型', width: 100, sort: true, templet: '#type' }
+        , { field: 'start_time', title: '举报时间', width: 80,toolbar: '#startTime'}
         , { field: 'complain_content', title: '举报理由', width: 90 }
         , { field: 'complain_photos', title: '举报证据', width: 90, toolbar: '#image' }
         , { field: 'complain_status', title: '状态', width: 80, templet: '#status' }
@@ -234,14 +239,14 @@
         layer.confirm('确认通过审核？', function (index) {
           obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
           layer.close(index);
-          $.get("http://127.0.0.1:8082/report/disposeReport/" + data.complain_id + "/" + data.audit_result + "/1/" + data.complained_userid + '/' + data.goods_id, function (data, status) {
+          $.get("http://127.0.0.1:8082/report/disposeReport/" + data.complain_id + "/" + data.audit_result + "/1/" +data.complain_userid+"/"+data.complained_userid + '/' + data.goods_id+"/"+adminAccount, function (data, status) {
             console.log(data, status)
           });
         });
       } else if (layEvent === 'refuse') {
-
+        console.log("hello ");
         layer.confirm('真的拒绝通过吗？', function (index) {
-          $.get("http://127.0.0.1:8082/report/disposeReport/" + data.complain_id + "/" + data.audit_result + "/0/" + data.complained_userid + '/' + data.goods_id, function (data, status) {
+          $.get("http://127.0.0.1:8082/report/disposeReport/" + data.complain_id + "/" + data.audit_result + "/0/" +data.complain_userid+"/"+ data.complained_userid + '/' + data.goods_id+"/"+adminAccount, function (data, status) {
             console.log(data, status)
           });
           obj.del(); //删除对应行（tr）的DOM结构，并更新缓存

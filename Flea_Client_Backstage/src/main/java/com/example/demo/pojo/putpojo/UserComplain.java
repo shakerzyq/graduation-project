@@ -21,6 +21,15 @@ public class UserComplain {
     private String end_time;
     private String audit_result;
     private String email;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getStart_time() {
         return start_time;

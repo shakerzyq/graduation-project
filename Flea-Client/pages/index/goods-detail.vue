@@ -10,8 +10,8 @@
 			<view class="iconfont back-icon" @tap="back() ">&#xe749;</view>
 			<!--搜索栏-->
 			<view class="search-father" @tap="goSearch">
-				<view class="iconfont search-icon">&#xe8aa;</view>
-				<input class="search-text " placeholder="搜你想搜的" readonly="readonly" />
+				<!-- <view class="iconfont search-icon">&#xe8aa;</view>
+				<input class="search-text " placeholder="搜你想搜的" readonly="readonly" /> -->
 			</view>
 			<view class="iconfont share-icon" @tap="openShare">&#xe859;</view>
 			<uni-popup ref="popup" type="share">
@@ -286,7 +286,7 @@
 			<view class="merchant-view" v-else>
 				<view ></view>
 				<view v-if="goodsUserInfo.status==='living'" class="observer-right" @click="goToUpdateProduct">管理商品</view>
-				<view v-else class="observer-right" style="background-color: #fff;color: #808080;" @click="goToUpdateProduct">{{goodsUserInfo.status==='traind'?'已被下单':'已售卖'}}</view>
+				<view v-else class="observer-right" style="background-color: #fff;color: #808080;" @click="goToUpdateProduct">{{goodsUserInfo.status==='trading'?'已被下单':'已售卖'}}</view>
 			</view>					
 		</view>
 	</view>
@@ -608,6 +608,8 @@
 					})
 				}
 				this.loadingJudge=true
+				
+				console.log("获取的交易状态为：",this.goodsUserInfo.status)
 			},
 
 			/**
@@ -864,6 +866,7 @@
 						cancelText: "取消",
 						confirmText: "确定",
 						success: (res) => {
+							console.log("商品ID为："+this.goodsId)
 							if (res.confirm) {
 								const result = this.$myRequest({
 									url:'/comment/reportComment',
@@ -874,6 +877,7 @@
 										violate_comment_id:comment.comment_id,
 										violate_user_id:comment.observer_id,
 										content:comment.comment,
+										goodsId:this.goodsId
 									}
 								})
 								if(result){
@@ -1062,7 +1066,7 @@
 				}
 				
 				
-				console.log("举报内容为"+this.lastReports)
+				console.log("地址为"+this.$store.state.addPlace)
 				const result = await this.$myRequest({
 					url:'/product/goodsReport/'+this.goodsUserInfo.goodsReportJudge,
 					data:{
@@ -1071,6 +1075,7 @@
 						violate_user_id:this.merchantId,
 						// violate_content:historyReports+','+reports,
 						violate_content:this.lastReports,
+						address:this.$store.state.addPlace
 					},
 					method:'POST'	
 				})
@@ -1117,9 +1122,59 @@
 			
 			/* 跳转到商品管理页面 */
 			goToUpdateProduct(){
-				uni.navigateTo({
-					url:'/pages/index/addProduct/updateProduct?goodsId='+this.goodsId+'&fleaId='+this.flea_id
-				})
+				if(this.goodsUserInfo.status==="living"){
+					uni.navigateTo({
+						url:'/pages/index/addProduct/updateProduct?goodsId='+this.goodsId+'&fleaId='+this.flea_id
+					})
+				}else if(this.goodsUserInfo.status==="trading"){
+					// uni.showToast({
+					// 	title:"商品正在交易中，不能修改",
+					// 	icon:"none",
+					// 	duration:3000
+					// })
+					uni.showModal({
+						title: '警告',
+						content: '该商品已交易结束，是否删除商品？',
+						cancelText: "取消",
+						confirmText: "确定",
+						success: (res) => {
+							if (res.confirm) {
+								const result = this.$myRequest({
+									url: '/product/delete/' + this.goodsId
+								})
+					
+								uni.navigateBack({
+									delta: 2
+								})
+					
+							} else if (res.cancel) {
+					
+							}
+						}
+					});
+				}else{
+					uni.showModal({
+						title: '警告',
+						content: '该商品已交易结束，是否删除商品？',
+						cancelText: "取消",
+						confirmText: "确定",
+						success: (res) => {
+							if (res.confirm) {
+								const result = this.$myRequest({
+									url: '/product/delete/' + this.goodsId
+								})
+					
+								uni.navigateBack({
+									delta: 2
+								})
+					
+							} else if (res.cancel) {
+					
+							}
+						}
+					});
+				}
+				
 			},
 			
 			/* 请求并判断用户是否对该商品下单 */
@@ -1197,6 +1252,8 @@
 			
 			//浏览记录
 			this.putBrowseLog()
+			
+			
 		}
 	}
 </script>
@@ -1227,7 +1284,7 @@
 			margin-bottom: 10rpx;
 			height: 75rpx;
 			width: 70%;
-			background-color: $uni-color-lightgray;
+			// background-color: $uni-color-lightgray;
 			border-radius: 35rpx;
 
 			.search-icon {

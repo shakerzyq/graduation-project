@@ -9,10 +9,10 @@ import java.util.ArrayList;
  * @date 2021/3/20 20:00
  */
 public interface AdminReportService {
-    Boolean disposeReport(String type, String reportId, String content,String complain_userid,String complained_userid,String goods_id);
+    Boolean disposeReport(String type, String reportId, String content,String complain_userid,String complained_userid,String goods_id,String admin_id);
 
 
     ArrayList<Report> getPendingReports(Integer page,Integer limit, Integer type, String flea_id, String goodsId);
 
-    ArrayList<Report> getAccomplishReports(Integer page,Integer limit,Integer reportType, Integer resultType);
+    ArrayList<Report> getAccomplishReports(Integer page,Integer limit,Integer reportType, Integer resultType,String adminAccount);
 }

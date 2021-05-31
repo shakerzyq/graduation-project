@@ -16,15 +16,15 @@ public interface AdminCommentMapper {
     @Update("update violate_comment set status=#{status},end_time=now() where complain_id=#{complainId}")
     Boolean updataReportStatus(String complainId, Integer status);
 
-    @Select("select * from violate_comment where status!=2 limit #{page},#{limit}")
-    ArrayList<CommentReport> selectAccomplishReport(Integer page, Integer limit);
+    @Select("select * from violate_comment where status!=2  and address=#{address} limit #{page},#{limit}")
+    ArrayList<CommentReport> selectAccomplishReport(Integer page, Integer limit,String address);
 
-    @Select("select * from violate_comment where status=#{status} limit #{page},#{limit}")
-    ArrayList<CommentReport> selectAccomplishReportStatus(Integer page, Integer limit, String status);
+    @Select("select * from violate_comment where status=#{status} and address=#{address} limit #{page},#{limit}")
+    ArrayList<CommentReport> selectAccomplishReportStatus(Integer page, Integer limit, String status,String address);
 
-    @Select("select * from violate_comment where status!=2 and (informer_id=#{userId} or violate_user_id=#{userId}) limit #{page},#{limit}")
-    ArrayList<CommentReport> selectAccomplishReportById(Integer page, Integer limit, String userId);
+    @Select("select * from violate_comment where status!=2 and (informer_id=#{userId} or violate_user_id=#{userId}) and address=#{address} limit #{page},#{limit}")
+    ArrayList<CommentReport> selectAccomplishReportById(Integer page, Integer limit, String userId,String address);
 
-    @Select("select * from violate_comment where status=#{status} and (informer_id=#{userId} or violate_user_id=#{userId}) limit #{page},#{limit}")
-    ArrayList<CommentReport> selectAccomplishReportByIdByStatus(Integer page, Integer limit, String userId, String status);
+    @Select("select * from violate_comment where status=#{status} and (informer_id=#{userId} or violate_user_id=#{userId}) and address=#{address} limit #{page},#{limit}")
+    ArrayList<CommentReport> selectAccomplishReportByIdByStatus(Integer page, Integer limit, String userId, String status,String address);
 }

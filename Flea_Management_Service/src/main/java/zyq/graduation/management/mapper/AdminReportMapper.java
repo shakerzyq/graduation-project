@@ -20,11 +20,11 @@ public interface AdminReportMapper {
     @Select("select * from violate_order where complain_status=2 limit #{page},#{limit}")
     ArrayList<Report> selectReport(Integer page, Integer limit);
 
-    @Update("update violate_order set complain_status=1,audit_result=#{content} where complain_id=#{reportId}")
-    Boolean receiveReport(String reportId,String content);
+    @Update("update violate_order set complain_status=1,audit_result=#{content},end_time=now(),admin_id=#{admin_id} where complain_id=#{reportId}")
+    Boolean receiveReport(String reportId,String content,String admin_id);
 
-    @Delete("update violate_order set complain_status=0,audit_result=#{content} where complain_id=#{reportId}")
-    Boolean refuseReport(String reportId,String content);
+    @Update("update violate_order set complain_status=0,audit_result=#{content},end_time=now(),admin_id=#{admin_id} where complain_id=#{reportId}")
+    Boolean refuseReport(String reportId,String content,String admin_id);
 
     /**
      * 查询处理完成的举报

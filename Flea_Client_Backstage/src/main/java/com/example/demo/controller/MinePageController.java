@@ -92,7 +92,7 @@ public class MinePageController {
      */
     @CrossOrigin(origins = "*",maxAge = 3600)
     @PutMapping("/putUserComplain")
-    public Boolean putUserComplain(@RequestBody UserComplain userComplain){
+    public Boolean putOrderComplain(@RequestBody UserComplain userComplain){
         System.out.println(userComplain);
         return minePageService.s_putUserComplain(userComplain);
     }
@@ -125,6 +125,11 @@ public class MinePageController {
         return minePageService.s_getComplainDetail(complain_id,status);
     }
 
+    /**
+     * 删除举报单
+     * @param complain_id
+     * @return
+     */
     @CrossOrigin(origins = "*",maxAge = 3600)
     @DeleteMapping("/deleteComplain/{complain_id}")
     public Boolean deleteComplain(@PathVariable("complain_id") String complain_id){

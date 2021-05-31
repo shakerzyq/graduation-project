@@ -11,5 +11,5 @@ import java.util.ArrayList;
 public interface AdminCommentService {
     ArrayList<CommentReport> getCommentReport(Integer page, Integer limit, String userId,String type);
 
-    ArrayList<CommentReport> getAccomplishReports(Integer page,Integer limit,String userId,String status);
+    ArrayList<CommentReport> getAccomplishReports(Integer page,Integer limit,String userId,String status,String adminAccount);
 }

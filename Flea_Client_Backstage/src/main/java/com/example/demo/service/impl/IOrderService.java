@@ -157,28 +157,51 @@ public class IOrderService implements OrderService {
                         .should(QueryBuilders.matchQuery("goodsId",historyOrder.getGoods_id()))
                         .must(QueryBuilders.matchQuery("status",status));
                 goodsIndex = esDataDao.selectGoodsForOrders("goods", queryBuilder,0,8,historyOrder.getConsumer_id());
-                System.out.println("收到的goodsIndex为："+goodsIndex);
+                if (goodsIndex==null){
+                    ordersShow= new OrdersShow();
+                    ordersShow.setOrderId(historyOrder.getOrder_id());
+                    ordersShow.setOrderStatus("交易完成");
+                    ordersShow.setOrderDate(historyOrder.getOrder_date());
+                    ordersShow.setEvaluateContent(historyOrder.getEvaluate_content());
+                    ordersShow.setEvaluateLevel(historyOrder.getEvaluate_level());
+
+                    ordersShow.setGoodsPrice(0.00);
+                    ordersShow.setGoodsContent("该商品已被删除");
+                    ordersShow.setGoodsPicture("该商品已被删除");
+                    ordersShow.setGoodsId(historyOrder.getGoods_id());
+
+                    ordersShow.setUserName("");
+                    ordersShow.setUsersIcon("");
+                    ordersShow.setMerchantId(historyOrder.getMerchant_id());
+                    ordersShow.setConsumerId(historyOrder.getConsumer_id());
+
+                    ordersShow.setReportStatus(orderMapper.selectReportStatus(ordersShow.getOrderId(),userId));
+                    orderShowList.add(ordersShow);
+                }else{
+                    System.out.println("收到的goodsIndex为："+goodsIndex);
 //            assert ordersShow != null;
 //            assert false;
-                ordersShow= new OrdersShow();
-                ordersShow.setOrderId(historyOrder.getOrder_id());
-                ordersShow.setOrderStatus("交易完成");
-                ordersShow.setOrderDate(historyOrder.getOrder_date());
-                ordersShow.setEvaluateContent(historyOrder.getEvaluate_content());
-                ordersShow.setEvaluateLevel(historyOrder.getEvaluate_level());
+                    ordersShow= new OrdersShow();
+                    ordersShow.setOrderId(historyOrder.getOrder_id());
+                    ordersShow.setOrderStatus("交易完成");
+                    ordersShow.setOrderDate(historyOrder.getOrder_date());
+                    ordersShow.setEvaluateContent(historyOrder.getEvaluate_content());
+                    ordersShow.setEvaluateLevel(historyOrder.getEvaluate_level());
 
-                ordersShow.setGoodsPrice(goodsIndex.getGoodsPrice());
-                ordersShow.setGoodsContent(goodsIndex.getGoodsDes());
-                ordersShow.setGoodsPicture(goodsIndex.getGoodsPhoto());
-                ordersShow.setGoodsId(goodsIndex.getGoodsId());
+                    ordersShow.setGoodsPrice(goodsIndex.getGoodsPrice());
+                    ordersShow.setGoodsContent(goodsIndex.getGoodsDes());
+                    ordersShow.setGoodsPicture(goodsIndex.getGoodsPhoto());
+                    ordersShow.setGoodsId(goodsIndex.getGoodsId());
 
-                ordersShow.setUserName(goodsIndex.getUserName());
-                ordersShow.setUsersIcon(goodsIndex.getUserIcon());
-                ordersShow.setMerchantId(goodsIndex.getUserId());
-                ordersShow.setConsumerId(historyOrder.getConsumer_id());
+                    ordersShow.setUserName(goodsIndex.getUserName());
+                    ordersShow.setUsersIcon(goodsIndex.getUserIcon());
+                    ordersShow.setMerchantId(goodsIndex.getUserId());
+                    ordersShow.setConsumerId(historyOrder.getConsumer_id());
 
-                ordersShow.setReportStatus(orderMapper.selectReportStatus(ordersShow.getOrderId(),userId));
-                orderShowList.add(ordersShow);
+                    ordersShow.setReportStatus(orderMapper.selectReportStatus(ordersShow.getOrderId(),userId));
+                    orderShowList.add(ordersShow);
+                }
+
             }
 
         }

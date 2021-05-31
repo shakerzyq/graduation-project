@@ -41,25 +41,25 @@ public class IAdminReportService implements AdminReportService {
      * @return
      */
     @Override
-    public Boolean disposeReport(String type, String reportId, String content,String complain_userid,String flea_id,String goods_id) {
+    public Boolean disposeReport(String type, String reportId, String content,String complain_userid,String flea_id,String goods_id,String admin_id) {
         User user1 = adminUserMapper.selectUser(flea_id);
         User user2 = adminUserMapper.selectUser(complain_userid);
         Goods goods = adminGoodsMapper.selectGoodsByGoodsId(goods_id);
         if(type.equals("1")){
             //查询被举报人email
-            String content1 = "你发布的商品("+goods.getProduct_title()+")已被认定为违规(详细请看举报单)"+"已作出信誉积分扣除或封禁惩罚"+"管理员留言："+content;
+            String content1 = "你发布的商品("+goods.getProduct_title()+")相关的交易订单已被认定为违规(详细请看举报单)"+"已作出信誉积分扣除或封禁惩罚"+"管理员留言："+content;
             sendEmailMessage.sendMessage(user1.getEmail(),content1);
             //查询举报人email
-            String content2 = "你举报的商品("+goods.getProduct_title()+")已被认定为违规(详细请看举报单)"+"该用户("+user1.getNickname()+")已被进行信誉积分扣除或封禁惩罚，如果对方没能执行要求请与管理员联系"+"管理员留言："+content;
+            String content2 = "你举报的商品("+goods.getProduct_title()+")相关的交易订单已被认定为违规(详细请看举报单)"+"该用户("+user1.getNickname()+")已被进行信誉积分扣除或封禁惩罚，如果对方没能执行要求请与管理员联系"+"管理员留言："+content;
             sendEmailMessage.sendMessage(user2.getEmail(),content2);
-            return adminReportMapper.receiveReport(reportId,content);
+            return adminReportMapper.receiveReport(reportId,content,admin_id);
         }else{
-            String content1 = "你发布的商品("+goods.getProduct_title()+")没有违规，管理员留言："+content;
+            String content1 = "你发布的商品("+goods.getProduct_title()+")相关的交易订单没有违规，管理员留言："+content;
             sendEmailMessage.sendMessage(user1.getEmail(),content1);
             //查询举报人email
-            String content2 = "你举报的商品("+goods.getProduct_title()+")没有违规，如有问题可以管理员联系，管理员留言："+content;
+            String content2 = "你举报的商品("+goods.getProduct_title()+")相关的交易订单没有违规，如有问题可以管理员联系，管理员留言："+content;
             sendEmailMessage.sendMessage(user2.getEmail(),content2);
-            return adminReportMapper.refuseReport(reportId,content);
+            return adminReportMapper.refuseReport(reportId,content,admin_id);
         }
     }
 
@@ -132,7 +132,7 @@ public class IAdminReportService implements AdminReportService {
      * @return
      */
     @Override
-    public ArrayList<Report> getAccomplishReports(Integer page, Integer limit,Integer reportType, Integer resultType) {
+    public ArrayList<Report> getAccomplishReports(Integer page, Integer limit,Integer reportType, Integer resultType,String adminAccount) {
 
         String type=reportType+""+resultType;
         switch(type){

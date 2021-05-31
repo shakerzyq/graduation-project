@@ -1,6 +1,7 @@
 package com.example.demo.mapper;
 
 import com.example.demo.pojo.*;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Component;
 
@@ -82,8 +83,12 @@ public interface ForGoodsMapper {
     @Delete("delete from violate_goods where informer_id=#{flea_id} and violate_goods_id=#{goods_id}")
     Boolean deleteGoodsReport(String flea_id, String goods_id);
     //插入举报
-    @Insert("insert into violate_goods ( complain_id,informer_id,violate_goods_id,violate_user_id,violate_content,start_time) values (#{complain_id},#{flea_id},#{goods_id},#{merchant_id},#{report_content},now())")
-    Boolean insertGoodsReport(String complain_id,String flea_id, String goods_id, String merchant_id,String report_content);
+    @Insert("insert into violate_goods ( complain_id,informer_id,violate_goods_id,violate_user_id,violate_content,start_time,address) values (#{complain_id},#{flea_id},#{goods_id},#{merchant_id},#{report_content},now(),#{address})")
+    Boolean insertGoodsReport(String complain_id,String flea_id, String goods_id, String merchant_id,String report_content,String address);
+
+    //获取发布地址
+    @Select("select concat(college,'-',area) from user where flea_id=#{userId}")
+    String selectAddress(String userId);
 
     //更新举报关系
     @Update("update violate_goods set violate_content=#{violate_content} where informer_id=#{informer_id} and violate_goods_id=#{violate_goods_id}")
@@ -136,6 +141,14 @@ public interface ForGoodsMapper {
     @Select("select concat(college,'-',area) from user where flea_id=#{userId}")
     String selectCollegeAreas(String userId);
 
+    @Delete("delete from collect where product_id=#{goodsId}")
+    Boolean deleteCollect(String goodsId);
+
+    @Delete("delete from likes where product_id=#{goodsId}")
+    Boolean deleteLikes(String goodsId);
+
+    @Delete("delete from browse_log where goods_id=#{goodsId}")
+    Boolean deleteLog(String goodsId);
 
 
 

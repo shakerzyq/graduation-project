@@ -59,11 +59,13 @@ public class AdminReportController {
     public ReportReturn getAccomplishReports(
             @PathParam("page") Integer page
             ,@PathParam("limit") Integer limit
+            ,@PathParam("adminAccount") String adminAccount
             ,@PathParam("reportType") Integer reportType
             ,@PathParam("resultType") Integer resultType){
         System.out.println("limit: "+limit+"page"+page);
         System.out.println("reportType: "+reportType+"resultType: "+resultType);
-        ArrayList<Report> reports = adminReportService.getAccomplishReports(page-1,limit,reportType,resultType);
+        ArrayList<Report> reports = adminReportService.getAccomplishReports(page-1,limit,reportType,resultType,adminAccount);
+        System.out.println("结果为："+reports);
         return new ReportReturn(0,"",reports.size(),reports);
     }
 
@@ -75,15 +77,18 @@ public class AdminReportController {
      * @return
      */
     @CrossOrigin(origins = "*",maxAge = 3600)
-    @GetMapping("/disposeReport/{reportId}/{content}/{type}/{complain_userid}/{complained_userid}/{goods_id}")
-    public Boolean  disposeReport(
+    @GetMapping("/disposeReport/{reportId}/{content}/{type}/{complain_userid}/{complained_userid}/{goods_id}/{admin_id}")
+    public Boolean  disposeOrderReport(
             @PathVariable("reportId") String reportId
             ,@PathVariable("type") String type
             ,@PathVariable("content") String content
             ,@PathVariable("complain_userid") String complain_userid
             ,@PathVariable("complained_userid") String complained_userid
-            ,@PathVariable("goods_id") String goods_id){
-        return adminReportService.disposeReport(type,reportId,content,complain_userid,complained_userid,goods_id);
+            ,@PathVariable("goods_id") String goods_id
+            ,@PathVariable("admin_id") String admin_id
+    ){
+        System.out.println("++++++++++++++++type:"+type+"reportId:"+reportId+"content:"+content+" "+complain_userid+" "+complained_userid+" "+goods_id+" "+admin_id);
+        return adminReportService.disposeReport(type,reportId,content,complain_userid,complained_userid,goods_id,admin_id);
     }
 
     /**

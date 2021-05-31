@@ -46,6 +46,7 @@
 		},
 		onLoad(options) {
 			this.flea_id=options.flea_id
+			this.username=options.username
 			this.violatorId=options.violatorId
 			this.goodsId=options.goodsId
 			this.complain_type=options.complain_type

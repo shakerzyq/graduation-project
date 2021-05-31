@@ -22,5 +22,6 @@ public interface LoginMapper {
     @Update("update account set password=#{password} where email=#{email}")
     Boolean updatePwd(String email, String password);
 
-
+    @Select("select status from service_area where college=#{college} and area=#{area}")
+    Integer selectServiceStatus(String college, String area);
 }

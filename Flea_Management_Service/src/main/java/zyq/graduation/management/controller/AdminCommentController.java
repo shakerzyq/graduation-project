@@ -51,7 +51,7 @@ public class AdminCommentController {
      */
     @CrossOrigin(origins = "*",maxAge = 3600)
     @GetMapping("/disposeReport/{complainId}/{status}")
-    public Boolean disposeReport(@PathVariable("complainId") String complainId,@PathVariable("status") Integer status){
+    public Boolean disposeCommentsReport(@PathVariable("complainId") String complainId,@PathVariable("status") Integer status){
         System.out.println("complainId:"+complainId+"status:"+status);
         return adminCommentMapper.updataReportStatus(complainId,status);
     }
@@ -63,14 +63,15 @@ public class AdminCommentController {
      * @return
      */
     @CrossOrigin(origins = "*",maxAge = 3600)
-    @GetMapping("/getAccomplishReports")
+    @GetMapping("/getAccomplishReports/{adminAccount}")
     public ReturnClass getAccomplishReports(
             @PathParam("page") Integer page
             ,@PathParam("limit") Integer limit
             ,@PathParam("userId") String userId
-            , @PathParam("status") String status){
+            , @PathParam("status") String status
+            ,@PathVariable("adminAccount") String adminAccount){
         System.out.println("userId:"+userId+"status:"+status);
-        ArrayList<CommentReport> commentReport = adminCommentService.getAccomplishReports(page-1,limit,userId,status);
+        ArrayList<CommentReport> commentReport = adminCommentService.getAccomplishReports(page-1,limit,userId,status,adminAccount);
         return new ReturnClass<>(0,"",commentReport.size(),commentReport);
     }
 

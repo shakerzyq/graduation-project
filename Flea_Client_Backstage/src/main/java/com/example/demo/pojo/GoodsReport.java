@@ -13,6 +13,15 @@ public class GoodsReport {
     private String violate_goods_id;
     private String violate_user_id;
     private String violate_content;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public String getInformer_id() {
         return informer_id;
@@ -53,6 +62,7 @@ public class GoodsReport {
                 ", violate_goods_id='" + violate_goods_id + '\'' +
                 ", violate_user_id='" + violate_user_id + '\'' +
                 ", violate_content='" + violate_content + '\'' +
+                ", address='" + address + '\'' +
                 '}';
     }
 }

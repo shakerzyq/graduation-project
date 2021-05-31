@@ -43,15 +43,29 @@
               <div class="layui-inline layui-show-xs-block">
                 <input class="layui-input" autocomplete="off" placeholder="截止日" name="end" id="end">
               </div> -->
+              <div class="layui-input-inline layui-show-xs-block">
+                <select name="province" id="province" lay-filter="province" lay-search>
+                  <option value="省份">省份</option>
+                </select>
+              </div>
+              <div class="layui-input-inline layui-show-xs-block">
+                <select name="college" id="college" lay-filter="college" lay-search>
+                  <option value="学校">学校</option>
+                </select>
+              </div>
+              <div class="layui-input-inline layui-show-xs-block">
+                <select name="area" id="area" lay-filter="area" lay-search>
+                  <option value="校区">校区</option>
+                </select>
+              </div>
               <div class="layui-inline layui-show-xs-block">
-                <input id="inputname" type="text" name="username" placeholder="请输入用户名" autocomplete="off"
+                <input id="name" type="text" name="username" placeholder="请输入用户名" autocomplete="off"
                   class="layui-input">
               </div>
               <div class="layui-inline layui-show-xs-block">
                 <!-- <button id="search-user" data-type="reload" class="layui-btn" lay-submit="" lay-filter="sreach"><i
                     class="layui-icon">&#xe615;</i></button> -->
-                    <button type="button" id="search-user" class="layui-btn"><i
-                      class="layui-icon">&#xe615;</i></button>
+                <button type="button" id="search-user" class="layui-btn"><i class="layui-icon">&#xe615;</i></button>
               </div>
             </form>
           </div>
@@ -131,18 +145,6 @@
               </tbody>
             </table>
           </div>
-          <div class="layui-card-body ">
-            <div class="page">
-              <div>
-                <a class="prev" href="">&lt;&lt;</a>
-                <a class="num" href="">1</a>
-                <span class="current">2</span>
-                <a class="num" href="">3</a>
-                <a class="num" href="">489</a>
-                <a class="next" href="">&gt;&gt;</a>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -186,9 +188,6 @@
 </script> -->
 <script>
 
-  // 查询用户
-
-
   $(document).ready(function () {
     var judge = true;
     if (judge) {
@@ -198,6 +197,21 @@
       $(".ban-user").attr("checked", false);
       $(".ban-status").addClass("layui-btn layui-btn-danger").text("被封禁");
     }
+    // $("#province").append("<option value=1>asd</option>")
+    $.get('http://127.0.0.1:8082/serviceinfo/getProvince', function (data, status) {
+      // console.log(data)
+      var i = 0;
+      for (i = 0; i < data.length; i++) {
+        // <option value="浙江">浙江</option>
+        // "<option value="+data[i]+">"+data[i]+"</option>"
+        console.log(data[i])
+        $("#province").append("<option value=" + data[i] + ">" + data[i] + "</option>")
+        // $("#province").first().attr("selected", true);
+        renderForm()
+      }
+    })
+
+
   });
   // $("#search-user").click(function () {
   //   console.log("asff")
@@ -210,6 +224,14 @@
 
 
 
+  function renderForm() {
+    layui.use('form', function () {
+      var form = layui.form;
+      form.render();
+    });
+  }
+
+
   layui.use('table', function () {
     var table = layui.table;
 
@@ -217,7 +239,7 @@
     var table1 = table.render({
       elem: '#demo'
       , height: 312
-      , url: 'http://127.0.0.1:8082/loginRegister/getUncheckedAdmins' //数据接口
+      , url: 'http://127.0.0.1:8082/manageAdmin/getUncheckedAdmins' //数据接口
       , page: true //开启分页
       , cols: [[ //表头
         { field: 'uuid', title: 'ID', width: 120, sort: true, fixed: 'left' }
@@ -226,8 +248,7 @@
         , { field: 'stu_num', title: '学号', width: 80, sort: true }
         , { field: 'province', title: '省份', width: 80 }
         , { field: 'college', title: '大学', width: 80 }
-        , { field: 'area', title: '校区', width: 80 }
-        , { field: 'picture', title: '学生证', width: 80 , toolbar: '#picture' }
+        , { field: 'picture', title: '学生证', width: 80, toolbar: '#picture' }
         , { field: 'status', title: '状态', width: 90, templet: '#status' }
         , { field: 'status', title: '处理', width: 177, toolbar: '#check' }
       ]]
@@ -235,20 +256,45 @@
     });
 
     $("#search-user").click(function () {
-      console.log("asff")
-      var value = $("#inputname").val();
-      console.log(value + "dd")
+      console.log("hello world");
+      // var type = document.getElementById("#report-type");
+      var province1 = $("#province").val();
+
+      // var typeindex = type.selectedIndex
+      // var typevalue = type.options[typeindex].value;
+      var college1 = $("#college").val();
+      var area1 = $("#area").val();
+      var name1 = $("#name").val();
+      console.log("hello", province1, college1, area1, name1)
       table.reload('aa', {
-        url: 'http://127.0.0.1:8082/user/getUncheckedUsersByName',
+        url: 'http://localhost:8082/manageAdmin/getUnCheckedAdminByCondition',
         where: { //设定异步数据接口的额外参数，任意设
-          nickname: value
+          province: province1,
+          college: college1,
+          area: area1,
+          name: name1
         }
         , page: {
           curr: 1 //重新从第 1 页开始
         }
       }); //只重载数据
-  });
-    
+    });
+
+    // $("#search-user").click(function () {
+    //   console.log("asff")
+    //   var value = $("#inputname").val();
+    //   console.log(value + "dd")
+    //   table.reload('aa', {
+    //     url: 'http://127.0.0.1:8082/user/getUncheckedUsersByName',
+    //     where: { //设定异步数据接口的额外参数，任意设
+    //       nickname: value
+    //     }
+    //     , page: {
+    //       curr: 1 //重新从第 1 页开始
+    //     }
+    //   }); //只重载数据
+    // });
+
 
     table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
       var data = obj.data; //获得当前行数据
@@ -259,14 +305,14 @@
         layer.confirm('确认通过审核？', function (index) {
           obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
           layer.close(index);
-          $.get("http://127.0.0.1:8082/loginRegister/disposeAdminRegisterApply/" + data.uuid + "/1/"+data.account, function (data, status) {
+          $.get("http://127.0.0.1:8082/manageAdmin/disposeAdminRegisterApply/" + data.uuid + "/1/" + data.account, function (data, status) {
             console.log(data, status)
           });
         });
       } else if (layEvent === 'refuse') {
 
         layer.confirm('真的拒绝通过吗？', function (index) {
-          $.get("http://127.0.0.1:8082/loginRegister/disposeAdminRegisterApply/" + data.uuid + "/0/"+data.account, function (data, status) {
+          $.get("http://127.0.0.1:8082/manageAdmin/disposeAdminRegisterApply/" + data.uuid + "/0/" + data.account, function (data, status) {
             console.log(data, status)
           });
           obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
@@ -303,6 +349,73 @@
     var laydate = layui.laydate;
     var form = layui.form;
 
+    form.on('select(province)',
+      function (data) {
+
+        if (data.value === "省份") {
+          console.log("hello")
+          $("#college").empty();
+          $("#college").append("<option value='学校'>学校</option>")
+          $("#college option").first().attr("selected", true);
+          $("#area").empty();
+          $("#area").append("<option value='校区'>校区</option>")
+          $("#area option").first().attr("selected", true);
+          renderForm()
+        } else {
+          console.log("hello2")
+          $("#college").empty();
+          $("#college").append("<option value='学校'>学校</option>")
+          $.get('http://127.0.0.1:8082/serviceinfo/getCollege/' + data.value, function (data, status) {
+            // console.log(data)
+            var i = 0;
+            for (i = 0; i < data.length; i++) {
+              // <option value="浙江">浙江</option>
+              // "<option value="+data[i]+">"+data[i]+"</option>"
+              console.log(data[i])
+              $("#college").append("<option value=" + data[i] + ">" + data[i] + "</option>")
+              $("#college option").first().next().attr("selected", true);
+              renderForm()
+            }
+            $("#area").empty();
+            $("#area").append("<option value='校区'>校区</option>")
+            $.get('http://127.0.0.1:8082/serviceinfo/getCollegeArea/' + data[0], function (data2, status) {
+              // console.log(data)
+              var i = 0;
+              for (i = 0; i < data2.length; i++) {
+                // <option value="浙江">浙江</option>
+                // "<option value="+data[i]+">"+data[i]+"</option>"
+                console.log(data2[i])
+                $("#area").append("<option value=" + data2[i] + ">" + data2[i] + "</option>")
+                $("#area option").first().next().attr("selected", true);
+                renderForm()
+              }
+            })
+          })
+        }
+      });
+
+    form.on('select(college)',
+
+      function (data) {
+        $("#area").empty();
+        $("#area").append("<option value='校区'>校区</option>")
+        if (data.value !== "学校") {
+          console.log("hello")
+          $.get('http://127.0.0.1:8082/serviceinfo/getCollegeArea/' + data.value, function (data, status) {
+            // console.log(data)
+            var i = 0;
+            for (i = 0; i < data.length; i++) {
+              $("#area").append("<option value=" + data[i] + ">" + data[i] + "</option>")
+              $("#area option").first().next().attr("selected", true);
+              renderForm()
+            }
+          })
+        }else{
+          renderForm()
+        }
+
+
+      });
 
     // 监听全选
     form.on('checkbox(checkall)', function (data) {

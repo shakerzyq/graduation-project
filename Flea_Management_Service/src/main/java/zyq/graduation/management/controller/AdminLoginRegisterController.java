@@ -115,7 +115,7 @@ public class AdminLoginRegisterController {
     @GetMapping("/selectSchoolArea/{college}")
     public List<String> selectSchoolArea(@PathVariable("college") String college){
         System.out.println("学校为："+college);
-        return Arrays.asList(adminLoginRegisterMapper.selectAreaByCollege(college).split("-"));
+        return adminLoginRegisterMapper.selectAreaByCollege(college);
     }
 
     /**
@@ -143,7 +143,6 @@ public class AdminLoginRegisterController {
     @CrossOrigin(origins = "*",maxAge = 3600)
     @PostMapping("/submitAdminInfo")
     public ReturnClass<String> RegisterAdmin(@RequestBody AdminGeneral adminGeneral){
-        System.out.println("hello");
         adminGeneral.setUuid(UUID.randomUUID().toString());
         System.out.println(adminGeneral);
         String judge= adminLoginRegisterMapper.verifyAdminInfo(adminGeneral)==0?"0":"1";
@@ -163,56 +162,9 @@ public class AdminLoginRegisterController {
         }
     }
 
-    /**
-     * 查询等待审核的管理员申请信息
-     * @param page
-     * @param limit
-     * @return
-     */
-    @CrossOrigin(origins = "*",maxAge = 3600)
-    @GetMapping("/getUncheckedAdmins")
-    public ReturnClass<ArrayList<AdminGeneral>> getUnchechedGeneralAdmin(@PathParam("page") Integer page
-            ,@PathParam("limit") Integer limit){
-        System.out.println("page:"+page+"limit"+limit);
-        ArrayList<AdminGeneral> admins = adminLoginRegisterMapper.selectUncheckedInfo(page-1,limit);
-        System.out.println("查询到的admins为："+admins);
-        return new ReturnClass<ArrayList<AdminGeneral>>(0,"",admins.size(),admins);
-    }
 
-    /**
-     *
-     * @param id
-     * @param instruct 指令
-     * @param email 邮箱用于通知是否通过审核
-     * @return
-     */
-    @CrossOrigin(origins = "*",maxAge = 3600)
-    @GetMapping("/disposeAdminRegisterApply/{id}/{instruct}/{email}")
-    public Boolean disposeAdminRegisterApply(@PathVariable("id") String id
-            ,@PathVariable("instruct") String instruct
-            ,@PathVariable("email") String email){
-        System.out.println("fleaid为："+id+" 指令："+instruct+"email为："+email);
-        if (instruct.equals("1")){
-            return adminLoginRegisterMapper.updateAdminStatus(id);
-        }else{
-            return adminLoginRegisterMapper.deleteAdmin(id);
-        }
-    }
 
-    /**
-     * 查询所有已经通过审核的管理员
-     * @param page
-     * @param limit
-     * @return
-     */
-    @CrossOrigin(origins = "*",maxAge = 3600)
-    @GetMapping("/getCheckedAdmins")
-    public ReturnClass<ArrayList<AdminGeneral>> getChechedGeneralAdmin(@PathParam("page") Integer page
-            ,@PathParam("limit") Integer limit){
-        System.out.println("page:"+page+"limit"+limit);
-        ArrayList<AdminGeneral> admins = adminLoginRegisterMapper.selectCheckedInfo(page-1,limit);
-        System.out.println("查询到的admins为："+admins);
-        return new ReturnClass<ArrayList<AdminGeneral>>(0,"",admins.size(),admins);
-    }
+
+
 }
 

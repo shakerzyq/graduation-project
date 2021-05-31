@@ -6,9 +6,16 @@
 			<view class="iconfont search-icon">&#xe8aa;</view>
 		</view>
 		
+		<view class="recommend-classify">
+			<view :class="newGoods" @click="getNewGoods">最新发布</view>
+			<view :class="hotGoods" @click="getHotGoods">热度最高</view>
+		</view>
+		
 		<!-- 商品展示页面 -->
 		<goodsList @goodsItemClick="goGoodsDetail" :goodsa="goodsa" :goodsb="goodsb"></goodsList>
 		<view class="isOver" v-if="flag">-----我是有底线的-----</view>
+		
+		
 
 	</view>
 </template>
@@ -29,7 +36,9 @@
 				is_open_socket: false,
 				flea_id:null,
 				pagenum:1,//当前页数
-				flag:false
+				flag:false,
+				newGoods:"newGoods",
+				hotGoods:"hotGoods2",
 			}
 			
 		},
@@ -74,7 +83,7 @@
 				    // error
 				}
 			}
-			setTimeout(()=>{ this.getGoodsList()},500)
+			setTimeout(()=>{ this.getGoodsList("new")},500)
 			this.connectSocketInit()
 			
 			
@@ -88,7 +97,7 @@
 			if(this.goods.length<this.pagenum*8) return this.flag=true
 			console.log("触底了")
 			this.pagenum++
-			this.getGoodsList()
+			this.getGoodsList("new")
 		},
 		
 		//刷新页面
@@ -98,7 +107,7 @@
 			this.goodsa=[]
 			this.goodsb=[]
 			this.flag=false
-			this.getGoodsList(()=>{
+			this.getGoodsList("new",()=>{
 				uni.stopPullDownRefresh()
 			})
 		},
@@ -119,10 +128,31 @@
 				})
 			},
 			
+			// 获取最新商品
+			getNewGoods(){
+				this.newGoods="newGoods";
+				this.hotGoods="hotGoods2";
+				this.goods=[]
+				this.goodsa=[]
+				this.goodsb=[]
+				this.getGoodsList("new")
+			},
+			
+			//获取热度最高商品
+			getHotGoods(){
+				this.newGoods="newGoods2";
+				this.hotGoods="hotGoods";
+				this.goods=[]
+				this.goodsa=[]
+				this.goodsb=[]
+				this.getGoodsList("hot")
+			},
+			
 			//获取商品数据
-			async getGoodsList(callBack){
+			async getGoodsList(type,callBack){
+				console.log("type:"+type)
 				const result = await this.$myRequest({
-					url:'/product/getgoodslist/'+this.pagenum+'/'+this.flea_id+'/'+this.$store.state.addPlace
+					url:'/product/getgoodslist/'+this.pagenum+'/'+this.flea_id+'/'+this.$store.state.addPlace+'/'+type
 				})
 				console.log("服务器的商品数据为"+result.data.length)
 				
@@ -309,8 +339,30 @@
 				font-size: 45rpx;
 			}
 		}
+		
+		.recommend-classify{
+			display: flex;
+			flex-direction: row;
+			justify-content: space-around;
+			width: 100%;
+			.newGoods,.hotGoods{
+				font-size: 40rpx;
+				color: $uni-color-orange;
+			}
+			.newGoods2,.hotGoods2{
+				
+			}
+			.hot{
+				
+			}
+		}
 		.test {
 			background-color: yellow;
+		}
+		
+		.recommend-classify{
+			display: flex;
+			flex-direction: row;
 		}
 	}
 

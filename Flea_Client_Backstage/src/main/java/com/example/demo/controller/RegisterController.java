@@ -38,7 +38,7 @@ public class RegisterController {
      */
     @CrossOrigin(origins = "*",maxAge = 3600)
     @GetMapping("/putemail/{type}/{email}")
-    public Boolean receiveEmail(@PathVariable("email") String email,@PathVariable("type") String type){
+    public Boolean sendEmail(@PathVariable("email") String email,@PathVariable("type") String type){
         System.out.println("emailWie："+email+" type为："+type);
         //查询该用户是否已被注册
         if (registerService.verifyEmail(email)){//存在账户

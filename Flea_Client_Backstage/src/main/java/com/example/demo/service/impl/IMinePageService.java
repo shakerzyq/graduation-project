@@ -140,6 +140,8 @@ public class IMinePageService implements MinePageService {
     @Override
     public Boolean s_putUserComplain(UserComplain userComplain) {
         sendEmailMessage.sendMessage(minePageMapper.selectUserEmail(userComplain.getComplained_userid()),userComplain.getEmail());
+        String address =minePageMapper.selectAddress(userComplain.getComplain_userid());
+        userComplain.setAddress(address);
         return minePageMapper.insertComplain(userComplain);
     }
 
@@ -173,7 +175,6 @@ public class IMinePageService implements MinePageService {
         }else{
             return minePageMapper.selectHistoryDetailComplain(complain_id,status);
         }
-
     }
 
     /**

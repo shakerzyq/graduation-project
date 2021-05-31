@@ -100,6 +100,7 @@
 						+"&flea_id="+this.flea_id
 						+'&complain_type=0'
 						+'&order_id='+order.orderId
+						+'&username='+this.username
 					})
 				}else{
 					uni.navigateTo({
@@ -111,7 +112,6 @@
 					})
 				}	
 			},
-			
 			//导航到商品详情页
 			goGoodsDetail(userId,goodsId){
 				console.log("跳转需要的id"+goodsId,userId)

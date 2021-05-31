@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.mapper.LoginMapper;
 import com.example.demo.pojo.Account;
 import com.example.demo.service.LoginService;
 import com.example.demo.util.JedisPoolUtils;
@@ -16,14 +17,17 @@ public class LoginController {
     @Autowired
     LoginService loginService;
 
+    @Autowired
+    LoginMapper loginMapper;
+
     /**
      * 账号密码登录
      */
     @CrossOrigin(origins = "*",maxAge = 3600)
     @PostMapping("/pwdlogin")
     public String pwdLogin(@RequestBody Account account){
-//        System.out.println("密码为"+account);
-//        System.out.println("返回的值为"+loginService.verifyPwd(account));
+        System.out.println("密码为"+account);
+        System.out.println("返回的值为"+loginService.verifyPwd(account));
         return loginService.verifyPwd(account);
     }
 
@@ -43,8 +47,17 @@ public class LoginController {
     /**
      *
      */
-    @GetMapping("verifyKey/{email}/{loginKey}")
+    @CrossOrigin(origins = "*",maxAge = 3600)
+    @GetMapping("/verifyKey/{email}/{loginKey}")
     public Boolean verifyLoginKey(@PathVariable("lgoinKey") String loginKey){
        return false;
+    }
+
+    @CrossOrigin(origins = "*",maxAge = 3600)
+    @GetMapping("/inquireServiceStatus/{address}")
+    public Boolean inquireServiceStatus(@PathVariable("address") String address){
+        System.out.println("地址为："+address);
+        String[] site = address.split("-");
+        return loginMapper.selectServiceStatus(site[0], site[1]) == 0;
     }
 }

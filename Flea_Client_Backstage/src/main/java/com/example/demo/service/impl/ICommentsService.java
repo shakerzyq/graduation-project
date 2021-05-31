@@ -234,6 +234,8 @@ public class ICommentsService implements CommentsService {
         System.out.println(id);
         commentReport.setComplain_id(id);
         if (commentsMapper.JudgeCommentExist(commentReport.getInformer_id(),commentReport.getViolate_comment_id())==0){
+            String address =commentsMapper.selectAddress(commentReport.getInformer_id());
+            commentReport.setAddress(address);
             return commentsMapper.reportComment(commentReport);
         }else{
             return true;

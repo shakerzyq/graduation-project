@@ -143,10 +143,11 @@
 <script>
 
   // 查询用户
-
+  var adminAccount
 
   $(document).ready(function () {
-  });
+    adminAccount = localStorage.getItem("adminaccount");
+  }); 
 
   layui.use('table', function () {
     var table = layui.table;
@@ -155,10 +156,11 @@
     var table1 = table.render({
       elem: '#demo'
       , height: 312
-      , url: 'http://127.0.0.1:8082/comment/getAccomplishReports' //数据接口
+      , url: 'http://127.0.0.1:8082/comment/getAccomplishReports/'+adminAccount //数据接口
       , page: true //开启分页
       , cols: [[ //表头
-        { field: 'informer_id', title: '举报人ID', width: 120, sort: true, fixed: 'left', toolbar: '#complainuserinfo' }
+        { field: 'complain_id', title: '举报单ID', width: 120, sort: true, fixed: 'left',  }
+        ,{ field: 'informer_id', title: '举报人ID', width: 120, sort: true, toolbar: '#complainuserinfo' }
         , { field: 'violate_user_id', title: '被举报人ID', width: 120, toolbar: '#complaineduserinfo' }
         , { field: 'start_time', title: '举报时间', width: 160, sort: true }
         , { field: 'end_time', title: '处理时间', width: 160, sort: true }
@@ -174,7 +176,7 @@
       var userid = $("#inputnameid").val();
       var typevalue = $("#result-type").val();
       table.reload('aa', {
-        url: 'http://127.0.0.1:8082/comment/getAccomplishReports',
+        url: 'http://127.0.0.1:8082/comment/getAccomplishReports/'+adminAccount,
         where: { //设定异步数据接口的额外参数，任意设
           userId: userid,
           status: typevalue
@@ -228,10 +230,10 @@
         });
       } else if (layEvent === 'todetail') {
         console.log("你好世界")
-        xadmin.open('编辑', 'member-detail.html?flea_id=' + obj.data.complain_userid, 600, 400);
+        xadmin.open('编辑', 'member-detail.html?flea_id=' + data.informer_id, 600, 400);
       } else if (layEvent === 'todetail2') {
         console.log("你好世界")
-        xadmin.open('编辑', 'member-detail.html?flea_id=' + obj.data.complained_userid, 600, 400);
+        xadmin.open('编辑', 'member-detail.html?flea_id=' + data.violate_user_id, 600, 400);
       } else if (layEvent === 'comment') {
         layer.prompt({
           fromType: 2,

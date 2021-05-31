@@ -65,10 +65,13 @@ public interface CommentsMapper {
     @Delete("delete from comment_1 where comment_f_id=#{commentid}")
     Boolean deleteChildComment(String commentid);
 
-    @Insert("insert into violate_comment (complain_id,rank,informer_id,violate_comment_id,violate_user_id,content,start_time) values " +
-            "(#{obj.complain_id},#{obj.rank},#{obj.informer_id},#{obj.violate_comment_id},#{obj.violate_user_id},#{obj.content},now())")
+    @Insert("insert into violate_comment (complain_id,rank,informer_id,violate_comment_id,violate_user_id,content,goods_id,start_time,address) values " +
+            "(#{obj.complain_id},#{obj.rank},#{obj.informer_id},#{obj.violate_comment_id},#{obj.violate_user_id},#{obj.content},#{obj.goodsId},now(),#{obj.address})")
     Boolean reportComment(@Param("obj") CommentReport commentReport);
 
     @Select("select count(*) from violate_comment where informer_id=#{informer_id} and violate_comment_id=#{violate_comment_id}")
     Integer JudgeCommentExist(String informer_id,String violate_comment_id);
+
+    @Select("select concat(college,'-',area) from user where flea_id=#{informer_id}")
+    String selectAddress(String informer_id);
 }

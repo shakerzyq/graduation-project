@@ -18,6 +18,9 @@
         <elasticsearch.version>7.6.2</elasticsearch.version>
     </properties>
     <dependencies>
+
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jdbc</artifactId>
@@ -102,7 +105,20 @@
             <version>7.6.2</version>
         </dependency>
 
+        <!--   个推sdk     -->
+        <dependency>
+            <groupId>com.gexin.platform</groupId>
+            <artifactId>gexin-rp-sdk-http</artifactId>
+            <version>4.1.0.5</version>
+        </dependency>
     </dependencies>
+
+    <repositories>
+        <repository>
+            <id>getui-nexus</id>
+            <url>http://mvn.gt.igexin.com/nexus/content/repositories/releases/</url>
+        </repository>
+    </repositories>
 
     <build>
         <plugins>

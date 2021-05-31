@@ -486,11 +486,12 @@ class DemoApplicationTests {
 
     }
 
+
     /**
-     * 将mysql中的信息转移到es中
+     * 验证用户信誉值加减
      */
     @Test
     public void test21(){
-
+        orderMapper.upUserCredit("7a0fc93fe",3.0);
     }
 }

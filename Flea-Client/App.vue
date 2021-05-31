@@ -9,7 +9,24 @@
 			        	url:'/pages/index/addProduct/addProduct'
 			        })
 			    })
-				
+			 //#ifdef APP-PLUS  
+						 var info = plus.push.getClientInfo();
+						console.log( "hello unipush",JSON.stringify( info ) );
+						 /* 5+  push 消息推送 ps:使用:H5+的方式监听，实现推送*/  
+						plus.push.addEventListener("click", function(msg) {  
+									console.log("click:"+JSON.stringify(msg));  
+									console.log(msg.payload);  
+									console.log(JSON.stringify(msg));  
+									//这里可以写跳转业务代码
+								}, false);  
+									// 监听在线消息事件    
+								plus.push.addEventListener("receive", function(msg) {  
+									// plus.ui.alert(2);  
+										//这里可以写跳转业务代码
+									console.log("recevice:"+JSON.stringify(msg))  
+						   }, false);  
+			
+					   //#endif 
 			// uni.getStorage({
 			// 	key: 'login_mark',
 			// 	success: res => {

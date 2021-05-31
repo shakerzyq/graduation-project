@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+    <meta charset="UTF-8">
+    <title>欢迎页面-X-admin2.2</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+        content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="./css/font.css">
+    <link rel="stylesheet" href="./css/xadmin.css">
+    <script src="./lib/layui/layui.js" charset="utf-8"></script>
+    <script type="text/javascript" src="./js/xadmin.js"></script>
+    <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    <style>
+        .input {
+            width: 83%;
+            display: flex;
+            flex-direction: column;
+            margin: 0 auto;
+
+        }
+
+        #ban-type {
+            width: 100px;
+            margin-bottom: 10px;
+            padding: 3px;
+        }
+
+        .short-ban {
+            width: 100px;
+            display: flex;
+            flex-direction: row;
+        }
+
+        .short-ban input {
+            width: 50px;
+            padding: 3px;
+            text-align: left;
+        }
+
+        .cut-credit {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            width: 110px;
+        }
+
+        .cut-credit input {
+            width: 80px;
+            padding: 3px;
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        .cut-credit text {
+            margin-top: 10px;
+            margin-left: 3px;
+        }
+        
+        .addzone{
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="x-nav">
+        <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a href="">演示</a>
+            <a>
+                <cite>导航元素</cite></a>
+        </span>
+        <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+            onclick="location.reload()" title="刷新">
+            <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+    </div>
+    <div class="layui-fluid">
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md12">
+                <div class="layui-card">
+                    <div class="layui-card-body ">
+                        <form class="layui-form layui-col-space5">
+                            <div class="layui-input-inline layui-show-xs-block">
+                                <select name="province" id="province" lay-filter="province" lay-search>
+                                    <option value="省份">省份</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline layui-show-xs-block">
+                                <select name="college" id="college" lay-filter="college" lay-search>
+                                    <option value="学校">学校</option>
+                                </select>
+                            </div>
+                            <div class="layui-input-inline layui-show-xs-block">
+                                <select name="area" id="area" lay-filter="area" lay-search>
+                                    <option value="校区">校区</option>
+                                </select>
+                            </div>
+                            <div class="layui-inline layui-show-xs-block">
+                                <input id="inputname" type="text" name="username" placeholder="请输入学校名"
+                                    autocomplete="off" class="layui-input">
+                            </div>
+                            <div class="layui-inline layui-show-xs-block">
+                                <button type="button" id="search-user" class="layui-btn" ><i
+                                        class="layui-icon">&#xe615;</i></button>
+                            </div>
+                            
+                        </form>
+                        <button type="button" class="layui-btn addzone" onclick="xadmin.open('添加','service-add.html', 600, 400)" href="javascript:;">
+                            <i class="layui-icon">&#xe608;</i> 添加
+                          </button>
+                    </div>
+                    <div class="layui-card-body layui-table-body layui-table-main">
+                        <table class="layui-table layui-form" id="demo" lay-filter="test">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- <div class="input" style="display:none">
+        <select id="ban-type" name="contrller">
+            <option class="ban-item" value="0">永久封禁</option>
+            <option class="ban-item" value="1">暂时封禁</option>
+        </select>
+        <div class="short-ban" style="display: none">
+            <input type='number' min=1 placeholder='天数'>
+            <text>天</text>
+        </div>
+        <div class="cut-credit">
+            <input type='number' min=1 placeholder='扣除信誉分'>
+            <text>分</text>
+        </div>
+
+    </div> -->
+</body>
+
+<script type="text/html" id="userinfo">
+<span class="layui-table-link" lay-event="todetail">详情</span>
+
+</script>
+
+<script type="text/html" id="status">
+  {{#  if(d.status==='1'){ }}
+    <span class="ban-show" style="color:red">服务暂停中</span>
+  {{#  } else{ }}
+    <span class="ban-show" style="color:green">正常</span>
+  {{#  } }}
+</script>
+<script type="text/html" id="picture">
+  <span class="layui-table-link" lay-event="picture">学生证</span>
+</script>
+<script type="text/html" id="check">
+    <div lay-event="banning">
+        {{#  if(d.status=='0'){ }}
+        <span   class="ban-action layui-btn layui-btn-danger">暂停服务</span>
+        {{#  } else{ }}
+        <span  class="ban-action layui-btn layui-btn-normal">开启服务</span>
+        {{#  } }}
+    </div>
+</script>
+<script>
+
+    // 查询用户
+
+
+    $(document).ready(function () {
+        $("#ban-type").click(function () {
+            //  alert("hello world");
+            console.log("hello world:" + $("#ban-type").val());
+            if ($("#ban-type").val() === '1') {
+                console.log("hello world:");
+                $(".short-ban").css("display", 'inline');
+            } else {
+                $(".short-ban").css("display", 'none');
+            }
+        })
+
+        $.get('http://127.0.0.1:8082/serviceinfo/getProvince', function (data, status) {
+            var i = 0;
+            for (i = 0; i < data.length; i++) {
+                console.log("省份", data[i])
+                $("#province").append("<option value=" + data[i] + ">" + data[i] + "</option>")
+                renderForm()
+            }
+        })
+
+    });
+
+    function renderForm() {
+        layui.use('form', function () {
+            var form = layui.form;
+            form.render();
+        });
+    }
+
+    layui.use('table', function () {
+        var table = layui.table;
+
+        //第一个实例
+        var table1 = table.render({
+            elem: '#demo'
+            , height: 312
+            , url: 'http://127.0.0.1:8082/manageServicedZone/getServices' //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                { field: 'uuid', title: 'ID', width: 120, sort: true, fixed: 'left' }
+                , { field: 'province', title: '省份', width: 80,sort: true }
+                , { field: 'college', title: '大学', width: 140,sort: true }
+                , { field: 'area', title: '校区', width: 140 }
+                , { field: 'status', title: '状态', width: 90, sort: true, templet: '#status' }
+                , { field: 'handle', title: '处理', width: 100, toolbar: '#check' }
+            ]]
+            , id: 'aa'
+        });
+
+        $("#search-user").click(function () {
+            console.log("hello world");
+            var province1 = $("#province").val();
+            var college1 = $("#college").val();
+            var area1 = $("#area").val();
+            var name1 = $("#inputname").val();
+            console.log("hello", province1, college1, area1, name1)
+            table.reload('aa', {
+                url: 'http://localhost:8082/manageServicedZone/SearchServeZone',
+                where: { //设定异步数据接口的额外参数，任意设
+                    province: province1,
+                    college: college1,
+                    area: area1,
+                    name: name1
+                }
+                , page: {
+                    curr: 1 //重新从第 1 页开始
+                }
+            }); //只重载数据
+        });
+
+        table.on('tool(test)', function (obj) { //注：tool 是工具条事件名，test 是 table 原始容器的属性 lay-filter="对应的值"
+            var data = obj.data; //获得当前行数据
+            var layEvent = obj.event; //获得 lay-event 对应的值（也可以是表头的 event 参数对应的值）
+            var tr = obj.tr; //获得当前行 tr 的 DOM 对象（如果有的话）
+
+            if (layEvent === "banning") {
+                console.log("当前行的ID为："+data.uuid)
+                $('#ban-type').val(0)
+                $('.short-ban').css('display', 'none');
+                $('.short-ban').children().val("")
+                console.log("neirong:"+tr.children("[data-field='handle']").text().toString)
+                if (tr.children("[data-field='handle']").text() === "   暂停服务   ") {//如果为true
+                    console.log("hello world")
+                    $.get("http://127.0.0.1:8082/manageServicedZone/handleServeZone/" + data.uuid + "/1" , function (datas, status) {
+                        tr.children("[data-field='handle']").children("div").children("div").children("span").text("开启服务").css("background-color", "rgb(30,159,255)")
+                        tr.children("[data-field='status']").children("div").children("span").text("服务暂停中").css("color", "red")
+                        if(datas){
+                            layer.msg("成功")
+                        }else{
+                            layer.msg("失败")
+                        }
+                    })
+                    // layer.open({
+                    //     type: 1,
+                    //     content: $('.input') //这里content是一个普通的String
+                    //     , btn: ['确定', '取消']
+                    //     , yes: function (index, layero) {
+                    //         永久封禁
+
+                    //         var credit = $('.cut-credit').children().val()
+                    //         if ($('#ban-type').val() === '0') {//永久封禁
+                    //             $.get("http://127.0.0.1:8082/user/updateUserStatus/ban/" + data.flea_id + "/" + data.email + "/" + credit, function (data, status) {
+                    //                 tr.children("[data-field='handle']").children("div").children("div").children("span").text("解封").css("background-color", "rgb(30,159,255)")
+                    //                 tr.children("[data-field='status']").children("div").children("span").text("永久封禁中").css("color", "red")
+                    //             })
+                    //             layer.close(index);
+                    //         } else {//暂时封禁
+                    //             var day = $('.short-ban').children().val()
+                    //             if (day !== null && day.length > 0) {
+                    //                 $.get('http://127.0.0.1:8082/user/temporaryBanUser/' + data.flea_id + '/' + day + "/" + data.email + "/" + credit, function (data, status) {
+                    //                     tr.children("[data-field='handle']").children("div").children("div").children("span").text("解封").css("background-color", "rgb(30,159,255)")
+                    //                     tr.children("[data-field='status']").children("div").children("span").text("暂时封禁(" + day + "天后解封)").css("color", "red")
+                    //                 })
+                    //                 layer.close(index);
+                    //             } else {
+                    //                 layer.msg('内容不能为空', { icon: 5 });
+                    //             }
+                    //         }
+                    //     }
+                    // });
+                } else {
+
+                    // obj.data.status==="正常"
+                    console.log("**************解封****************")
+                    //解禁
+                    $.get("http://127.0.0.1:8082/manageServicedZone/handleServeZone/" + data.uuid + "/0", function (data, status) {
+                        tr.children("[data-field='handle']").children("div").children("div").children("span").text("暂停服务").css("background-color", "rgb(255,87,34)")
+                        tr.children("[data-field='status']").children("div").children("span").text("正常").css("color", "green")
+                    })
+                    this.status = true;
+                }
+            } else if (layEvent === 'pass') {
+                layer.confirm('确认通过审核？', function (index) {
+                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                    layer.close(index);
+                    $.get("http://127.0.0.1:8082/user/disposeRegisterApply/" + obj.data.flea_id + "/1", function (data, status) {
+                    });
+                });
+            } else if (layEvent === 'refuse') {
+                layer.confirm('真的拒绝通过吗？', function (index) {
+                    $.get("http://127.0.0.1:8082/user/disposeRegisterApply/" + obj.data.flea_id + "/0", function (data, status) {
+                    });
+                    obj.del(); //删除对应行（tr）的DOM结构，并更新缓存
+                    layer.close(index);
+                    //向服务端发送删除指令
+                });
+            } else if (layEvent === 'todetail') {
+                xadmin.open('编辑', 'member-detail.html?flea_id=' + obj.data.flea_id, 600, 400);
+            }
+        });
+    });
+
+
+    layui.use(['laydate', 'form'], function () {
+        var laydate = layui.laydate;
+        var form = layui.form;
+
+        form.on('select(province)',
+            function (data) {
+
+                if (data.value === "省份") {
+                    console.log("hello")
+                    $("#college").empty();
+                    $("#college").append("<option value='学校'>学校</option>")
+                    $("#college option").first().attr("selected", true);
+                    $("#area").empty();
+                    $("#area").append("<option value='校区'>校区</option>")
+                    $("#area option").first().attr("selected", true);
+                    renderForm()
+                } else {
+                    console.log("hello2")
+                    // $("#college").empty();
+                    // $("#college").append("<option value='学校'>学校</option>")
+                    $.get('http://127.0.0.1:8082/serviceinfo/getCollege/' + data.value, function (data1, status) {
+                        // console.log(data)
+                        var i = 0;
+                        console.log("data1的长度为：", data1.length, data1[0], data1[1])
+                        for (i = 0; i < data1.length; i++) {
+                            console.log("学校为" + data1[i])
+                            $("#college").append("<option value=" + data1[i] + ">" + data1[i] + "</option>")
+                            $("#college option").first().next().attr("selected", true);
+                            renderForm()
+                        }
+                        $("#area").empty();
+                        $("#area").append("<option value='校区'>校区</option>")
+                        $.get('http://127.0.0.1:8082/serviceinfo/getCollegeArea/' + data1[0], function (data2, status) {
+                            // console.log(data)
+                            var i = 0;
+                            for (i = 0; i < data2.length; i++) {
+                                // <option value="浙江">浙江</option>
+                                // "<option value="+data[i]+">"+data[i]+"</option>"
+                                console.log(data2[i])
+                                $("#area").append("<option value=" + data2[i] + ">" + data2[i] + "</option>")
+                                $("#area option").first().next().attr("selected", true);
+                                renderForm()
+                            }
+                        })
+                    })
+                }
+            });
+
+        form.on('select(college)',
+
+            function (data) {
+                $("#area").empty();
+                $("#area").append("<option value='校区'>校区</option>")
+                if (data.value !== "学校") {
+                    console.log("hello")
+                    $.get('http://127.0.0.1:8082/serviceinfo/getCollegeArea/' + data.value, function (data, status) {
+                        // console.log(data)
+                        var i = 0;
+                        for (i = 0; i < data.length; i++) {
+                            $("#area").append("<option value=" + data[i] + ">" + data[i] + "</option>")
+                            $("#area option").first().next().attr("selected", true);
+                            renderForm()
+                        }
+                    })
+                } else {
+                    renderForm()
+                }
+            });
+
+
+        // 监听全选
+        form.on('checkbox(checkall)', function (data) {
+            if (data.elem.checked) {
+                $('tbody input').prop('checked', true);
+            } else {
+                $('tbody input').prop('checked', false);
+            }
+            form.render('checkbox');
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#start' //指定元素
+        });
+
+        //执行一个laydate实例
+        laydate.render({
+            elem: '#end' //指定元素
+        });
+
+
+
+
+    });
+
+
+
+    /*用户-停用*/
+    function member_stop(obj, id) {
+        layer.confirm('确认要停用吗？', function (index) {
+
+            if ($(obj).attr('title') == '启用') {
+
+                //发异步把用户状态进行更改
+                $(obj).attr('title', '停用')
+                $(obj).find('i').html('&#xe62f;');
+
+                $(obj).parents("tr").find(".td-status").find('span').addClass('layui-btn-disabled').html('已停用');
+                layer.msg('已停用!', { icon: 5, time: 1000 });
+
+            } else {
+                $(obj).attr('title', '启用')
+                $(obj).find('i').html('&#xe601;');
+
+                $(obj).parents("tr").find(".td-status").find('span').removeClass('layui-btn-disabled').html('已启用');
+                layer.msg('已启用!', { icon: 5, time: 1000 });
+            }
+        });
+    }
+
+    /*用户-删除*/
+    function member_del(obj, id) {
+        layer.confirm('确认要删除吗？', function (index) {
+            //发异步删除数据
+            $(obj).parents("tr").remove();
+            layer.msg('已删除!', { icon: 1, time: 1000 });
+        });
+    }
+
+
+
+    function delAll(argument) {
+        var ids = [];
+
+        // 获取选中的id 
+        $('tbody input').each(function (index, el) {
+            if ($(this).prop('checked')) {
+                ids.push($(this).val())
+            }
+        });
+
+        layer.confirm('确认要删除吗？' + ids.toString(), function (index) {
+            //捉到所有被选中的，发异步进行删除
+            layer.msg('删除成功', { icon: 1 });
+            $(".layui-form-checked").not('.header').parents('tr').remove();
+        });
+    }
+</script>
+
+</html>

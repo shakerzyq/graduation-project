@@ -16,6 +16,24 @@ public class CommentReport implements Serializable {
     private String violate_comment_id;
     private String violate_user_id;
     private String content;
+    private String goodsId;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getGoodsId() {
+        return goodsId;
+    }
+
+    public void setGoodsId(String goodsId) {
+        this.goodsId = goodsId;
+    }
 
     public String getContent() {
         return content;

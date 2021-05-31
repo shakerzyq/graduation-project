@@ -243,8 +243,12 @@ public class ESDataDao {
             SearchResponse searchResponse = client.search(searchRequest,ElasticSearchConfig.COMMON_OPTIONS);
             SearchHits hits = searchResponse.getHits();
             SearchHit[] searchHits = hits.getHits();
-            String json = searchHits[0].getSourceAsString();
-            goodsIndex = toGoodsIndex(json,consumerId);
+            if (searchHits.length>0){
+                String json = searchHits[0].getSourceAsString();
+                goodsIndex = toGoodsIndex(json,consumerId);
+            }
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -298,6 +302,25 @@ public class ESDataDao {
                 jsonMap.put("goodsWanter", goodsIndex.getGoodsWanter()+1);
             }
         }
+
+        UpdateRequest updateRequest = new UpdateRequest(index,id).doc(jsonMap);
+
+        UpdateResponse updateResponse = null;
+        try {
+            updateResponse = client.update(updateRequest, ElasticSearchConfig.COMMON_OPTIONS);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        System.out.println(updateResponse);
+    }
+
+
+    public void upGoodsViews(String index, String id) {
+
+        GoodsIndex goodsIndex = selectGoodsIndex(id);
+
+        Map<String, Object> jsonMap = new HashMap<>();
+        jsonMap.put("viewsNum", goodsIndex.getViewsNum()+1);
 
         UpdateRequest updateRequest = new UpdateRequest(index,id).doc(jsonMap);
 
@@ -414,6 +437,43 @@ public class ESDataDao {
     }
 
     /**
+     * 获取热度排序的商品列表
+     * @param index
+     * @param queryBuilder
+     * @return
+     */
+    public ArrayList<GoodsIndex> hotGoodsSort(String index,QueryBuilder queryBuilder){
+        SearchRequest searchRequest = new SearchRequest();
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(queryBuilder);
+        searchSourceBuilder.from(0);
+        searchSourceBuilder.size(10);
+        searchSourceBuilder.sort("likesNum",SortOrder.DESC);
+        searchSourceBuilder.sort("goodsWanter",SortOrder.DESC);
+        searchSourceBuilder.sort("viewsNum",SortOrder.DESC);
+
+        SearchResponse searchResponse = null;
+        System.out.println(searchSourceBuilder);
+        searchRequest.source(searchSourceBuilder);
+        ArrayList<GoodsIndex> goodsIndices = new ArrayList<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        try {
+            searchResponse = client.search(searchRequest, ElasticSearchConfig.COMMON_OPTIONS);
+            SearchHits hits = searchResponse.getHits();
+            SearchHit[] searchHits = hits.getHits();
+            for (SearchHit hit:searchHits){
+                String json = hit.getSourceAsString();
+                goodsIndices.add(toGoodsIndex(json));
+//                GoodsIndex goodsIndex = objectMapper.readValue(json,GoodsIndex.class);
+//                goodsIndices.add(goodsIndex);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return goodsIndices;
+    }
+
+    /**
      * 复合查询商品
      * @param from
      * @param size
@@ -435,6 +495,7 @@ public class ESDataDao {
         searchSourceBuilder.query(queryBuilder);
         searchSourceBuilder.from(from);
         searchSourceBuilder.size(size);
+
 
         switch (sortType){
             case 1:

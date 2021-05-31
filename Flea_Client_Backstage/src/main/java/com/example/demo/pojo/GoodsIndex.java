@@ -26,6 +26,15 @@ public class GoodsIndex {
     private Integer viewsNum;//浏览数，默认排序
     private Integer likesNum;//喜欢数
     private String status;
+    private Long addTime;
+
+    public Long getAddTime() {
+        return addTime;
+    }
+
+    public void setAddTime(Long addTime) {
+        this.addTime = addTime;
+    }
 
     public String getAddPlace() {
         return addPlace;
@@ -165,6 +174,7 @@ public class GoodsIndex {
                 ", viewsNum=" + viewsNum +
                 ", likesNum=" + likesNum +
                 ", status='" + status + '\'' +
+                ", addTime=" + addTime +
                 '}';
     }
 }

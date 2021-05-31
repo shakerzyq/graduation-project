@@ -41,7 +41,7 @@ public interface ForGoodsService {
      * @param size
      * @return
      */
-    ArrayList<GoodsIndex> s_getGoodsForIndex(int from, int size,String status,String status2,String addPlace);
+    ArrayList<GoodsIndex> s_getGoodsForIndex(int from, int size,String status,String status2,String addPlace,String type);
 
     /**
      * 通过输入的字段查询商品--ES搜索
